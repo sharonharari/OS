@@ -14,6 +14,7 @@ main file. This file contains the main function of smash
 #include <map>
 #include <string>
 #include <string_view>
+using namespace std;
 
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
@@ -23,20 +24,16 @@ void* jobs = NULL; //This represents the list of jobs. Please change to a prefer
 char lineSize[MAX_LINE_SIZE]; 
 
 enum job_state {
-	Stopped,
+	Stopped ,
 	Running
 };
 
-struct job
-{
-	int pid;
-	std::string cmd;
-	job_state state;
-	int entered_time; // the time the job entered the list
-};
+
+
 
 int last_job;
 char * last_path;
+std::map<int, job, less<int>> mp;
 
 //**************************************************************************************
 // function name: main
@@ -61,7 +58,10 @@ int main(int argc, char *argv[])
 	/************************************/
 	// Init globals 
 
+
+
     last_path = NULL;
+
 	
 	L_Fg_Cmd =(char*)malloc(sizeof(char)*(MAX_LINE_SIZE+1));
 	if (L_Fg_Cmd == NULL) 
