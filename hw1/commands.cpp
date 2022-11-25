@@ -2,9 +2,10 @@
 //********************************************
 #include <iostream>
 #include "commands.h"
-//using namespace std;
+#include <string>
+//#include <bits/basic_string.h>//using namespace std;
 
-//using std::cout;
+//sing std::a;
 //using std::endl;
 //using std::string;
 
@@ -26,14 +27,21 @@ job::job(int pida,std::string cmda,job_state statea,time_t entered_timea)
 }
 job::~job(){}
 
+bool is_number(std::string& str);
+bool is_number_char(char * str);
+int arg_in_map(char * arg);
+
 
 //********************************************
 int find_stopped()
 {
+	job stopped = NULL;
 	for (auto it = mp.begin(); it != mp.end(); ++it)
 		if ((it->second).state == Stopped)
-			return it->first;
-	return -1;
+			stopped = it->first;
+	if(stopped == NULL) return -1;
+
+	return stopped.pid;
 }
 //********************************************
 
@@ -78,13 +86,15 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 		}
 		else {
 			if(chdir(arg[1])) perror("chdir() error");
+			else{
+				char * last_path_tmp = get_current_dir_name();
+				if ( last_path_tmp == NULL)
+					perror("getcwd() error");
+				free(last_path);
+				// maybe change it to string instead char *
+				last_path = last_path_tmp;
+			}
 		}
-
-		char * last_path_tmp = get_current_dir_name();
-		if ( last_path_tmp == NULL)
-			perror("getcwd() error");
-		free(last_path);
-		last_path = last_path_tmp;
 	} 
 	
 	/*************************************************/
@@ -92,7 +102,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 	{
 		char * cwd = get_current_dir_name();
 		if ( cwd == NULL)
-			perror("getcwd() error"); // TBD
+			perror("smash error: getcwd() error");
 		else
 		    printf("%s", *cwd);
 		free(cwd);
@@ -101,11 +111,73 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 	/*************************************************/
 	else if (!strcmp(cmd, "kill"))
 	{
- 		
+		// valid arguments check
+		if (num_arg != 2) {
+			perror("smash error: kill: invalid arguments");
+		}
+		else{
+			std::string signum_s(args[1]);
+			std::string job_id_s(args[2]);
+			if (signum_s[0] != '-'){
+				perror("smash error: kill: invalid arguments");
+			}
+			else signum_s.erase(0,1);
+			if (!is_number(signum_s) || !is_number(job_id_s) ){
+				perror("smash error: kill: invalid arguments");
+			}
+			else {
+				// job_id check
+				int job_id = std::stoi(job_id_s);
+				int signum = std::stoi(signum_s);
+				if(mp.find(job_id) == mp.end()){
+					std::cerr << "smash error: kill: job-id " <<job_id<<" does not exist" << std::endl;
+				}
+				else {
+					if (kill(mp[job_id].pid , signum)){
+						printf("smash error: kill: job-id %d - Cannot send signal\n",job_id);
+					}
+					std::cout << "signal number "<< signum<< " was sent to pid "<<mp[job_id].pid << std::endl;
+				}
+			}
+
+		}
 	}
 	else if (!strcmp(cmd, "diff"))
 	{
-
+		if (num_arg != 2) {
+			perror("smash error: diff: invalid arguments");
+		}
+		else {
+			FILE *f1, *f2;
+			f1 = fopen(args[1],"r");
+			if( f1 == NULL){
+				std::cerr << "smash error : failed to open file" << std::endl;
+				return 1;
+			}
+			f2 = fopen(args[2],"r");
+			if (f2 == NULL){
+				std::cerr << "smash error : failed to open file" << std::endl;
+			}
+			unsigned char c1 = 0;
+			unsigned char c2 = 0;
+			bool diff = 0;
+			while (!feof(f1) || !feof(f2)){
+				c1 = getc(f1);
+				c2 = getc(f2);
+				if (c1 != c2) {
+					diff = 1;
+					break;
+				}
+			}
+			if (diff){ //different
+				std::cout << "1" << std::endl;
+			}
+			else{ //identical
+				std::cout << "0" << std::endl;
+			}
+			fclose(f1);
+			fclose(f2);
+		}
 	}
 	/*************************************************/
 	
@@ -117,13 +189,14 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 		delete curr_time;
 
 		//for (auto it : mp){
-
 		for (auto it = mp.begin(); it != mp.end(); ++it){
 			 diff_time = diff_time(*curr_time, (it->second).entered_time);
 			 std::cout << "[" << it->first << "] " << (it->second).cmd
 					 << " : " << (it->second).pid << " "
-					 << diff_time << " (" << (it->second).state << ")"
-					 << std::endl ;
+					 << diff_time << "secs";
+			 if((it->second).state == Stopped){
+				 std::cout << " (stopped)" << std::endl;
+			 }
 		}
 	}
 	/*************************************************/
@@ -134,60 +207,113 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 	/*************************************************/
 	else if (!strcmp(cmd, "fg"))  //
 	{
-		if((num_arg > 1) || (num_arg > 0 && decltype(args[1]) != int) ) {
-			// wrong type or format - need to check!!!
+		if(num_arg > 1){
+			// too many arguments
 			std::cerr << "smash error: fg: invalid arguments" << std::endl;
 		}
 		else if (num_arg == 0 && mp.empty()) {
 			// no arguments passed, and map is empty
 			std::cerr << "smash error: fg: jobs list is empty" << std::endl;
 		}
-		else if (mp.find((int)args[1]) == mp.end()) {
-		  // not found
+
+		else if (num_arg != 0 && !is_number_char(args[1])){
+			// argument is not a number - invalid argument
+			std::cerr << "smash error: fg: invalid arguments" << std::endl;
+		}
+		else if ((num_arg != 0) && (arg_in_map(args[1])==-1)) {
+			// job id is not found
 			std::cerr << "smash error: fg: job-id" << args[1] << " does not exist" << std::endl;
-		} else {
-			// found
-			std::cout <<  mp[(int)args[1]].cmd << " : " << mp[(int)args[1]].pid << std::endl;
-			kill(mp[(int)args[1]].pid, SIGCONT );
-			waitpid(mp[(int)args[1]].pid, NULL, WCONTINUED);
-			mp.erase((int)args[1]);
+		}
+		else
+		{
+			// no error
+			int job_id = -1;
+			if(num_arg == 0){ // take the biggest job id
+				job_id = mp.rbegin()->first; // the biggest key
+			}
+			else job_id = arg_in_map(args[1]); // take the arg job_id
+			std::cout <<  mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
+			kill(mp[job_id].pid, SIGCONT );
+			// wait for job to finish - running in foreground
+			waitpid(mp[job_id].pid, NULL, WCONTINUED);
+			mp.erase(job_id);
 		}
 	} 
 	/*************************************************/
 	else if (!strcmp(cmd, "bg")) //
 	{
-		if((num_arg > 1) || (num_arg > 0 && decltype(args[1]) != int) ) {
-			// wrong type or format - need to check!!!
-			std::cerr << "smash error: fg: invalid arguments" << std::endl;
+		if(num_arg > 1){
+			// too many arguments
+			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 		}
 		else if (num_arg == 0 && mp.empty()) {
 			// no arguments passed, and map is empty
-			std::cerr << "smash error: fg: jobs list is empty" << std::endl;
+			std::cerr << "smash error: bg: jobs list is empty" << std::endl;
 		}
 		else if (num_arg == 0 && (find_stopped() == -1)) {
 			// no arguments passed, no stopped job
 			std::cerr << "smash error: bg: there are no stopped jobs to resume" << std::endl;
 		}
-		else if (mp.find((int)args[1]) == mp.end()) {
-		  // not found
-			std::cerr << "smash error: fg: job-id" << args[1] << " does not exist" << std::endl;
-		} else {
-			// found
-			if (mp[(int)args[1]].state == Running){
+		else if (num_arg != 0 && !is_number_char(args[1])){
+			// argument is not a number - invalid argument
+			std::cerr << "smash error: bg: invalid arguments" << std::endl;
+		}
+		else if ((num_arg != 0) && (arg_in_map(args[1])==-1)) {
+			// job id is not found
+			std::cerr << "smash error: bg: job-id" << args[1] << " does not exist" << std::endl;
+		}
+		else {
+			// no error
+			int job_id = 0;
+			if(num_arg == 0){
+				job_id = find_stopped();
+			}
+			else job_id = args[1];
+			if (mp[job_id].state == Running){
 				// this job is already running
-				std::cerr << "smash error: bg: job-id "<< args[1] << " is already running in the background" << std::endl
+				std::cerr << "smash error: bg: job-id "<< job_id << " is already running in the background" << std::endl;
 			}
 			else {
-				std::cout <<  mp[(int)args[1]].cmd << " : " << mp[(int)args[1]].pid << std::endl;
-				kill(mp[(int)args[1]].pid, SIGCONT );
-				mp.erase((int)args[1]);
+				std::cout <<  mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
+				kill(mp[job_id].pid, SIGCONT );
+				mp.erase(job_id);
 			}
 		}
 	}
 	/*************************************************/
-	else if (!strcmp(cmd, "quit")) //
+	else if (!strcmp(cmd, "quit"))
 	{
-   		
+		pid_t child_pid;
+   		if(strcmp(args[1],"kill")){
+
+   			for (auto it = mp.begin(); it != mp.end(); ++it){ // for each of the jobs running
+   				if(kill(it->first, SIGTERM)){
+   					// kill error
+   					std::cerr << "smash error: kill SIGTERM error" << std::endl;
+   					return 1;
+   				}
+   				std::cout << "[" << it->first << "] " << it->second.cmd << " - " <<"Sending SIGTERM...";
+   				fflush( stdout);
+   				sleep(5);
+   				child_pid = waitpid(it->second.pid, NULL, WNOHANG);
+   				if ( child_pid == -1) {
+   					// waitpid error
+   					std::cerr << "smash error: waitpid failed";
+   					return 1;
+   				}
+   				if( child_pid != it->second.pid){
+   					// the process hasn't finish yet
+   					std::cout << " (5 sec passed) Sending SIGKILL…";
+   					if (kill(it->second.pid, SIGKILL)){
+   						std::cerr << "smash error: kill failed" << std::endl;
+   						return 1;
+   					}
+   				}
+   				std::cout << " Done." << std::endl;
+			}
+   		}
+
+   		exit(0);
 	} 
 	/*************************************************/
 	else // external command
@@ -324,3 +450,29 @@ int BgCmd(char* lineSize, void* jobs)
 	return -1;
 }
 
+bool is_number(std::string& str)
+{
+    for (char const &c : str) {
+        // using the std::isdigit() function
+        if (std::isdigit(c) == 0)
+          return false;
+    }
+    return true;
+}
+bool is_number_char(char * str)
+{
+	std::string str_s(str);
+    for (char const &c : str_s) {
+        // using the std::isdigit() function
+        if (std::isdigit(c) == 0)
+          return false;
+    }
+    return true;
+}
+
+int arg_in_map(char * arg){
+	std::string arg_s(arg);
+	int num = std::stoi(arg_s);
+	if (mp.find(num) == mp.end()) return -1;
+	return num;
+}
