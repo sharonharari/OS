@@ -1,10 +1,12 @@
 //		commands.c
 //********************************************
+const int CMD = 0;
+
 #include <iostream>
 #include "commands.h"
 #include <string>
+#include<map>
 //#include <bits/basic_string.h>//using namespace std;
-
 //sing std::a;
 //using std::endl;
 //using std::string;
@@ -32,6 +34,12 @@ bool is_number_char(char * str);
 int arg_in_map(char * arg);
 
 
+bool is_number(std::string& str);
+bool is_number_char(char * str);
+int arg_in_map(std::string& arg);
+
+
+
 //********************************************
 int find_stopped()
 {
@@ -45,50 +53,59 @@ int find_stopped()
 }
 //********************************************
 
+
+int cmdline_split_into_arguments(std::string line, std::string(&args)[MAX_ARG], std::string delimiters = " \t\n")
+{
+
+	char* iter = strtok(const_cast<char*>(line.c_str()), const_cast<char*>(delimiters.c_str()));
+	int i = 0, num_arg = 0;
+	if (iter == NULL)
+		return 0;
+	args[0] = iter; // arg[0] is the cmd
+	for (i = 1; i < MAX_ARG; i++)
+	{
+		iter = strtok(NULL, const_cast<char*>(delimiters.c_str())); // arg[i] is the arguments by order
+		if (iter != NULL) {
+			args[i] = iter;
+			num_arg++;  // number of arguments of cmd
+		}
+
+	}
+	return num_arg;
+}
+
+
+
 // function name: ExeCmd
 // Description: interperts and executes built-in commands
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
 //**************************************************************************************
-int ExeCmd(void* jobs, char* lineSize, char* cmdString)
+int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
-	char* cmd; 
-	char* args[MAX_ARG];
-	char pwd[MAX_LINE_SIZE];
-	char* delimiters = " \t\n";  
-	int i = 0, num_arg = 0;
+	
 	bool illegal_cmd = false; // illegal command
-    	cmd = strtok(lineSize, delimiters);
-	if (cmd == NULL)
-		return 0; 
-   	args[0] = cmd; // arg[0] is the cmd
-	for (i=1; i<MAX_ARG; i++)
-	{
-		args[i] = strtok(NULL, delimiters); // arg[i] is the arguments by order
-		if (args[i] != NULL) 
-			num_arg++;  // number of arguments of cmd
- 
-	}
 /*************************************************/
 // Built in Commands PLEASE NOTE NOT ALL REQUIRED
 // ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
 // MORE IF STATEMENTS AS REQUIRED
 /*************************************************/
-	if (!strcmp(cmd, "cd") ) //
+	if (args[CMD] == "cd") //
 	{
-		if( num_arg > 1) perror("smash error: cd: too many arguments");
-
-		else if (args[1] == '-'){
-			if ( last_path == NULL) perror("smash error: cd: OLDPWD not set"); // TBD initialize to NULL
-			else if(chdir(last_path)){
+		if (num_arg > 1) 
+			perror("smash error: cd: too many arguments");
+		else if (args[1] == "-") {
+			if (last_path == NULL) 
+				perror("smash error: cd: OLDPWD not set"); // TBD initialize to NULL
+			else if (chdir(last_path)) {
 				perror("chdir() error");
 			}
 		}
 		else {
-			if(chdir(arg[1])) perror("chdir() error");
-			else{
-				char * last_path_tmp = get_current_dir_name();
-				if ( last_path_tmp == NULL)
+			if (chdir(const_cast<char*>(args[1].c_str()))) perror("chdir() error");
+			else {
+				char* last_path_tmp = get_current_dir_name();
+				if (last_path_tmp == NULL)
 					perror("getcwd() error");
 				free(last_path);
 				// maybe change it to string instead char *
@@ -96,9 +113,10 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 			}
 		}
 	} 
+
 	
 	/*************************************************/
-	else if (!strcmp(cmd, "pwd"))  //
+	else if (args[CMD] == "pwd")  //
 	{
 		char * cwd = get_current_dir_name();
 		if ( cwd == NULL)
@@ -109,7 +127,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 	}
 	
 	/*************************************************/
-	else if (!strcmp(cmd, "kill"))
+	else if (args[CMD] == "kill")
 	{
 		// valid arguments check
 		if (num_arg != 2) {
@@ -118,7 +136,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 		else{
 			std::string signum_s(args[1]);
 			std::string job_id_s(args[2]);
-			if (signum_s[0] != '-'){
+			if (signum_s[0] != "-"){
 				perror("smash error: kill: invalid arguments");
 			}
 			else signum_s.erase(0,1);
@@ -139,24 +157,24 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 					std::cout << "signal number "<< signum<< " was sent to pid "<<mp[job_id].pid << std::endl;
 				}
 			}
-
 		}
 	}
-	else if (!strcmp(cmd, "diff"))
+	else if (args[CMD] == "diff")
 	{
 		if (num_arg != 2) {
 			perror("smash error: diff: invalid arguments");
 		}
 		else {
 			FILE *f1, *f2;
-			f1 = fopen(args[1],"r");
+			f1 = fopen(const_cast<char*>(args[1].c_str()),"r");
 			if( f1 == NULL){
 				std::cerr << "smash error : failed to open file" << std::endl;
 				return 1;
 			}
-			f2 = fopen(args[2],"r");
+			f2 = fopen(const_cast<char*>(args[2].c_str()),"r");
 			if (f2 == NULL){
 				std::cerr << "smash error : failed to open file" << std::endl;
+				return 1;
 			}
 			unsigned char c1 = 0;
 			unsigned char c2 = 0;
@@ -181,13 +199,11 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 	}
 	/*************************************************/
 	
-	else if (!strcmp(cmd, "jobs")) //
+	else if (args[CMD] == "jobs") //
 	{
 		time_t * curr_time = new time_t;;
 		double diff_time;
 		time(curr_time);
-		delete curr_time;
-
 		//for (auto it : mp){
 		for (auto it = mp.begin(); it != mp.end(); ++it){
 			 diff_time = diff_time(*curr_time, (it->second).entered_time);
@@ -198,14 +214,15 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 				 std::cout << " (stopped)" << std::endl;
 			 }
 		}
+		delete curr_time;
 	}
 	/*************************************************/
-	else if (!strcmp(cmd, "showpid"))  //
+	else if (args[CMD] == "showpid")  //
 	{
 		std::cout << "smash pid is " << getpid() << std::endl;
 	}
 	/*************************************************/
-	else if (!strcmp(cmd, "fg"))  //
+	else if (args[CMD] == "fg"))  //
 	{
 		if(num_arg > 1){
 			// too many arguments
@@ -215,32 +232,29 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 			// no arguments passed, and map is empty
 			std::cerr << "smash error: fg: jobs list is empty" << std::endl;
 		}
-
-		else if (num_arg != 0 && !is_number_char(args[1])){
+		else if (num_arg != 0 && !is_number(args[1])){
 			// argument is not a number - invalid argument
 			std::cerr << "smash error: fg: invalid arguments" << std::endl;
 		}
 		else if ((num_arg != 0) && (arg_in_map(args[1])==-1)) {
 			// job id is not found
 			std::cerr << "smash error: fg: job-id" << args[1] << " does not exist" << std::endl;
-		}
-		else
-		{
+		} else {
 			// no error
 			int job_id = -1;
-			if(num_arg == 0){ // take the biggest job id
+			if (num_arg == 0) { // take the biggest job id
 				job_id = mp.rbegin()->first; // the biggest key
 			}
 			else job_id = arg_in_map(args[1]); // take the arg job_id
-			std::cout <<  mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
-			kill(mp[job_id].pid, SIGCONT );
+			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
+			kill(mp[job_id].pid, SIGCONT);
 			// wait for job to finish - running in foreground
 			waitpid(mp[job_id].pid, NULL, WCONTINUED);
 			mp.erase(job_id);
 		}
 	} 
 	/*************************************************/
-	else if (!strcmp(cmd, "bg")) //
+	else if (args[CMD] == "bg")) //
 	{
 		if(num_arg > 1){
 			// too many arguments
@@ -254,7 +268,7 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 			// no arguments passed, no stopped job
 			std::cerr << "smash error: bg: there are no stopped jobs to resume" << std::endl;
 		}
-		else if (num_arg != 0 && !is_number_char(args[1])){
+		else if (num_arg != 0 && !is_number(args[1])){
 			// argument is not a number - invalid argument
 			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 		}
@@ -268,23 +282,23 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
 			if(num_arg == 0){
 				job_id = find_stopped();
 			}
-			else job_id = args[1];
+			else job_id = std::stoi(args[1]);
 			if (mp[job_id].state == Running){
 				// this job is already running
-				std::cerr << "smash error: bg: job-id "<< job_id << " is already running in the background" << std::endl;
+				std::cerr << "smash error: bg: job-id "<< job_id << " is already running in the background" << std::endl
 			}
 			else {
-				std::cout <<  mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
-				kill(mp[job_id].pid, SIGCONT );
+				std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
+				kill(mp[job_id].pid, SIGCONT);
 				mp.erase(job_id);
 			}
 		}
 	}
 	/*************************************************/
-	else if (!strcmp(cmd, "quit"))
+	else if (args[CMD] == "quit"))
 	{
 		pid_t child_pid;
-   		if(strcmp(args[1],"kill")){
+   		if(args[1] == "kill"){
 
    			for (auto it = mp.begin(); it != mp.end(); ++it){ // for each of the jobs running
    				if(kill(it->first, SIGTERM)){
@@ -310,9 +324,8 @@ int ExeCmd(void* jobs, char* lineSize, char* cmdString)
    					}
    				}
    				std::cout << " Done." << std::endl;
-			}
+			  }
    		}
-
    		exit(0);
 	} 
 	/*************************************************/
@@ -358,6 +371,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString)
 			default:
                 	// Add your code here
 					//execv(args[0], args+1);
+					fg_insert()
 					waitpid(pID,NULL,WEXITED );
 					/* 
 					your code
@@ -387,37 +401,16 @@ int ExeComp(char* lineSize)
 // Parameters: command string, pointer to jobs
 // Returns: 0- BG command -1- if not
 //**************************************************************************************
-int BgCmd(char* lineSize, void* jobs)
+int BgCmd(std::map<int, job, less<int>> &mp, std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
-	char* cmd;
-	char* args[MAX_ARG];
-	char pwd[MAX_LINE_SIZE];
-	char* delimiters = " \t\n";
-	int i = 0, num_arg = 0;
-	bool illegal_cmd = false; // illegal command
-		cmd = strtok(lineSize, delimiters);
-	if (cmd == NULL)
-		return 0;
-
-	args[0] = cmd; // arg[0] is the cmd
-	for (i=1; i<MAX_ARG; i++)
+	if (num_args > 0 && is_path_cmd(args[CMD]) && cmdString == "&")
 	{
-		args[i] = strtok(NULL, delimiters); // arg[i] is the arguments by order
-		if (args[i] != NULL)
-			num_arg++;  // number of arguments of cmd
-
-	}
-	//char* Command;
-	//char* delimiters = " \t\n";
-	//char *args[MAX_ARG];
-	if (lineSize[strlen(lineSize)-2] == '&')
-	{
-		lineSize[strlen(lineSize)-2] = '\0';
+		//lineSize[strlen(lineSize)-2] = '\0';
+		num_args -= 1;
 		// Add your code here (execute a in the background)
 					
 		int pID;
-		    	switch(pID = fork())
-			{
+		switch(pID = fork()){
 				case -1:
 						// Add your code here (error)
 						std::cerr << 'smash error: fork failed' << std::endl;
@@ -429,11 +422,16 @@ int BgCmd(char* lineSize, void* jobs)
 						// Child Process
 						time_t * curr_time = new time_t;
 						time(curr_time);
-						job newjob(pID,std::string cmd_s(cmd),Running,*curr_time);
+						job newjob(pID, args[CMD],Running,*curr_time);
 						delete curr_time;
+						mp.insert(pair<int, job>(last_job, newjob));
 						// Add your code here (execute an external command)
 						setpgrp();
-						execv(args[0], args+1);
+						const char** argv = new const char* [num_args + 2];
+						for (int i = 0; i < num_args + 1; i++)
+							argv[i] = const_cast<char*>(args[i].c_str());
+						argv[num_args + 1] = NULL;
+						execv(argv[CMD], args);
 						std::cerr << 'smash error: execv failed' << std::endl;
 						//waitpid(0, NULL, WCONTINUED);
 
@@ -444,11 +442,12 @@ int BgCmd(char* lineSize, void* jobs)
 						/*
 						your code
 						*/
-			}
+		}
 		
 	}
 	return -1;
 }
+
 
 bool is_number(std::string& str)
 {
@@ -470,9 +469,10 @@ bool is_number_char(char * str)
     return true;
 }
 
-int arg_in_map(char * arg){
-	std::string arg_s(arg);
-	int num = std::stoi(arg_s);
-	if (mp.find(num) == mp.end()) return -1;
+
+int arg_in_map(std::string& arg){
+	int num = std::stoi(arg);
+	if (mp.find(num) == mp.end())
+		return -1;
 	return num;
 }
