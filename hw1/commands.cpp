@@ -4,16 +4,10 @@ const int CMD = 0;
 
 #include <iostream>
 #include "commands.h"
-
-//using namespace std;
-
 #include <string>
 #include<map>
-
 //#include <bits/basic_string.h>//using namespace std;
-
-
-//using std::cout;
+//sing std::a;
 //using std::endl;
 //using std::string;
 
@@ -35,6 +29,10 @@ job::job(int pida,std::string cmda,job_state statea,time_t entered_timea)
 }
 job::~job(){}
 
+bool is_number(std::string& str);
+bool is_number_char(char * str);
+int arg_in_map(char * arg);
+
 
 bool is_number(std::string& str);
 bool is_number_char(char * str);
@@ -45,10 +43,13 @@ int arg_in_map(std::string& arg);
 //********************************************
 int find_stopped()
 {
+	job stopped = NULL;
 	for (auto it = mp.begin(); it != mp.end(); ++it)
 		if ((it->second).state == Stopped)
-			return it->first;
-	return -1;
+			stopped = it->first;
+	if(stopped == NULL) return -1;
+
+	return stopped.pid;
 }
 //********************************************
 
@@ -111,7 +112,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 				last_path = last_path_tmp;
 			}
 		}
-	}
+	} 
 
 	
 	/*************************************************/
@@ -119,7 +120,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	{
 		char * cwd = get_current_dir_name();
 		if ( cwd == NULL)
-			perror("getcwd() error"); // TBD
+			perror("smash error: getcwd() error");
 		else
 		    printf("%s", *cwd);
 		free(cwd);
@@ -150,7 +151,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 					std::cerr << "smash error: kill: job-id " <<job_id<<" does not exist" << std::endl;
 				}
 				else {
-					if (!kill(mp[job_id].pid , signum)){
+					if (kill(mp[job_id].pid , signum)){
 						printf("smash error: kill: job-id %d - Cannot send signal\n",job_id);
 					}
 					std::cout << "signal number "<< signum<< " was sent to pid "<<mp[job_id].pid << std::endl;
@@ -208,8 +209,10 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 			 diff_time = diff_time(*curr_time, (it->second).entered_time);
 			 std::cout << "[" << it->first << "] " << (it->second).cmd
 					 << " : " << (it->second).pid << " "
-					 << diff_time << " (" << (it->second).state << ")"
-					 << std::endl ;
+					 << diff_time << "secs";
+			 if((it->second).state == Stopped){
+				 std::cout << " (stopped)" << std::endl;
+			 }
 		}
 		delete curr_time;
 	}
@@ -253,7 +256,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	/*************************************************/
 	else if (args[CMD] == "bg")) //
 	{
-		if (num_arg > 1) {
+		if(num_arg > 1){
 			// too many arguments
 			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 		}
@@ -292,7 +295,6 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 		}
 	}
 	/*************************************************/
-
 	else if (args[CMD] == "quit"))
 	{
 		pid_t child_pid;
@@ -322,7 +324,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
    					}
    				}
    				std::cout << " Done." << std::endl;
-			}
+			  }
    		}
    		exit(0);
 	} 
@@ -467,10 +469,10 @@ bool is_number_char(char * str)
     return true;
 }
 
+
 int arg_in_map(std::string& arg){
 	int num = std::stoi(arg);
 	if (mp.find(num) == mp.end())
 		return -1;
 	return num;
 }
-
