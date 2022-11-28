@@ -9,7 +9,8 @@
 #include <csignal>
 #include <iostream>
 
-
+void ctrl_c_handler(int sig_num);
+void ctrl_z_handler(int sig_num);
 
 #endif
 

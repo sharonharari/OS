@@ -1,7 +1,8 @@
 //		commands.c
 //********************************************
 const int CMD = 0;
-
+const int SUCCESS = 0;
+const int FAILED = -1;
 #include <iostream>
 #include "commands.h"
 #include <string>
@@ -13,14 +14,14 @@ const int CMD = 0;
 
 class job{
 public:
-	int pid;
+	pid_t pid;
 	std::string cmd;
 	job_state state;
 	time_t entered_time; // the time the job entered the list
-	job(int pida,std::string cmda,job_state statea,time_t entered_timea);
+	job(pid_t pida,std::string cmda,job_state statea,time_t entered_timea);
 	~job();
 };
-job::job(int pida,std::string cmda,job_state statea,time_t entered_timea)
+job::job(pid_t pida,std::string cmda,job_state statea,time_t entered_timea)
 {
 		pid=pida;
 		cmd=cmda;
@@ -201,12 +202,11 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	
 	else if (args[CMD] == "jobs") //
 	{
-		time_t * curr_time = new time_t;;
+		time_t curr_time(time(NULL));
 		double diff_time;
-		time(curr_time);
 		//for (auto it : mp){
 		for (auto it = mp.begin(); it != mp.end(); ++it){
-			 diff_time = diff_time(*curr_time, (it->second).entered_time);
+			 diff_time = difftime(curr_time, (it->second).entered_time);
 			 std::cout << "[" << it->first << "] " << (it->second).cmd
 					 << " : " << (it->second).pid << " "
 					 << diff_time << "secs";
@@ -214,7 +214,6 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 				 std::cout << " (stopped)" << std::endl;
 			 }
 		}
-		delete curr_time;
 	}
 	/*************************************************/
 	else if (args[CMD] == "showpid")  //
@@ -247,6 +246,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 			}
 			else job_id = arg_in_map(args[1]); // take the arg job_id
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
+
 			kill(mp[job_id].pid, SIGCONT);
 			// wait for job to finish - running in foreground
 			waitpid(mp[job_id].pid, NULL, WCONTINUED);
@@ -331,8 +331,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	/*************************************************/
 	else // external command
 	{
- 		ExeExternal(args, cmdString);
-	 	return 0;
+	 	return ExeExternal(args, cmdString);
 	}
 	if (illegal_cmd == true)
 	{
@@ -347,19 +346,18 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-void ExeExternal(char *args[MAX_ARG], char* cmdString)
+int ExeExternal(char *args[MAX_ARG], char* cmdString)
 {
-	int pID;
-    	switch(pID = fork()) 
-	{
-    		case -1: 
+	pid_t pID;
+	switch(pID = fork()) {
+		case -1: 
 					// Add your code here (error)
     			    std::cerr << 'smash error: fork failed' << std::endl;
     			    exit(1);
 					/* 
 					your code
 					*/
-        	case 0 :
+		case 0 :
                 	// Child Process
 
 			        // Add your code here (execute an external command)
@@ -368,7 +366,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString)
 					std::cerr << 'smash error: execv failed' << std::endl;
 					//waitpid(0, NULL, WCONTINUED);
 
-			default:
+		default:
                 	// Add your code here
 					//execv(args[0], args+1);
 					fg_insert()
@@ -377,6 +375,7 @@ void ExeExternal(char *args[MAX_ARG], char* cmdString)
 					your code
 					*/
 	}
+	return FAILED;
 }
 //**************************************************************************************
 // function name: ExeComp
@@ -403,15 +402,15 @@ int ExeComp(char* lineSize)
 //**************************************************************************************
 int BgCmd(std::map<int, job, less<int>> &mp, std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
-	if (num_args > 0 && is_path_cmd(args[CMD]) && cmdString == "&")
+	if (num_args > 0 && is_path_cmd(args[CMD]) && cmdString[cmdString.length()-1] == "&")
 	{
 		//lineSize[strlen(lineSize)-2] = '\0';
 		num_args -= 1;
 		// Add your code here (execute a in the background)
 					
-		int pID;
+		pid_t pID;
 		switch(pID = fork()){
-				case -1:
+				case FAILED:
 						// Add your code here (error)
 						std::cerr << 'smash error: fork failed' << std::endl;
 						exit(1);
@@ -420,11 +419,6 @@ int BgCmd(std::map<int, job, less<int>> &mp, std::string args[MAX_ARG], int num_
 						*/
 				case 0 :
 						// Child Process
-						time_t * curr_time = new time_t;
-						time(curr_time);
-						job newjob(pID, args[CMD],Running,*curr_time);
-						delete curr_time;
-						mp.insert(pair<int, job>(last_job, newjob));
 						// Add your code here (execute an external command)
 						setpgrp();
 						const char** argv = new const char* [num_args + 2];
@@ -442,10 +436,14 @@ int BgCmd(std::map<int, job, less<int>> &mp, std::string args[MAX_ARG], int num_
 						/*
 						your code
 						*/
+						if (!addNewJob(pID, cmdString)) {//Need to be discussed about which cmd text we store in map.
+							//FAILED! type bool function
+						}
+						return SUCCESS;
 		}
 		
 	}
-	return -1;
+	return FAILED;
 }
 
 
@@ -473,6 +471,12 @@ bool is_number_char(char * str)
 int arg_in_map(std::string& arg){
 	int num = std::stoi(arg);
 	if (mp.find(num) == mp.end())
-		return -1;
+		return FAILED;
 	return num;
+}
+
+bool addNewJob(pid_t pID, std::string cmd, job_state state = Running) {
+	time_t curr_time(time(NULL));
+	job newjob(pID, cmd, state, curr_time);
+	return mp.insert(std::pair<int, job>(last_job, newjob)).second;
 }
