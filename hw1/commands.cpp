@@ -11,7 +11,7 @@ const int FAILED = -1;
 //sing std::a;
 //using std::endl;
 //using std::string;
-
+/*
 class job{
 public:
 	pid_t pid;
@@ -20,7 +20,7 @@ public:
 	time_t entered_time; // the time the job entered the list
 	job(pid_t pida,std::string cmda,job_state statea,time_t entered_timea);
 	~job();
-};
+};*/
 job::job(pid_t pida,std::string cmda,job_state statea,time_t entered_timea)
 {
 		pid=pida;
@@ -93,7 +93,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 /*************************************************/
 	if (args[CMD] == "cd") //
 	{
-		if (num_arg > 1) 
+		if (num_args > 1) 
 			perror("smash error: cd: too many arguments");
 		else if (args[1] == "-") {
 			if (last_path == NULL) 
@@ -123,7 +123,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 		if ( cwd == NULL)
 			perror("smash error: getcwd() error");
 		else
-		    printf("%s", *cwd);
+		    printf("%s", cwd);
 		free(cwd);
 	}
 	
@@ -131,13 +131,13 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	else if (args[CMD] == "kill")
 	{
 		// valid arguments check
-		if (num_arg != 2) {
+		if (num_args != 2) {
 			perror("smash error: kill: invalid arguments");
 		}
 		else{
 			std::string signum_s(args[1]);
 			std::string job_id_s(args[2]);
-			if (signum_s[0] != "-"){
+			if (signum_s[0] != '-'){
 				perror("smash error: kill: invalid arguments");
 			}
 			else signum_s.erase(0,1);
@@ -162,7 +162,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	}
 	else if (args[CMD] == "diff")
 	{
-		if (num_arg != 2) {
+		if (num_args != 2) {
 			perror("smash error: diff: invalid arguments");
 		}
 		else {
@@ -221,27 +221,27 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 		std::cout << "smash pid is " << getpid() << std::endl;
 	}
 	/*************************************************/
-	else if (args[CMD] == "fg"))  //
+	else if (args[CMD] == "fg")  //
 	{
-		if(num_arg > 1){
+		if(num_args > 1){
 			// too many arguments
 			std::cerr << "smash error: fg: invalid arguments" << std::endl;
 		}
-		else if (num_arg == 0 && mp.empty()) {
+		else if (num_args == 0 && mp.empty()) {
 			// no arguments passed, and map is empty
 			std::cerr << "smash error: fg: jobs list is empty" << std::endl;
 		}
-		else if (num_arg != 0 && !is_number(args[1])){
+		else if (num_args != 0 && !is_number(args[1])){
 			// argument is not a number - invalid argument
 			std::cerr << "smash error: fg: invalid arguments" << std::endl;
 		}
-		else if ((num_arg != 0) && (arg_in_map(args[1])==-1)) {
+		else if ((num_args != 0) && (arg_in_map(args[1])==-1)) {
 			// job id is not found
 			std::cerr << "smash error: fg: job-id" << args[1] << " does not exist" << std::endl;
 		} else {
 			// no error
 			int job_id = -1;
-			if (num_arg == 0) { // take the biggest job id
+			if (num_args == 0) { // take the biggest job id
 				job_id = mp.rbegin()->first; // the biggest key
 			}
 			else job_id = arg_in_map(args[1]); // take the arg job_id
@@ -254,32 +254,32 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 		}
 	} 
 	/*************************************************/
-	else if (args[CMD] == "bg")) //
+	else if (args[CMD] == "bg") //
 	{
-		if(num_arg > 1){
+		if(num_args > 1){
 			// too many arguments
 			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 		}
-		else if (num_arg == 0 && mp.empty()) {
+		else if (num_args == 0 && mp.empty()) {
 			// no arguments passed, and map is empty
 			std::cerr << "smash error: bg: jobs list is empty" << std::endl;
 		}
-		else if (num_arg == 0 && (find_stopped() == -1)) {
+		else if (num_args == 0 && (find_stopped() == -1)) {
 			// no arguments passed, no stopped job
 			std::cerr << "smash error: bg: there are no stopped jobs to resume" << std::endl;
 		}
-		else if (num_arg != 0 && !is_number(args[1])){
+		else if (num_args != 0 && !is_number(args[1])){
 			// argument is not a number - invalid argument
 			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 		}
-		else if ((num_arg != 0) && (arg_in_map(args[1])==-1)) {
+		else if ((num_args != 0) && (arg_in_map(args[1])==-1)) {
 			// job id is not found
 			std::cerr << "smash error: bg: job-id" << args[1] << " does not exist" << std::endl;
 		}
 		else {
 			// no error
 			int job_id = 0;
-			if(num_arg == 0){
+			if(num_args == 0){
 				job_id = find_stopped();
 			}
 			else job_id = std::stoi(args[1]);
@@ -295,7 +295,7 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 		}
 	}
 	/*************************************************/
-	else if (args[CMD] == "quit"))
+	else if (args[CMD] == "quit")
 	{
 		pid_t child_pid;
    		if(args[1] == "kill"){
@@ -331,11 +331,11 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 	/*************************************************/
 	else // external command
 	{
-	 	return ExeExternal(args, cmdString);
+	 	return ExeExternal(args,num_args, cmdString);
 	}
 	if (illegal_cmd == true)
 	{
-		printf("smash error: > \"%s\"\n", cmdString);
+		std::cerr << "smash error: " << cmdString << std::endl;
 		return 1;
 	}
     return 0;
@@ -346,13 +346,13 @@ int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdS
 // Parameters: external command arguments, external command string
 // Returns: void
 //**************************************************************************************
-int ExeExternal(char *args[MAX_ARG], char* cmdString)
+int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
 	pid_t pID;
 	switch(pID = fork()) {
-		case -1: 
+		case FAILED:
 					// Add your code here (error)
-    			    std::cerr << 'smash error: fork failed' << std::endl;
+    			    std::cerr << "smash error: fork failed" << std::endl;
     			    exit(1);
 					/* 
 					your code
@@ -362,14 +362,18 @@ int ExeExternal(char *args[MAX_ARG], char* cmdString)
 
 			        // Add your code here (execute an external command)
         			setpgrp();
-					execv(args[0], args+1);
-					std::cerr << 'smash error: execv failed' << std::endl;
+					const char** argv = new const char* [num_args + 2];
+					for (int i = 0; i < num_args + 1; i++)
+						argv[i] = const_cast<char*>(args[i].c_str());
+					argv[num_args + 1] = NULL;
+					execv(argv[CMD], argv);
+					std::cerr << "smash error: execv failed" << std::endl;
 					//waitpid(0, NULL, WCONTINUED);
 
 		default:
                 	// Add your code here
-					//execv(args[0], args+1);
-					fg_insert()
+					fg_clear();
+					fg_insert(pID, cmdString);
 					waitpid(pID,NULL,WEXITED );
 					/* 
 					your code
@@ -383,7 +387,7 @@ int ExeExternal(char *args[MAX_ARG], char* cmdString)
 // Parameters: command string
 // Returns: 0- if complicated -1- if not
 //**************************************************************************************
-int ExeComp(char* lineSize)
+/*int ExeComp(char* lineSize)
 {
 	char ExtCmd[MAX_LINE_SIZE+2];
 	char *args[MAX_ARG];
@@ -393,7 +397,7 @@ int ExeComp(char* lineSize)
 
 	} 
 	return -1;
-}
+}*/
 //**************************************************************************************
 // function name: BgCmd
 // Description: if command is in background, insert the command to jobs
@@ -402,17 +406,23 @@ int ExeComp(char* lineSize)
 //**************************************************************************************
 int BgCmd(std::map<int, job, less<int>> &mp, std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
-	if (num_args > 0 && is_path_cmd(args[CMD]) && cmdString[cmdString.length()-1] == "&")
+	if (num_args > 0 && cmdString[cmdString.length()-1] == '&')//&& is_path_cmd(args[CMD]) ?
 	{
-		//lineSize[strlen(lineSize)-2] = '\0';
-		num_args -= 1;
+		if (args[num_args][args[num_args].length() - 1] != '&') {
+			//ERROR
+			exit(1)
+		}
+		args[num_args].pop_back();
+		if (args[num_args].empty()) {
+			num_args -= 1;
+		}
 		// Add your code here (execute a in the background)
 					
 		pid_t pID;
 		switch(pID = fork()){
 				case FAILED:
 						// Add your code here (error)
-						std::cerr << 'smash error: fork failed' << std::endl;
+						std::cerr << "smash error: fork failed" << std::endl;
 						exit(1);
 						/*
 						your code
@@ -425,13 +435,12 @@ int BgCmd(std::map<int, job, less<int>> &mp, std::string args[MAX_ARG], int num_
 						for (int i = 0; i < num_args + 1; i++)
 							argv[i] = const_cast<char*>(args[i].c_str());
 						argv[num_args + 1] = NULL;
-						execv(argv[CMD], args);
-						std::cerr << 'smash error: execv failed' << std::endl;
+						execv(argv[CMD], argv);
+						std::cerr << "smash error: execv failed" << std::endl;
 						//waitpid(0, NULL, WCONTINUED);
 
 				default:
 						// Add your code here
-						//execv(args[0], args+1);
 						//waitpid(pID,NULL,WEXITED );
 						/*
 						your code

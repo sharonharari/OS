@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <signal.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -17,17 +16,17 @@ enum job_state {
 };
 class job{
 public:
-	int pid;
+	pid_t pid;
 	std::string cmd;
 	job_state state;
 	time_t entered_time; // the time the job entered the list
-	job(int pida,std::string cmda,job_state statea,time_t entered_timea);
+	job(pid_t pida,std::string cmda,job_state statea,time_t entered_timea);
 	~job();
 };
-int ExeComp(char* lineSize);
-int BgCmd(char* lineSize, void* jobs);
-int ExeCmd(void* jobs, char* lineSize, char* cmdString);
-void ExeExternal(char *args[MAX_ARG], char* cmdString);
+//int ExeComp(char* lineSize);
+int BgCmd(std::map<int, job, less<int>>& mp, std::string args[MAX_ARG], int num_args, std::string cmdString);
+int ExeCmd(void* jobs, std::string args[MAX_ARG], int num_args, std::string cmdString);
+void ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString);
 
 
 #endif

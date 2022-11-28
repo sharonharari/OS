@@ -23,7 +23,7 @@ void ctrl_c_handler(int sig_num) {
 void ctrl_z_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-Z" << std::endl;
 	if (is_fg_exists()) {
-		if (addNewJob(fg_pid, cmd, Stopped)) {
+		if (addNewJob(fg_pid, fg_cmd, Stopped)) {
 			if (!kill(fg_pid, SIGSTOP)) {
 				std::cout << "smash: process " << fg_pid << " was stopped" << std::endl;
 				fg_clear()
