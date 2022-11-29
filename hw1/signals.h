@@ -5,9 +5,9 @@
 #include <unistd.h> 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <csignal>
 #include <iostream>
+#include "commands.h"
 
 void ctrl_c_handler(int sig_num);
 void ctrl_z_handler(int sig_num);

@@ -6,14 +6,13 @@ main file. This file contains the main function of smash
 #include <unistd.h> 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "commands.h"
 #include "signals.h"
 #include <iostream>
 #include <map>
-#include <string>
-#include <string_view>
-using namespace std;
+
+
+
 
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
@@ -21,37 +20,10 @@ using namespace std;
 
 
 
-enum job_state {
-	Stopped ,
-	Running
-};
 
 
 
 
-int last_job;
-char * last_path;
-std::map<int, job, less<int>> mp;
-
-//FG handling
-pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
-std::string fg_cmd;
-
-bool is_fg_exists() {
-	if ((fg_pid != -1) && (!fg_cmd.empty)) {
-		return true;
-	}
-	//std::cerr << "fg container flawed/broken." << std::endl;
-	return false;
-}
-void fg_clear() {
-	fg_pid = -1;
-	fg_cmd.clear();
-}
-void fg_insert(pid_t newPid, std::string newCmd) {
-	fg_pid = newPid;
-	fg_cmd = newCmd;
-}
 
 
 
@@ -84,7 +56,7 @@ int main(int argc, char *argv[])
 
 
 
-    last_path = NULL;
+  
 
 	
 
@@ -99,9 +71,36 @@ int main(int argc, char *argv[])
 					// perform a complicated Command
 		//if(!ExeComp(lineSize)) continue; 
 					// background command	
-	 	if(!BgCmd(jobs, args, num_args, cmdString)) continue;
-					// built in commands
-		ExeCmd(jobs, args, num_args, cmdString);
+		if (!is_built_in_cmd(args[CMD])) {
+			if (args[CMD]!="&" && args[num_args][args[num_args].length() - 1] == '&') {
+				args[num_args].pop_back();
+				if (args[num_args].empty()) {
+					num_args -= 1;
+				}
+				if (!BgCmd(args, num_args, cmdString)) {
+					//ERROR background
+					std::cerr << "smash error: BgCmd faild" << std::endl;
+				}
+			}
+			else {
+				if (!ExeExternal(args, num_args, cmdString)) {
+					//ERROR foreground
+					std::cerr << "smash error: ExeExternal faild" << std::endl;
+				}
+			}
+
+		}
+		else {
+			if (args[num_args][args[num_args].length() - 1] == '&') {
+				args[num_args].pop_back();
+				if (args[num_args].empty()) {
+					num_args -= 1;
+				}
+			}
+			// built in commands
+			ExeCmd(args, num_args, cmdString);
+		}
+		fg_clear();
 	}
     return 0;
 }
