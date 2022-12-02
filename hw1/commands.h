@@ -21,6 +21,10 @@ const int SUCCESS = 0;
 const int FAILED = -1;
 const std::string BUILT_IN_CMD[] = { "showpid" ,"pwd","cd","jobs","kill","fg","bg","quit","diff" };
 
+//FG handling
+pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
+std::string fg_cmd;
+
 class job{
 public:
 	pid_t pid;

@@ -7,6 +7,7 @@
    Synopsis: handle the Control-C */
 #include "signals.h"
 
+
 void ctrl_c_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-C" << std::endl;
 	if (is_fg_exists()) {
@@ -15,7 +16,7 @@ void ctrl_c_handler(int sig_num) {
 			fg_clear();
 		}
 		else {
-			std::perror << "smash error: kill failed" << std::endl;
+			std::perror("smash error: kill failed");
 		}
 	}
 }
@@ -29,7 +30,7 @@ void ctrl_z_handler(int sig_num) {
 				fg_clear();
 			}
 			else {
-				std::perror << "smash error: kill failed" << std::endl;
+				std::perror("smash error: kill failed");
 			}
 		}
 		else {

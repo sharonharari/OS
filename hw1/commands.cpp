@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include "commands.h"
-#include<map>
+#include <map>
+#include <algorithm>    // std::find
+#include <cerrno>
+#include <cstdio>
 
 int last_job = 0;
 char* last_path = NULL;
@@ -21,9 +24,7 @@ bool is_built_in_cmd(std::string cmd) {
 }
 
 
-//FG handling
-pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
-std::string fg_cmd;
+
 bool is_fg_exists() {
 	if ((fg_pid != -1) && (!fg_cmd.empty())) {
 		return true;
@@ -292,7 +293,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 
 			if (kill(mp[job_id].pid, SIGCONT)) {
-				std::perror << "smash error: kill failed" << std::endl;
+				std::perror("smash error: kill failed");
 				return FAILED;
 			}
 			// wait for job to finish - running in foreground
@@ -410,12 +411,12 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 
 			        // Add your code here (execute an external command)
         			setpgrp();
-					const char** argv = new const char* [num_args + 2];
+					char* argv[MAX_ARG];
 					for (int i = 0; i < num_args + 1; i++)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
 					execv(argv[CMD], argv);
-					std::cerr << "smash error: execv failed" << std::endl;
+					std::cerr << "smash error: execv failed\n" << std::endl;
 					//waitpid(0, NULL, WCONTINUED);
 
 		default:
@@ -423,7 +424,7 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					fg_clear();
 					fg_insert(pID, cmdString);
 					if (waitpid(pID, NULL, WUNTRACED)) { //Need to be check for different Wparameter.
-						std::perror << "smash error: waitpid failed" << std::endl;
+						std::perror("smash error: waitpid failed\n");
 						return FAILED;
 					}
 					/* 
@@ -470,7 +471,7 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					// Child Process
 					// Add your code here (execute an external command)
 					setpgrp();
-					const char** argv = new const char* [num_args + 2];
+					char * argv[MAX_ARG];
 					for (int i = 0; i < num_args + 1; i++)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
