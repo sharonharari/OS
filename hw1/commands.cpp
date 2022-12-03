@@ -130,23 +130,23 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	if (args[CMD] == "cd") //
 	{
 		if (num_args > 1) 
-			perror("smash error: cd: too many arguments");
+			std::cerr << "smash error: cd: too many arguments\n";
 		else if (args[1] == "-") {
 			if (last_path == NULL) {
-				perror("smash error: cd: OLDPWD not set"); // TBD initialize to NULL
+				std::cerr << "smash error: cd: OLDPWD not set\n"; // TBD initialize to NULL
 				illegal_cmd = true;
 			}
 			else if (chdir(last_path)) {
-				perror("chdir() error");
+				perror("smash error: chdir error\n");
 				illegal_cmd = true;
 			}
 		}
 		else {
-			if (chdir(const_cast<char*>(args[1].c_str()))) perror("chdir() error");
+			if (chdir(const_cast<char*>(args[1].c_str()))) perror("smash error: chdir error\n");
 			else {
 				char* last_path_tmp = get_current_dir_name();
 				if (last_path_tmp == NULL) {
-					perror("getcwd() error");
+					perror("smash error: getcwd error\n");
 					return FAILED;
 				}
 				free(last_path);
@@ -162,11 +162,11 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	{
 		char * cwd = get_current_dir_name();
 		if (cwd == NULL) {
-			perror("smash error: getcwd() error");
+			perror("smash error: getcwd error\n");
 			return FAILED;
 		}
 		else
-		    printf("%s", cwd);
+		    std::cout << cwd << std::endl;
 		free(cwd);
 	}
 	
@@ -175,19 +175,19 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	{
 		// valid arguments check
 		if (num_args != 2) {
-			perror("smash error: kill: invalid arguments");
+			std::cerr << "smash error: kill: invalid arguments\n";
 			illegal_cmd = true;
 		}
 		else{
 			std::string signum_s(args[1]);
 			std::string job_id_s(args[2]);
 			if (signum_s[0] != '-'){
-				perror("smash error: kill: invalid arguments");
+				std::cerr << "smash error: kill: invalid arguments\n";
 				illegal_cmd = true;
 			}
 			else signum_s.erase(0,1);
 			if (!is_number(signum_s) || !is_number(job_id_s) ){
-				perror("smash error: kill: invalid arguments");
+				std::cerr << "smash error: kill: invalid arguments\n";
 				illegal_cmd = true;
 			}
 			else {
@@ -200,7 +200,8 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				}
 				else {
 					if (kill(mp[job_id].pid , signum)){
-						std::cout <<"smash error: kill: job-id " << job_id << " - Cannot send signal\n";
+						//std::cout <<"smash error: kill: job-id " << job_id << " - Cannot send signal\n";
+						std::perror("smash error: kill failed\n");
 						illegal_cmd = true;
 					}
 					std::cout << "signal number "<< signum<< " was sent to pid "<<mp[job_id].pid << std::endl;
@@ -211,14 +212,14 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	else if (args[CMD] == "diff")
 	{
 		if (num_args != 2) {
-			perror("smash error: diff: invalid arguments");
+			std::cerr << "smash error: diff: invalid arguments\n";
 			illegal_cmd = true;
 		}
 		else {
 			FILE *f1, *f2;
 			f1 = fopen(const_cast<char*>(args[1].c_str()),"r");
 			if( f1 == NULL){
-				std::cerr << "smash error : failed to open file" << std::endl;
+				std::cerr << "smash error : failed to open file" << std::endl; //fopen counts as syscall?
 				return FAILED;
 			}
 			f2 = fopen(const_cast<char*>(args[2].c_str()),"r");
@@ -297,11 +298,14 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 
 			if (kill(mp[job_id].pid, SIGCONT)) {
-				std::perror("smash error: kill failed");
+				std::perror("smash error: kill failed\n");
 				return FAILED;
 			}
 			// wait for job to finish - running in foreground
-			waitpid(mp[job_id].pid, NULL, WCONTINUED);
+			if (waitpid(mp[job_id].pid, NULL, WCONTINUED) == -1) {
+				std::perror("smash error: waitpid failed\n");
+				return FAILED;
+			}
 			mp.erase(job_id);
 		}
 	} 
@@ -346,7 +350,10 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			}
 			else {
 				std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
-				kill(mp[job_id].pid, SIGCONT);
+				if (kill(mp[job_id].pid, SIGCONT)) {
+					std::perror("smash error: kill failed\n");
+					return FAILED;
+				}
 				mp.erase(job_id);
 			}
 		}
@@ -358,25 +365,26 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
    		if(args[1] == "kill"){
 
    			for (auto it = mp.begin(); it != mp.end(); ++it){ // for each of the jobs running
-   				if(kill(it->first, SIGTERM)){
+				std::cout << "[" << it->first << "] " << it->second.cmd << " - " <<"Sending SIGTERM...";
+   				if(kill(it->second.pid, SIGTERM)){
    					// kill error
-   					std::cerr << "smash error: kill SIGTERM error" << std::endl;
+   					std::perror("smash error: kill SIGTERM error\n");
    					return FAILED;
    				}
-   				std::cout << "[" << it->first << "] " << it->second.cmd << " - " <<"Sending SIGTERM...";
+   				
    				fflush( stdout);
    				sleep(5);
    				child_pid = waitpid(it->second.pid, NULL, WNOHANG);
    				if ( child_pid == -1) {
    					// waitpid error
-   					std::cerr << "smash error: waitpid failed";
+   					std::perror("smash error: waitpid failed\n");
    					return FAILED;
    				}
    				if( child_pid != it->second.pid){
    					// the process hasn't finish yet
    					std::cout << " (5 sec passed) Sending SIGKILL…";
    					if (kill(it->second.pid, SIGKILL)){
-   						std::cerr << "smash error: kill failed" << std::endl;
+   						std::perror("smash error: kill failed\n");
    						return FAILED;
    					}
    				}
@@ -420,40 +428,22 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
 					execv(argv[CMD], argv);
-					std::cerr << "smash error: execv failed\n" << std::endl;
-					//waitpid(0, NULL, WCONTINUED);
+					std::perror("smash error: execv failed\n");
+					exit(1);
 
 		default:
                 	// Add your code here
 					fg_clear();
 					fg_insert(pID, cmdString);
-					if (waitpid(pID, NULL, WUNTRACED)) { //Need to be check for different Wparameter.
+					if (waitpid(pID, NULL, WUNTRACED) == -1) {
 						std::perror("smash error: waitpid failed\n");
 						return FAILED;
 					}
-					/* 
-					your code
-					*/
+					return SUCCESS;
 	}
 	return FAILED;
 }
-//**************************************************************************************
-// function name: ExeComp
-// Description: executes complicated command
-// Parameters: command string
-// Returns: 0- if complicated -1- if not
-//**************************************************************************************
-/*int ExeComp(char* lineSize)
-{
-	char ExtCmd[MAX_LINE_SIZE+2];
-	char *args[MAX_ARG];
-    if ((strstr(lineSize, "|")) || (strstr(lineSize, "<")) || (strstr(lineSize, ">")) || (strstr(lineSize, "*")) || (strstr(lineSize, "?")) || (strstr(lineSize, ">>")) || (strstr(lineSize, "|&")))
-    {
-		// Add your code here (execute a complicated command)
 
-	} 
-	return -1;
-}*/
 //**************************************************************************************
 // function name: BgCmd
 // Description: if command is in background, insert the command to jobs
@@ -466,7 +456,7 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	switch(pID = fork()){
 			case FAILED:
 					// Add your code here (error)
-					std::cerr << "smash error: fork failed" << std::endl;
+					std::perror("smash error: fork failed\n");
 					exit(1);
 					/*
 						Maybe return?
@@ -480,17 +470,16 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
 					execv(argv[CMD], argv);
-					std::cerr << "smash error: execv failed" << std::endl;
-					return FAILED;
+					std::perror("smash error: execv failed\n");
+					exit(1);
 
 			default:
 					// Add your code here
-					//waitpid(pID,NULL,WEXITED );
 					/*
 					your code
 					*/
 					if (!addNewJob(pID, cmdString)) {//Need to be discussed about which cmd text we store in map.
-						//FAILED! type bool function
+						return FAILED;
 					}
 					return SUCCESS;
 	}

@@ -22,11 +22,18 @@ void ctrl_c_handler(int sig_num) {
 			std::perror("smash error: kill failed");
 		}
 	}
+	else {
+		printf("smash > ");
+		fflush(stdout);
+
+	}
 }
 
 void ctrl_z_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-Z" << std::endl;
+	//printf("IM HERE1\n");
 	if (is_fg_exists()) {
+		//printf("IM HERE2\n");
 		if (addNewJob(fg_pid, fg_cmd, Stopped)) {
 			if (!kill(fg_pid, SIGSTOP)) {
 				std::cout << "smash: process " << fg_pid << " was stopped" << std::endl;
@@ -37,9 +44,11 @@ void ctrl_z_handler(int sig_num) {
 			}
 		}
 		else {
-			/*
-				addNewJob() faliure handling.
-			*/
+			std::cerr << "smash error: addNewJob failed\n";
 		}
+	}
+	else {
+		printf("smash > ");
+		fflush(stdout);
 	}
 }
