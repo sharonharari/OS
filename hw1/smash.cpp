@@ -12,17 +12,8 @@ main file. This file contains the main function of smash
 #include <map>
 
 
-
-
 #define MAX_LINE_SIZE 80
 #define MAXARGS 20
-
-
-
-
-
-
-
 
 
 

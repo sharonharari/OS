@@ -6,6 +6,9 @@
 /* Name: handler_cntlc
    Synopsis: handle the Control-C */
 #include "signals.h"
+extern pid_t fg_pid; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
+extern std::string fg_cmd;
+
 
 
 void ctrl_c_handler(int sig_num) {

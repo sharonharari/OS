@@ -12,6 +12,10 @@ int last_job = 0;
 char* last_path = NULL;
 std::map<int, job, std::less<int>> mp;
 
+//FG handling
+pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
+std::string fg_cmd;
+
 
 bool is_built_in_cmd(std::string cmd) {
 	if (cmd[cmd.length() - 1] == '&') {
