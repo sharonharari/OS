@@ -10,6 +10,7 @@
 
 int last_job = 0;
 char* last_path = NULL;
+char* current_path = NULL;
 std::map<int, job, std::less<int>> mp;
 
 //FG handling
@@ -140,18 +141,23 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				perror("smash error: chdir error\n");
 				illegal_cmd = true;
 			}
+			else {
+				char* temp_path = current_path;
+				current_path = last_path;
+				last_path = temp_path;
+			}
 		}
 		else {
 			if (chdir(const_cast<char*>(args[1].c_str()))) perror("smash error: chdir error\n");
 			else {
-				char* last_path_tmp = get_current_dir_name();
-				if (last_path_tmp == NULL) {
+				char* current_path_tmp = get_current_dir_name();
+				if (current_path_tmp == NULL) {
 					perror("smash error: getcwd error\n");
 					return FAILED;
 				}
 				free(last_path);
-				// maybe change it to string instead char *
-				last_path = last_path_tmp;
+				last_path = current_path;
+				current_path = current_path_tmp;
 			}
 		}
 	} 
@@ -160,14 +166,20 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	/*************************************************/
 	else if (args[CMD] == "pwd")  //
 	{
-		char * cwd = get_current_dir_name();
-		if (cwd == NULL) {
-			perror("smash error: getcwd error\n");
-			return FAILED;
+		if (current_path) {
+			std::cout << current_path << std::endl;
 		}
-		else
-		    std::cout << cwd << std::endl;
-		free(cwd);
+		else {
+			char* cwd = get_current_dir_name();
+			if (cwd == NULL) {
+				perror("smash error: getcwd error\n");
+				return FAILED;
+			}
+			else { 
+				std::cout << cwd << std::endl; 
+				current_path = cwd;
+			}
+		}
 	}
 	
 	/*************************************************/
@@ -391,6 +403,8 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
    				std::cout << " Done." << std::endl;
 			  }
    		}
+		free(last_path);
+		free(current_path);
    		exit(0);
 	} 
 	/*************************************************/
