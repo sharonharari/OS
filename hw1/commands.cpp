@@ -9,7 +9,7 @@
 #include <cerrno>
 #include <cstdio>
 
-int last_job = 1;
+int last_job = 0;
 char* last_path = NULL;
 char* current_path = NULL;
 std::map<int, job, std::less<int>> mp;
@@ -17,6 +17,7 @@ std::map<int, job, std::less<int>> mp;
 //FG handling
 pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
 std::string fg_cmd;
+int fg_job_id = -1;
 
 void update_jobs_list()
 {
@@ -48,7 +49,7 @@ void update_jobs_list()
 		}
 	}
 	if (mp.empty()) {
-		last_job = 1;
+		last_job = 0;
 	}
 	else{
 		last_job = mp.rbegin()->first;
@@ -76,13 +77,18 @@ bool is_fg_exists() {
 	//std::cerr << "fg container flawed/broken." << std::endl;
 	return false;
 }
+bool is_fg_have_job_id() {
+	return (is_fg_exists() && fg_job_id != -1);
+}
 void fg_clear() {
 	fg_pid = -1;
 	fg_cmd.clear();
+	fg_job_id = -1;
 }
-void fg_insert(pid_t newPid, std::string newCmd) {
+void fg_insert(pid_t newPid, std::string newCmd, int job_id) {
 	fg_pid = newPid;
 	fg_cmd = newCmd;
+	fg_job_id = job_id;
 }
 
 job::job():pid(-1),cmd(""),state(Stopped),entered_time(time(NULL)){}
@@ -349,20 +355,20 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				job_id = mp.rbegin()->first; // the biggest key
 			}
 			else job_id = arg_in_map(args[1]); // take the arg job_id
-			fg_pid = mp[job_id].pid;
-			fg_cmd = args[CMD];
+			fg_clear();
+			fg_insert(mp[job_id].pid, mp[job_id].cmd, job_id);
+			mp.erase(job_id);
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 
-			if (kill(mp[job_id].pid, SIGCONT)) {
+			if (kill(fg_pid, SIGCONT)) {
 				std::perror("smash error: kill failed\n");
 				return FAILED;
 			}
 			// wait for job to finish - running in foreground
-			if (waitpid(mp[job_id].pid, NULL, WUNTRACED) == -1) {
+			if (waitpid(fg_pid, NULL, WUNTRACED) == -1) {
 				std::perror("smash error: waitpid failed\n");
 				return FAILED;
 			}
-			mp.erase(job_id);
 		}
 	} 
 	/*************************************************/
@@ -488,18 +494,8 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					for (int i = 0; i < num_args + 1; i++)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
-					//printf("HI HI00000000000 HI HI HI HI HI HI H IHI I\n");
-					//fflush(stdout);
-
-					//setpgid(0, 0);
-					//signal(SIGTTIN, SIG_IGN);
-					//signal(SIGTTOU, SIG_IGN);
-					//signal(SIGSTOP, catch_int);
-					//signal(SIGINT, catch_int);
 					setpgrp();
 					execv(argv[CMD], argv);
-					//printf("HI H8888888888 HI HI HI HI HI HI H IHI I\n");
-
 					std::perror("smash error: execv failed\n");
 					exit(1);
 
@@ -507,25 +503,10 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
                 	// Add your code here
 					fg_clear();
 					fg_insert(pID, cmdString);
-					//printf("HI HI11111111111111 HI HI HI HI HI HI H IHI I\n");
-					//signal(SIGTTIN, SIG_IGN);
-					//signal(SIGTTOU, SIG_IGN);
-					//signal(SIGSTOP, catch_int);
-					//signal(SIGINT, catch_int);
-					//printf("HI HI2222222222 HI HI HI HI HI HI H IHI I\n");
-					// TODO: Error handling here
-					//setpgid(pID, 0);
-					//tcsetpgrp(STDIN_FILENO, pID);
 					if (waitpid(pID, NULL, WUNTRACED) == -1) {
 						std::perror("smash error: waitpid failed\n");
 						return FAILED;
 					}
-					//tcsetpgrp(STDIN_FILENO, getpgrp());
-
-					//signal(SIGTTIN, SIG_DFL);
-					//signal(SIGTTOU, SIG_DFL);
-					//signal(SIGSTOP, ctrl_z_handler);
-					//signal(SIGINT, ctrl_c_handler);
 					return SUCCESS;
 	}
 	return FAILED;
@@ -607,13 +588,15 @@ int arg_in_map(std::string& arg){
 	return num;
 }
 
-bool addNewJob(pid_t pID, std::string cmd, job_state state) {
+bool addNewJob(pid_t pID, std::string cmd, job_state state, int job_id) {
 	update_jobs_list();
 	time_t curr_time(time(NULL));
 	job newjob(pID, cmd, state, curr_time);
-	bool result = mp.insert(std::pair<int, job>(last_job, newjob)).second;
-	//if (result) {
-	//	last_job++;
-	//}
+	int final_job_id = last_job + 1;
+	if (job_id != -1) {
+		final_job_id = job_id;
+	}
+	std::cout << "It's the final countdown: " << (mp.find(final_job_id) != mp.end()) << std::endl;
+	bool result = mp.insert(std::pair<int, job>(final_job_id, newjob)).second;
 	return result;
 }

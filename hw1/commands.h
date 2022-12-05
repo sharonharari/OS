@@ -28,6 +28,7 @@ std::string fg_cmd;
 
 extern pid_t fg_pid; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
 extern std::string fg_cmd;
+extern int fg_job_id;
 
 class job{
 public:
@@ -49,13 +50,13 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString);
 bool is_built_in_cmd(std::string cmd);
 bool is_fg_exists();
 void fg_clear();
-void fg_insert(pid_t newPid, std::string newCmd);
+void fg_insert(pid_t newPid, std::string newCmd, int job_id = -1);
 int cmdline_split_into_arguments(std::string line, std::string(&args)[MAX_ARG], std::string delimiters = " \t\n");
-bool addNewJob(pid_t pID, std::string cmd, job_state state = Running);
+bool addNewJob(pid_t pID, std::string cmd, job_state state = Running, int job_id = -1);
 int arg_in_map(std::string& arg);
 bool is_number_char(char* str);
 bool is_number(std::string& str);
 int find_stopped();
-
+bool is_fg_have_job_id();
 #endif
 
