@@ -3,12 +3,13 @@
 
 #include <iostream>
 #include "commands.h"
+#include "signals.h"
 #include <map>
 #include <algorithm>    // std::find
 #include <cerrno>
 #include <cstdio>
 
-int last_job = 0;
+int last_job = 1;
 char* last_path = NULL;
 char* current_path = NULL;
 std::map<int, job, std::less<int>> mp;
@@ -17,7 +18,40 @@ std::map<int, job, std::less<int>> mp;
 pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
 std::string fg_cmd;
 
+void update_jobs_list()
+{
+	int status;
+	pid_t child_pid;
+	// checking which sons are still running
+	for (auto it = mp.begin(); it != mp.end(); ++it)
+	{
+		status = 0;
+		child_pid = waitpid((it->second).pid,&status, WNOHANG|WUNTRACED|WCONTINUED);
+		if (child_pid == -1) //waitpid failed
+		{
+			perror("smash error: > - ");
+			return;
+		}
 
+		if(WIFSTOPPED(status))
+		{
+			(it->second).state = Stopped;
+
+		}
+		else if(WIFCONTINUED(status))
+		{
+			(it->second).state = Running;
+		}
+		else if(child_pid == (it->second).pid) // the process is not running
+		{
+			mp.erase(it->first);
+		}
+	}
+	last_job = mp.rbegin()->first;
+}
+void catch_int(int sig_num) {
+	printf("Don't do that\n");
+}
 bool is_built_in_cmd(std::string cmd) {
 	if (cmd[cmd.length() - 1] == '&') {
 		cmd.pop_back();
@@ -80,11 +114,12 @@ int find_stopped()
 {
 	bool exist_one = false;
 	job stopped;
-	for (auto it = mp.begin(); it != mp.end(); ++it)
+	for (auto it = mp.begin(); it != mp.end(); ++it){
 		if ((it->second).state == Stopped) {
 			stopped = it->second;
 			exist_one = true;
 		}
+	}
 	if(!exist_one) return -1;
 
 	return stopped.pid;
@@ -264,6 +299,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	
 	else if (args[CMD] == "jobs") //
 	{
+		update_jobs_list();
 		time_t curr_time(time(NULL));
 		double diff_time;
 		for (auto it = mp.begin(); it != mp.end(); ++it){
@@ -302,11 +338,14 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			std::cerr << "smash error: fg: job-id" << args[1] << " does not exist" << std::endl;
 		} else {
 			// no error
+
 			int job_id = -1;
 			if (num_args == 0) { // take the biggest job id
 				job_id = mp.rbegin()->first; // the biggest key
 			}
 			else job_id = arg_in_map(args[1]); // take the arg job_id
+			fg_pid = mp[job_id].pid;
+			fg_cmd = args[CMD];
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 
 			if (kill(mp[job_id].pid, SIGCONT)) {
@@ -314,7 +353,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				return FAILED;
 			}
 			// wait for job to finish - running in foreground
-			if (waitpid(mp[job_id].pid, NULL, WCONTINUED) == -1) {
+			if (waitpid(mp[job_id].pid, NULL, WUNTRACED) == -1) {
 				std::perror("smash error: waitpid failed\n");
 				return FAILED;
 			}
@@ -361,12 +400,15 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				std::cerr << "smash error: bg: job-id " << job_id << " is already running in the background" << std::endl;
 			}
 			else {
+				//fg_pid = mp[job_id].pid;
+				//fg_cmd = args[CMD];
 				std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 				if (kill(mp[job_id].pid, SIGCONT)) {
 					std::perror("smash error: kill failed\n");
 					return FAILED;
 				}
 				mp.erase(job_id);
+
 			}
 		}
 	}
@@ -436,12 +478,23 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
                 	// Child Process
 
 			        // Add your code here (execute an external command)
-        			setpgrp();
+
 					char* argv[MAX_ARG];
 					for (int i = 0; i < num_args + 1; i++)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
+					//printf("HI HI00000000000 HI HI HI HI HI HI H IHI I\n");
+					//fflush(stdout);
+
+					//setpgid(0, 0);
+					//signal(SIGTTIN, SIG_IGN);
+					//signal(SIGTTOU, SIG_IGN);
+					//signal(SIGSTOP, catch_int);
+					//signal(SIGINT, catch_int);
+					setpgrp();
 					execv(argv[CMD], argv);
+					//printf("HI H8888888888 HI HI HI HI HI HI H IHI I\n");
+
 					std::perror("smash error: execv failed\n");
 					exit(1);
 
@@ -449,10 +502,25 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
                 	// Add your code here
 					fg_clear();
 					fg_insert(pID, cmdString);
+					//printf("HI HI11111111111111 HI HI HI HI HI HI H IHI I\n");
+					//signal(SIGTTIN, SIG_IGN);
+					//signal(SIGTTOU, SIG_IGN);
+					//signal(SIGSTOP, catch_int);
+					//signal(SIGINT, catch_int);
+					//printf("HI HI2222222222 HI HI HI HI HI HI H IHI I\n");
+					// TODO: Error handling here
+					//setpgid(pID, 0);
+					//tcsetpgrp(STDIN_FILENO, pID);
 					if (waitpid(pID, NULL, WUNTRACED) == -1) {
 						std::perror("smash error: waitpid failed\n");
 						return FAILED;
 					}
+					//tcsetpgrp(STDIN_FILENO, getpgrp());
+
+					//signal(SIGTTIN, SIG_DFL);
+					//signal(SIGTTOU, SIG_DFL);
+					//signal(SIGSTOP, ctrl_z_handler);
+					//signal(SIGINT, ctrl_c_handler);
 					return SUCCESS;
 	}
 	return FAILED;
@@ -479,10 +547,12 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					// Child Process
 					// Add your code here (execute an external command)
 					setpgrp();
+
 					char * argv[MAX_ARG];
 					for (int i = 0; i < num_args + 1; i++)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
+					//setpgid(0, 0);
 					execv(argv[CMD], argv);
 					std::perror("smash error: execv failed\n");
 					exit(1);
@@ -495,7 +565,10 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					if (!addNewJob(pID, cmdString)) {//Need to be discussed about which cmd text we store in map.
 						return FAILED;
 					}
+					//fflush(stdout);
 					return SUCCESS;
+					//setpgid(pID, 0);
+					//tcsetpgrp(STDIN_FILENO, getpgrp());
 	}
 	return FAILED;
 }
@@ -530,11 +603,12 @@ int arg_in_map(std::string& arg){
 }
 
 bool addNewJob(pid_t pID, std::string cmd, job_state state) {
+	update_jobs_list();
 	time_t curr_time(time(NULL));
 	job newjob(pID, cmd, state, curr_time);
 	bool result = mp.insert(std::pair<int, job>(last_job, newjob)).second;
-	if (result) {
-		last_job++;
-	}
+	//if (result) {
+	//	last_job++;
+	//}
 	return result;
 }

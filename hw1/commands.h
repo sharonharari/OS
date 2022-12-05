@@ -42,6 +42,7 @@ public:
 	~job();
 };
 //int ExeComp(char* lineSize);
+void update_jobs_list();
 int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString);
 int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString);
 int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString);

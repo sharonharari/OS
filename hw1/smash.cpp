@@ -59,7 +59,9 @@ int main(int argc, char *argv[])
 
 	
     while (1){
-	 	std::cout << "smash > ";
+    	printf("smash > ");
+		update_jobs_list();
+    	//fflush(stdout);
 		std::string line,cmdString;
 		std::getline (std::cin,line);
 		cmdString = line;
@@ -72,7 +74,7 @@ int main(int argc, char *argv[])
 				if (args[num_args].empty()) {
 					num_args -= 1;
 				}
-				std::cout << "HERE: " << args[num_args] << std::endl;
+				//std::cout << "HERE: " << args[num_args] << std::endl;
 				if (BgCmd(args, num_args, cmdString)) {
 					//ERROR background
 					//std::cerr << "smash error: BgCmd failed" << std::endl;
@@ -97,6 +99,7 @@ int main(int argc, char *argv[])
 			ExeCmd(args, num_args, cmdString);
 		}
 		fg_clear();
+
 	}
     return 0;
 }
