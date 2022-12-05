@@ -44,10 +44,15 @@ void update_jobs_list()
 		}
 		else if(child_pid == (it->second).pid) // the process is not running
 		{
-			mp.erase(it->first);
+			mp.erase(it);
 		}
 	}
-	last_job = mp.rbegin()->first;
+	if (mp.empty()) {
+		last_job = 1;
+	}
+	else{
+		last_job = mp.rbegin()->first;
+	}
 }
 void catch_int(int sig_num) {
 	printf("Don't do that\n");
