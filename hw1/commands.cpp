@@ -319,8 +319,9 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					 << " : " << (it->second).pid << " "
 					 << diff_time << "secs";
 			 if((it->second).state == Stopped){
-				 std::cout << " (stopped)" << std::endl;
+				 std::cout << " (stopped)";
 			 }
+			 std::cout << std::endl;
 		}
 	}
 	/*************************************************/
