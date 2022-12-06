@@ -14,7 +14,7 @@ extern std::string fg_cmd;
 void ctrl_c_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-C" << std::endl;
 	if (is_fg_exists()) {
-		if (!kill(fg_pid, SIGKILL)) { //SIGKILL
+		if (!kill(fg_pid, SIGKILL)) {
 			std::cout << "smash: process " << fg_pid << " was killed" << std::endl;
 			fg_clear();
 		}
@@ -32,9 +32,8 @@ void ctrl_c_handler(int sig_num) {
 void ctrl_z_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-Z" << std::endl;
 	if (is_fg_exists()) {
-		std::cout << "FG JOB ID!: " << fg_job_id << std::endl;
 		if (addNewJob(fg_pid, fg_cmd, Stopped,fg_job_id)) {
-			if (!kill(fg_pid, SIGSTOP)) { //SIGSTOP
+			if (!kill(fg_pid, SIGSTOP)) {
 				std::cout << "smash: process " << fg_pid << " was stopped" << std::endl;
 				fg_clear();
 			}

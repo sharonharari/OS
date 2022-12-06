@@ -8,6 +8,12 @@
 #include <sys/wait.h>
 #include <string>
 #include <cstring>
+#include <map>
+#include <algorithm>    // std::find
+#include <cerrno>
+#include <cstdio>
+#include <iostream>
+
 #define MAX_LINE_SIZE 80
 #define MAX_ARG 20
 
@@ -20,16 +26,12 @@ const int CMD = 0;
 const int SUCCESS = 0;
 const int FAILED = -1;
 const std::string BUILT_IN_CMD[] = { "showpid" ,"pwd","cd","jobs","kill","fg","bg","quit","diff" };
-/*
-//FG handling
-pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
-std::string fg_cmd;
-*/
 
 extern pid_t fg_pid; //PID of the foreground process. Initialy/not in use, has value of impossible pid.
 extern std::string fg_cmd;
 extern int fg_job_id;
-
+extern char* last_path;
+extern char* current_path;
 class job{
 public:
 	pid_t pid;

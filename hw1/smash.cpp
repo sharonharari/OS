@@ -1,15 +1,11 @@
-/*	smash.c
+/*	smash.cpp
 main file. This file contains the main function of smash
 *******************************************************************/
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h> 
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "commands.h"
 #include "signals.h"
-#include <iostream>
-#include <map>
+
+
 
 
 #define MAX_LINE_SIZE 80
@@ -41,27 +37,17 @@ int main(int argc, char *argv[])
 	//set your signal handlers here
 	/* add your code here */
 	if (sigaction(SIGINT, &ctrl_c, NULL) == -1) {
-		perror("smash error: sigaction error\n");
+		perror("smash error: sigaction failed");
 	}
 	if(sigaction(SIGTSTP, &ctrl_z, NULL) == -1){
-		perror("smash error: sigaction error\n");
+		perror("smash error: sigaction failed");
 	}
 	/************************************/
 
 	/************************************/
-	// Init globals 
-
-
-
-  
-
-	
-
-	
     while (1){
     	printf("smash > ");
 		update_jobs_list();
-    	//fflush(stdout);
 		std::string line,cmdString;
 		std::getline (std::cin,line);
 		cmdString = line;
@@ -74,16 +60,13 @@ int main(int argc, char *argv[])
 				if (args[num_args].empty()) {
 					num_args -= 1;
 				}
-				//std::cout << "HERE: " << args[num_args] << std::endl;
 				if (BgCmd(args, num_args, cmdString)) {
 					//ERROR background
-					//std::cerr << "smash error: BgCmd failed" << std::endl;
 				}
 			}
 			else {
 				if (ExeExternal(args, num_args, cmdString)) {
 					//ERROR foreground
-					//std::cerr << "smash error: ExeExternal failed" << std::endl;
 				}
 			}
 
@@ -101,6 +84,8 @@ int main(int argc, char *argv[])
 		fg_clear();
 
 	}
+	free(last_path);
+	free(current_path);
     return 0;
 }
 
