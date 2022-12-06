@@ -238,7 +238,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				illegal_cmd = true;
 			}
 			else signum_s.erase(0,1);
-			if (!is_number(signum_s) || !is_number(job_id_s) ){
+			if (!illegal_cmd && (!is_number(signum_s) || !is_number(job_id_s) )){
 				std::cerr << "smash error: kill: invalid arguments\n";
 				illegal_cmd = true;
 			}
