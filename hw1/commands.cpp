@@ -30,7 +30,7 @@ void update_jobs_list()
 		child_pid = waitpid((it->second).pid,&status, WNOHANG|WUNTRACED|WCONTINUED);
 		if (child_pid == -1) //waitpid failed
 		{
-			perror("smash error: > - ");
+			std::perror("smash error: waitpid failed\n");
 			return;
 		}
 
@@ -358,9 +358,8 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			else job_id = arg_in_map(args[1]); // take the arg job_id
 			fg_clear();
 			fg_insert(mp[job_id].pid, mp[job_id].cmd, job_id);
-			mp.erase(job_id);
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
-
+			mp.erase(job_id);
 			if (kill(fg_pid, SIGCONT)) {
 				std::perror("smash error: kill failed\n");
 				return FAILED;
