@@ -55,9 +55,7 @@ void update_jobs_list()
 		last_job = mp.rbegin()->first;
 	}
 }
-void catch_int(int sig_num) {
-	printf("Don't do that\n");
-}
+
 bool is_built_in_cmd(std::string cmd) {
 	if (cmd[cmd.length() - 1] == '&') {
 		cmd.pop_back();
@@ -124,16 +122,17 @@ job::~job(){}
 int find_stopped()
 {
 	bool exist_one = false;
-	job stopped;
+	int stopped;
 	for (auto it = mp.begin(); it != mp.end(); ++it){
 		if ((it->second).state == Stopped) {
-			stopped = it->second;
+			stopped = it->first;
 			exist_one = true;
+			printf("job=%d\n", it->first);
 		}
 	}
 	if(!exist_one) return -1;
 
-	return stopped.pid;
+	return stopped;
 }
 //********************************************
 
@@ -364,6 +363,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				std::perror("smash error: kill failed\n");
 				return FAILED;
 			}
+			printf("fg_pid = %d\n", fg_pid);
 			// wait for job to finish - running in foreground
 			if (waitpid(fg_pid, NULL, WUNTRACED) == -1) {
 				std::perror("smash error: waitpid failed\n");
@@ -404,8 +404,13 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			int job_id = 0;
 			if(num_args == 0){
 				job_id = find_stopped();
+				printf("job_id stopped last = %d/n",job_id);
 			}
-			else job_id = std::stoi(args[1]);
+			else {
+				job_id = std::stoi(args[1]);
+				printf("job_id from args = %d/n",job_id);
+
+			}
 			if (mp[job_id].state == Running){
 				// this job is already running
 				std::cerr << "smash error: bg: job-id " << job_id << " is already running in the background" << std::endl;
@@ -413,12 +418,13 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			else {
 				//fg_pid = mp[job_id].pid;
 				//fg_cmd = args[CMD];
+				fg_clear();
 				std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 				if (kill(mp[job_id].pid, SIGCONT)) {
 					std::perror("smash error: kill failed\n");
 					return FAILED;
 				}
-				mp.erase(job_id);
+				mp[job_id].state = Running;
 
 			}
 		}
