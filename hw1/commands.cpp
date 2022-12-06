@@ -305,6 +305,10 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	{
 		update_jobs_list();
 		time_t curr_time(time(NULL));
+		if (curr_time == -1) {
+			std::perror("smash error: time failed");
+			return FAILED;
+		}
 		double diff_time;
 		for (auto it = mp.begin(); it != mp.end(); ++it){
 			 diff_time = difftime(curr_time, (it->second).entered_time);
@@ -564,6 +568,10 @@ int arg_in_map(std::string& arg){
 bool addNewJob(pid_t pID, std::string cmd, job_state state, int job_id) {
 	update_jobs_list();
 	time_t curr_time(time(NULL));
+	if (curr_time == -1) {
+		std::perror("smash error: time failed");
+		return false;
+	}
 	job newjob(pID, cmd, state, curr_time);
 	int final_job_id = last_job + 1;
 	if (job_id != -1) {
