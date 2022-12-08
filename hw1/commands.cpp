@@ -1,4 +1,4 @@
-//		commands.c
+//		commands.cpp
 //********************************************
 
 
@@ -550,9 +550,7 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 		case FAILED:
 					// fork failed error
 					std::perror("smash error: fork failed");
-					free(last_path);
-					free(current_path);
-    			    exit(1);
+					return FAILED;
 
 		case 0 :
                 	// Child Process
@@ -595,9 +593,7 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	switch(pID = fork()){
 			case FAILED:
 					std::perror("smash error: fork failed");
-					free(last_path);
-					free(current_path);
-					exit(1);
+					return FAILED;
 
 			case 0 :
 					// Child Process
