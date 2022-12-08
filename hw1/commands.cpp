@@ -16,11 +16,18 @@ pid_t fg_pid = -1; //PID of the foreground process. Initialy/not in use, has val
 std::string fg_cmd;
 int fg_job_id = -1;
 
+//********************************************
+// function name: update_jobs_list
+// Description: Updates the job list according to which job has finished (remove
+// it from the list) and which job is stopped/running.
+// Parameters: none
+// Returns: void
+//********************************************
 void update_jobs_list()
 {
 	int status;
 	pid_t child_pid;
-	// checking which sons are still running
+	// Checks which sons are still running
 	for (auto it = mp.begin(); it != mp.end(); ++it)
 	{
 		status = 0;
@@ -45,6 +52,7 @@ void update_jobs_list()
 			mp.erase(it);
 		}
 	}
+	// Update last_job array to match the last job in jobs (with the biggest job-id)
 	if (mp.empty()) {
 		last_job = 0;
 	}
@@ -53,38 +61,77 @@ void update_jobs_list()
 	}
 }
 
+//********************************************
+// function name: is_built_in_cmd
+// Description:  returns true if the cmd entered is one of the built in
+// commands stored in 'BUILT_IN_CMD' array
+// Parameters: the cmd as string
+// Returns: bool - true if the cmd is built-in command
+//********************************************
 bool is_built_in_cmd(std::string cmd) {
+	// Rm the & whether exists
 	if (cmd[cmd.length() - 1] == '&') {
 		cmd.pop_back();
 		if (cmd.empty()) {
 			return false;
 		}
 	}
+	// Search in 'BUILT_IN_CMD' the cmd
 	return (std::find(std::begin(BUILT_IN_CMD), std::end(BUILT_IN_CMD), cmd) != std::end(BUILT_IN_CMD));
 }
 
-
-
+//********************************************
+// function name: is_fg_exists
+// Description: Returns true if fg command is currently running, false otherwise
+//********************************************
 bool is_fg_exists() {
 	if ((fg_pid != -1) && (!fg_cmd.empty())) {
 		return true;
 	}
 	return false;
 }
+
+//********************************************
+// function name: is_fg_have_job_id
+// Description: Returns true if the fg job that is currently running
+// has already got a job-id allocation
+//********************************************
 bool is_fg_have_job_id() {
 	return (is_fg_exists() && fg_job_id != -1);
 }
+
+//********************************************
+// function name: fg_clear
+// Description: Clears the fg job's metadata - meaning no job is currently
+// running in the foreground
+//********************************************
 void fg_clear() {
 	fg_pid = -1;
 	fg_cmd.clear();
 	fg_job_id = -1;
 }
+
+//********************************************
+// function name: fg_insert
+// Description: Inserts new metadata information about the command
+// that is currently running in the foreground
+// Parameters: newPid - the pid of the job, newCmd - the command of the job,
+// job_id - the id of the job.
+//********************************************
 void fg_insert(pid_t newPid, std::string newCmd, int job_id) {
 	fg_pid = newPid;
 	fg_cmd = newCmd;
 	fg_job_id = job_id;
 }
 
+
+//********************************************
+// job:
+// The struct of every job in 'mp'(the dynamic std::map that contains all of the
+// current jobs).
+// Stores the important information about the job - its pid, the cmd of its origin,
+// the time it was added to the map and its current state (Running/Stopped)
+//********************************************
 job::job():pid(-1),cmd(""),state(Stopped),entered_time(time(NULL)){}
 job::job(pid_t pida,std::string cmda,job_state statea,time_t entered_timea)
 {
@@ -111,9 +158,10 @@ job& job::operator=(const job& new_job) {
 }
 job::~job(){}
 
-
-
-
+//********************************************
+// function name: find_stopped
+// Description: Finds the last job which is Stopped in the list of jobs.
+// Returns: int of the last stopped job-id if it exists, -1 otherwise.
 //********************************************
 int find_stopped()
 {
@@ -129,13 +177,15 @@ int find_stopped()
 
 	return stopped;
 }
-//********************************************
 
-/*
-	cmdline_split_into_arguments:
-		Splits a given command line input, accourding to the delimiters, into an array of arguments.
-		The user has the responsibility of creating and deleting the arguments space/slots.
-*/
+//********************************************
+// function name: cmdline_split_into_arguments
+// Description: Splits a given command line input, according to the delimiters, into
+// an array of arguments.
+// The user has the responsibility of creating and deleting the arguments space/slots.
+// Parameters: line - the string of the whole line entered. &args - pointer to an empty
+// array of arguments. delimiters - the delimiters which by them the split splits.
+//********************************************
 int cmdline_split_into_arguments(std::string line, std::string(&args)[MAX_ARG], std::string delimiters)
 {
 
@@ -146,7 +196,8 @@ int cmdline_split_into_arguments(std::string line, std::string(&args)[MAX_ARG], 
 	args[0] = iter; // arg[0] is the cmd
 	for (i = 1; i < MAX_ARG; i++)
 	{
-		iter = strtok(NULL, const_cast<char*>(delimiters.c_str())); // arg[i] is the arguments by order
+		// arg[i] is the arguments by order
+		iter = strtok(NULL, const_cast<char*>(delimiters.c_str()));
 		if (iter != NULL) {
 			args[i] = iter;
 			num_arg++;  // number of arguments of cmd
@@ -156,13 +207,12 @@ int cmdline_split_into_arguments(std::string line, std::string(&args)[MAX_ARG], 
 	return num_arg;
 }
 
-
-
+//********************************************
 // function name: ExeCmd
 // Description: interperts and executes built-in commands
 // Parameters: pointer to jobs, command string
 // Returns: 0 - success,1 - failure
-//**************************************************************************************
+//********************************************************
 int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
 	
@@ -172,13 +222,16 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 // ARE IN THIS CHAIN OF IF COMMANDS. PLEASE ADD
 // MORE IF STATEMENTS AS REQUIRED
 /*************************************************/
-	if (args[CMD] == "cd") //
+
+	if (args[CMD] == "cd")
 	{
-		if (num_args > 1) 
+		// Cd error checks
+		if (num_args > 1)  // too many arguments
 			std::cerr << "smash error: cd: too many arguments\n";
 		else if (args[1] == "-") {
 			if (last_path == NULL) {
-				std::cerr << "smash error: cd: OLDPWD not set\n"; // TBD initialize to NULL
+				 // there is no last path specified yet since the start of the program
+				std::cerr << "smash error: cd: OLDPWD not set\n";
 				illegal_cmd = true;
 			}
 			else if (chdir(last_path)) {
@@ -186,14 +239,19 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				illegal_cmd = true;
 			}
 			else {
+				// In case of successful cd - Update last path by swap current<->last paths
 				char* temp_path = current_path;
 				current_path = last_path;
 				last_path = temp_path;
 			}
 		}
 		else {
-			if (chdir(const_cast<char*>(args[1].c_str()))) perror("smash error: chdir failed");
+			//
+			if (chdir(const_cast<char*>(args[1].c_str()))){
+				perror("smash error: chdir failed");
+			}
 			else {
+				// In case of successful cd - Update last path
 				char* current_path_tmp = get_current_dir_name();
 				if (current_path_tmp == NULL) {
 					perror("smash error: getcwd failed");
@@ -208,18 +266,20 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 
 	
 	/*************************************************/
-	else if (args[CMD] == "pwd")  //
+	else if (args[CMD] == "pwd")
 	{
 		if (current_path) {
 			std::cout << current_path << std::endl;
 		}
 		else {
+			// Update 'current_path' to store the current path
 			char* cwd = get_current_dir_name();
 			if (cwd == NULL) {
 				perror("smash error: getcwd failed");
 				return FAILED;
 			}
 			else { 
+				// print the pwd
 				std::cout << cwd << std::endl; 
 				current_path = cwd;
 			}
@@ -229,7 +289,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	/*************************************************/
 	else if (args[CMD] == "kill")
 	{
-		// valid arguments check
+		// Valid arguments check
 		if (num_args != 2) {
 			std::cerr << "smash error: kill: invalid arguments\n";
 			illegal_cmd = true;
@@ -237,12 +297,13 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 		else{
 			std::string signum_s(args[1]);
 			std::string job_id_s(args[2]);
-			if (signum_s[0] != '-'){
+			if (signum_s[0] != '-'){ // kill's first argument must start with '-'
 				std::cerr << "smash error: kill: invalid arguments\n";
 				illegal_cmd = true;
 			}
-			else signum_s.erase(0,1);
+			else signum_s.erase(0,1); // erase the '-' in kill's first arg
 			if (!illegal_cmd && (!is_number(signum_s) || !is_number(job_id_s) )){
+				// one/both of the kill's arguments are not integers - error
 				std::cerr << "smash error: kill: invalid arguments\n";
 				illegal_cmd = true;
 			}
@@ -250,7 +311,9 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				// job_id check
 				int job_id = std::stoi(job_id_s);
 				int signum = std::stoi(signum_s);
+				// Search the job-id in the jobs map
 				if(mp.find(job_id) == mp.end()){
+					// The job-id entered is not found in the jobs map - error
 					std::cerr << "smash error: kill: job-id " <<job_id<<" does not exist" << std::endl;
 					illegal_cmd = true;
 				}
@@ -259,6 +322,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 						std::perror("smash error: kill failed");
 						illegal_cmd = true;
 					}
+					// Signal successfully sent
 					std::cout << "signal number "<< signum<< " was sent to pid "<<mp[job_id].pid << std::endl;
 				}
 			}
@@ -266,6 +330,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	}
 	else if (args[CMD] == "diff")
 	{
+		// Valid arguments check
 		if (num_args != 2) {
 			std::cerr << "smash error: diff: invalid arguments\n";
 			illegal_cmd = true;
@@ -285,6 +350,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 			unsigned char c1 = 0;
 			unsigned char c2 = 0;
 			bool diff = 0;
+			// Checks every char in the file if its the same
 			while (!feof(f1) || !feof(f2)){
 				c1 = getc(f1);
 				c2 = getc(f2);
@@ -305,8 +371,9 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	}
 	/*************************************************/
 	
-	else if (args[CMD] == "jobs") //
+	else if (args[CMD] == "jobs")
 	{
+		// Update the state(Running/Stopped) of every job in the jobs map
 		update_jobs_list();
 		time_t curr_time(time(NULL));
 		if (curr_time == -1) {
@@ -315,6 +382,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 		}
 		double diff_time;
 		for (auto it = mp.begin(); it != mp.end(); ++it){
+			// Prints the details of every job in the jobs map
 			 diff_time = difftime(curr_time, (it->second).entered_time);
 			 std::cout << "[" << it->first << "] " << (it->second).cmd
 					 << " : " << (it->second).pid << " "
@@ -326,41 +394,42 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 		}
 	}
 	/*************************************************/
-	else if (args[CMD] == "showpid")  //
+	else if (args[CMD] == "showpid")
 	{
 		std::cout << "smash pid is " << getpid() << std::endl;
 	}
 	/*************************************************/
-	else if (args[CMD] == "fg")  //
+	else if (args[CMD] == "fg")
 	{
 		if(num_args > 1){
-			// too many arguments
+			// too many arguments - error
 			std::cerr << "smash error: fg: invalid arguments" << std::endl;
 			illegal_cmd = true;
 		}
 		else if (num_args == 0 && mp.empty()) {
-			// no arguments passed, and map is empty
+			// no arguments passed, and map is empty - error
 			std::cerr << "smash error: fg: jobs list is empty" << std::endl;
 		}
 		else if (num_args != 0 && !is_number(args[1])){
-			// argument is not a number - invalid argument
+			// argument is not a number - invalid argument - error
 			std::cerr << "smash error: fg: invalid arguments" << std::endl;
 		}
 		else if ((num_args != 0) && (arg_in_map(args[1])==-1)) {
-			// job id is not found
+			// job id is not found in the jobs map - error
 			std::cerr << "smash error: fg: job-id " << args[1] << " does not exist" << std::endl;
 		} else {
 			// no error
-
 			int job_id = -1;
 			if (num_args == 0) { // take the biggest job id
 				job_id = mp.rbegin()->first; // the biggest key
 			}
 			else job_id = arg_in_map(args[1]); // take the arg job_id
+			// Update which job is currently in foreground state
 			fg_clear();
 			fg_insert(mp[job_id].pid, mp[job_id].cmd, job_id);
 			std::cout << mp[job_id].cmd << " : " << mp[job_id].pid << std::endl;
 			mp.erase(job_id);
+
 			if (kill(fg_pid, SIGCONT)) {
 				std::perror("smash error: kill failed");
 				return FAILED;
@@ -370,6 +439,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 				std::perror("smash error: waitpid failed");
 				return FAILED;
 			}
+			// after wait_pid finishes - the job no longer runs in the foreground
 			fg_clear();
 		}
 	} 
@@ -377,36 +447,37 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	else if (args[CMD] == "bg") //
 	{
 		if(num_args > 1){
-			// too many arguments
+			// too many arguments - error
 			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 			illegal_cmd = true;
 		}
 		else if (num_args == 0 && (find_stopped() == -1)) {
-			// no arguments passed, no stopped job
+			// no arguments passed, no stopped job in jobs map - error
 			std::cerr << "smash error: bg: there are no stopped jobs to resume" << std::endl;
 			illegal_cmd = true;
 		}
 		else if (num_args != 0 && !is_number(args[1])){
-			// argument is not a number - invalid argument
+			// argument is not a number - invalid argument - error
 			std::cerr << "smash error: bg: invalid arguments" << std::endl;
 			illegal_cmd = true;
 		}
 		else if ((num_args != 0) && (arg_in_map(args[1])==-1)) {
-			// job id is not found
+			// job id is not found in the jobs map - error
 			std::cerr << "smash error: bg: job-id " << args[1] << " does not exist" << std::endl;
 			illegal_cmd = true;
 		}
 		else {
-			// no error
 			int job_id = 0;
+			// job_id is the job in arg[1] and if it wasn't entered by the user its the
+			// last stopped job in the jobs map
 			if(num_args == 0){
-				job_id = find_stopped();
+				job_id = find_stopped(); // last stopped job
 			}
 			else {
-				job_id = std::stoi(args[1]);
+				job_id = std::stoi(args[1]); // entered job
 			}
 			if (mp[job_id].state == Running){
-				// this job is already running
+				// this job is already running - error
 				std::cerr << "smash error: bg: job-id " << job_id << " is already running in the background" << std::endl;
 			}
 			else {
@@ -424,7 +495,8 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	{
 		pid_t child_pid;
    		if(args[1] == "kill"){
-
+   			// kill every job in jobs map. at first send SIGTERM signal,
+   			// if after 5 seconds it wasn't killed - send SIGKILL signal
    			for (auto it = mp.begin(); it != mp.end(); ++it){ // for each of the jobs running
 				std::cout << "[" << it->first << "] " << it->second.cmd << " - " <<"Sending SIGTERM...";
    				if(kill(it->second.pid, SIGTERM)){
@@ -434,7 +506,9 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
    				}
    				
    				fflush( stdout);
+   				// wait 5 seconds
    				sleep(5);
+   				// Check if the process was killed by SIGTERN signal
    				child_pid = waitpid(it->second.pid, NULL, WNOHANG);
    				if ( child_pid == -1) {
    					// waitpid error
@@ -442,7 +516,7 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
    					return FAILED;
    				}
    				if( child_pid != it->second.pid){
-   					// the process hasn't finish yet
+   					// the process wasn't killed yet - send SIGKILL
    					std::cout << " (5 sec passed) Sending SIGKILL…";
    					if (kill(it->second.pid, SIGKILL)){
    						std::perror("smash error: kill failed");
@@ -474,6 +548,7 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 	pid_t pID;
 	switch(pID = fork()) {
 		case FAILED:
+					// fork failed error
 					std::perror("smash error: fork failed");
 					free(last_path);
 					free(current_path);
@@ -482,22 +557,26 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 		case 0 :
                 	// Child Process
 					char* argv[MAX_ARG];
+					// Arrange the args in argv[] for execv()
 					for (int i = 0; i < num_args + 1; i++)
 						argv[i] = const_cast<char*>(args[i].c_str());
 					argv[num_args + 1] = NULL;
 					setpgrp();
 					execv(argv[CMD], argv);
+					// if we got here it means the execv failed
 					std::perror("smash error: execv failed");
 					exit(1);
 
 		default:
-                	// Add your code here
+                	// Parent process - meaning the external cmd was sent to be executed
 					fg_clear();
 					fg_insert(pID, cmdString);
+					// wait for the command to finish in foreground
 					if (waitpid(pID, NULL, WUNTRACED) == -1) {
 						std::perror("smash error: waitpid failed");
 						return FAILED;
 					}
+					// the command finished
 					fg_clear();
 					return SUCCESS;
 	}
@@ -532,6 +611,7 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 					exit(1);
 
 			default:
+					// Parent process - meaning the external cmd was sent to be executed
 					if (!addNewJob(pID, cmdString)) {
 						return FAILED;
 					}
@@ -541,6 +621,10 @@ int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 }
 
 
+//********************************************
+// function name: is_number
+// Returns: bool 'true' if the string entered is a number
+//********************************************
 bool is_number(std::string& str)
 {
     for (char const &c : str) {
@@ -550,8 +634,14 @@ bool is_number(std::string& str)
     }
     return true;
 }
+
+//********************************************
+// function name: is_number_char
+// Returns: bool 'true' if the char entered is a number
+//********************************************
 bool is_number_char(char * str)
 {
+	// cnvert the char to a string
 	std::string str_s(str);
     for (char const &c : str_s) {
         // using the std::isdigit() function
@@ -561,7 +651,12 @@ bool is_number_char(char * str)
     return true;
 }
 
-
+//********************************************
+// function name: arg_in_map
+// Description: Searches whether the job-id entered( in string format)
+// is in the jobs map. It is called after making sure this arg is a valid number.
+// Returns: the int job-id if it was found, -1 otherwise
+//********************************************
 int arg_in_map(std::string& arg){
 	int num = std::stoi(arg);
 	if (mp.find(num) == mp.end())
@@ -571,9 +666,9 @@ int arg_in_map(std::string& arg){
 
 /*
 	addNewJob:
-		By a given process, wether it has already a job ID or not.
+		By a given process, whether it has already a job ID or not.
 		The function will insert the process as a new job object into the jobs ADT.
-		returns: boolean state, if the operation succeded.
+		returns: boolean state, if the operation succeeded.
 */
 bool addNewJob(pid_t pID, std::string cmd, job_state state, int job_id) {
 	update_jobs_list();
