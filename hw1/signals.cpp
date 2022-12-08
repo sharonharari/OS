@@ -10,7 +10,10 @@ extern pid_t fg_pid; //PID of the foreground process. Initialy/not in use, has v
 extern std::string fg_cmd;
 
 
-
+/*
+	ctrl_c_handler:
+		A SIGINT signal handler. By given ctrl-c, the fg process is being killed.
+*/
 void ctrl_c_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-C" << std::endl;
 	if (is_fg_exists()) {
@@ -29,6 +32,11 @@ void ctrl_c_handler(int sig_num) {
 	}
 }
 
+
+/*
+	ctrl_z_handler:
+		A SIGTSTP signal handler. By given ctrl-z, the fg process is stopped, turned to a job and added to the jobs ADT.
+*/
 void ctrl_z_handler(int sig_num) {
 	std::cout << "smash: caught ctrl-Z" << std::endl;
 	if (is_fg_exists()) {
