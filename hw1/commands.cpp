@@ -131,7 +131,11 @@ int find_stopped()
 }
 //********************************************
 
-
+/*
+	cmdline_split_into_arguments:
+		Splits a given command line input, accourding to the delimiters, into an array of arguments.
+		The user has the responsibility of creating and deleting the arguments space/slots.
+*/
 int cmdline_split_into_arguments(std::string line, std::string(&args)[MAX_ARG], std::string delimiters)
 {
 
@@ -462,8 +466,8 @@ int ExeCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 //**************************************************************************************
 // function name: ExeExternal
 // Description: executes external command
-// Parameters: external command arguments, external command string
-// Returns: void
+// Parameters: external command arguments, number of actual arguments, and external command string.
+// Returns: Success or Failed
 //**************************************************************************************
 int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 {
@@ -503,8 +507,8 @@ int ExeExternal(std::string args[MAX_ARG], int num_args, std::string cmdString)
 //**************************************************************************************
 // function name: BgCmd
 // Description: if command is in background, insert the command to jobs
-// Parameters: command string, pointer to jobs
-// Returns: 0- BG command -1- if not
+// Parameters: external background command arguments, number of actual arguments, and external background command string.
+// Returns: Success or Failed
 //**************************************************************************************
 int BgCmd(std::string args[MAX_ARG], int num_args, std::string cmdString)
 {		
@@ -565,6 +569,12 @@ int arg_in_map(std::string& arg){
 	return num;
 }
 
+/*
+	addNewJob:
+		By a given process, wether it has already a job ID or not.
+		The function will insert the process as a new job object into the jobs ADT.
+		returns: boolean state, if the operation succeded.
+*/
 bool addNewJob(pid_t pID, std::string cmd, job_state state, int job_id) {
 	update_jobs_list();
 	time_t curr_time(time(NULL));
