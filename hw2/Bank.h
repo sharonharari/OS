@@ -2,37 +2,37 @@
 #define BANK_H
 #include <map>
 #include <pthread.h>
+#include <iostream> 
+#include <fstream> 
+#include <string>
+#include <cstdint>
+#include <unistd.h>
+#include "Account.h"
 
-const int INITIAL_BANK_PROFIT = 0;
-
-class Account {
-private:
-	int balance;
-	int password;
-public:
-	Account(int balance, int password);
-	~Account();
-	int getBalance() const;
-	int getPassword() const;
-	bool setBalance(int newBalance);
-};
-
+const int INITIAL_BANK_PROFIT = 0, MINIMUM_NUM_VALID_ARGC = 2;
 
 class Bank {
 private:
 	std::map<int, Account, std::less<int>> mp_ac;
 	int profit;
-	std::map<int, pthread_ mutex_ t, std::less<int>> mutex;
-	bool passwordCompare(int account_id, int password);
+	pthread_mutex_t read_mutex;
+	pthread_mutex_t write_mutex;
 public:
 	Bank();
 	~Bank();
+	bool passwordCompare(int account_id, int password);
+	bool isAccountExist(int account_id);
+	void readLock();
+	void readUnlock();
+	void writeLock();
+	void writeUnlock();
 	bool openAccount(int account_id,int balance, int password);
-	bool closeAccount(int account_id, int password);
+	void closeAccount(int account_id, int password);
 	bool depositIntoAccount(int account_id, int password, int amount);
 	bool withdrawalFromAccount(int account_id, int password, int amount);
 	void getBalance(int account_id, int password) const;
 	bool transferAmount(int account_id, int password, int target_id, int amount);
+	int getProfit() const;
 	bool tax();
 };
 
