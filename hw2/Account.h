@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <unistd.h>
 
+const int INITIAL_NUMBER_OF_READERS = 0;
+
 class Account {
 private:
 	int balance;
@@ -12,9 +14,10 @@ private:
 	pthread_mutex_t read_mutex;
 	pthread_mutex_t write_mutex;
 public:
-	Account(int balance, int password);
+	Account();
+	Account(int newBalance, int newPassword);
 	~Account();
-	int getBalance() const;
+	int getBalance();
 	int getPassword() const;
 	void increaseBalance(int value);
 	void decreaseBalance(int value);

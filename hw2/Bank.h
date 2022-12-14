@@ -7,14 +7,19 @@
 #include <string>
 #include <cstdint>
 #include <unistd.h>
+#include <queue>
+#include <sstream>
 #include "Account.h"
 
 const int INITIAL_BANK_PROFIT = 0, MINIMUM_NUM_VALID_ARGC = 2;
+
+std::vector<std::string> split(std::string const& str, const char delim = ' ');
 
 class Bank {
 private:
 	std::map<int, Account, std::less<int>> mp_ac;
 	int profit;
+	int numberOfReaders;
 	pthread_mutex_t read_mutex;
 	pthread_mutex_t write_mutex;
 public:
@@ -32,7 +37,7 @@ public:
 	bool withdrawalFromAccount(int account_id, int password, int amount);
 	void getBalance(int account_id, int password) const;
 	bool transferAmount(int account_id, int password, int target_id, int amount);
-	int getProfit() const;
+	int getProfit();
 	bool tax();
 };
 

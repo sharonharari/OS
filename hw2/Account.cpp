@@ -4,15 +4,21 @@
 /*
 *	Account ADT declaration
 */
-Account::Account(int newBalance, int newPassword) :balance(newBalance), password(newPassword), numberOfReaders(0) {
+Account::Account() {
 	pthread_mutex_init(&read_mutex, NULL);
 	pthread_mutex_init(&write_mutex, NULL);
 }
+Account::Account(int newBalance, int newPassword) :balance(newBalance), password(newPassword)
+	, numberOfReaders(INITIAL_NUMBER_OF_READERS) {
+	pthread_mutex_init(&read_mutex, NULL);
+	pthread_mutex_init(&write_mutex, NULL);
+}
+
 Account::~Account() {
 	pthread_mutex_destroy(&read_mutex);
 	pthread_mutex_destroy(&write_mutex);
 }
-int Account::getBalance() const {
+int Account::getBalance() {
 	int currentBalance = 0;
 	this->readLock();
 	currentBalance = this->balance;
