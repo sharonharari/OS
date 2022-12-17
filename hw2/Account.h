@@ -20,7 +20,10 @@ public:
 	int getBalance();
 	int getPassword() const;
 	void increaseBalance(int value);
-	void decreaseBalance(int value);
+	void increaseBalance_nolock(int value);
+	bool decreaseBalance(int value);
+	bool decreaseBalance_nolock(int value);
+	int decreaseBalance_tax_nolock(int ratio);
 	void readLock();
 	void readUnlock();
 	void writeLock();
