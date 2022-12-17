@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <cstdint>
 #include <unistd.h>
+#include <cmath>
 
 const int INITIAL_NUMBER_OF_READERS = 0;
 
@@ -23,7 +24,7 @@ public:
 	int increaseBalance_nolock(int value);
 	int decreaseBalance(int value);
 	int decreaseBalance_nolock(int value);
-	int decreaseBalance_tax_nolock(int ratio);
+	int decreaseBalance_tax_nolock(int percentage);
 	void readLock();
 	void readUnlock();
 	void writeLock();

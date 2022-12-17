@@ -1,9 +1,21 @@
 #include "Bank.h"
 #include "Account.h"
-
+#include <ctime>
 Bank bank;
 void *atm(void *arg);
+void* tax_routine(void* arg);
+void* printout_routine(void* arg);
 bool finished = false;
+
+void milli_sleep(long milliseconds) {
+    long arg_in_nanoseconds = milliseconds * MILLISEC_TO_NANOSEC_CONVERTOR;
+    struct timespec interval = { 0 };
+    interval.tv_sec = 0;
+    interval.tv_nsec = arg_in_nanoseconds;
+    if (nanosleep(&interval, NULL)) {
+        std::perror("Bank error: nanosleep failed");
+    }
+}
 
 class atm_input{
 public:
@@ -20,50 +32,72 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Bank error: illegal arguments" << std::endl;
 		return 1;
 	}
-
-    pthread_t *threads = new pthread_t[argc]; // 0 is the bank, 1-N is the ATMs
-    atm_input *atm_inputs = new atm_input[argc];
-
-    // Bank thread create
+    // Bank printout thread create
     int bank_id = 0;
-    if(!pthread_create( &threads[0], NULL, bank_routine, (void *)&bank_id)){
+    pthread_t bank_printout_thread;
+    if(pthread_create( &bank_printout_thread, NULL, printout_routine, (void *)&bank_id)){
+        std::perror("Bank error: pthread_create failed");
+    }
+    // Bank tax thread create
+    int bank_tax_id = 0;
+    pthread_t bank_tax_thread;
+    if (pthread_create(&bank_tax_thread, NULL, tax_routine, (void*)&bank_tax_id)) {
         std::perror("Bank error: pthread_create failed");
     }
     // ATMs threads create
-    for(int i = 1; i < argc; i++) {
+    pthread_t* atms_threads = new pthread_t[argc - 1];
+    atm_input* atm_inputs = new atm_input[argc - 1];
+    for(int i = 0; i < argc-1; i++) {
         atm_inputs[i].id = i; 
-        atm_inputs[i].file = input_files[i-1];
-        if(!pthread_create( &threads[i], NULL, atm, (void *)&atm_inputs[i])){
+        atm_inputs[i].file = input_files[i];
+        if(pthread_create( &atms_threads[i], NULL, atm, (void *)&atm_inputs[i])){
             std::perror("Bank error: pthread_create failed");
         }
     }
-
-    for(int i = 1; i < argc; i++) {
-        pthread_join(threads[i], NULL);
+    // ATMs threads join
+    for(int i = 0; i < argc-1; i++) {
+        if (pthread_join(atms_threads[i], NULL)) {
+            std::perror("Bank error: pthread_join failed");
+        }
     } 
     finished = true;
-
-    pthread_join(threads[0], NULL);
+    if (pthread_join(bank_tax_thread, NULL)) {
+        std::perror("Bank error: pthread_join failed");
+    }
+    if (pthread_join(bank_printout_thread, NULL)) {
+        std::perror("Bank error: pthread_join failed");
+    }
     delete[] input_files;
+    delete[] atm_inputs;
     return 0;
 }
 
-void *bank_routine(void *bank_id){
+void *tax_routine(void *arg){
     while(!finished){
-        sleep(3);
+        sleep(TAX_ROUTINE_SLEEP_TIME_IN_SECONDS);//Maybe inside?
         bank.tax();
     }
+    pthread_exit(NULL);
+}
+
+void* printout_routine(void* arg) {
+    while (!finished) {
+        milli_sleep(PRINTOUT_ROUTINE_SLEEP_TIME_IN_MILLISEC);//Maybe inside?
+        bank.print();
+    }
+    pthread_exit(NULL);
 }
 
 void *atm(void *arg){
     atm_input input = *(atm_input *)arg;
     while(!input.file.empty()){
+        milli_sleep(ATM_ROUTINE_SLEEP_TIME_IN_MILLISEC);
         std::vector<std::string> cmd = input.file.front();
         input.file.pop();
         // Assuming cmd entered is valid
         if(cmd[0] == "O"){ // Open account
             bank.writeLock();
-            sleep(1);
+            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             if(bank.isAccountExist(std::stoi(cmd[1]))){
                 std::cerr << "Error "<< input.id <<": Your transaction failed - account with the same id exists" << std::endl;
             }
@@ -79,7 +113,7 @@ void *atm(void *arg){
             int password = std::stoi(cmd[2]);
             int amount = std::stoi(cmd[3]);
             int new_balance;
-            sleep(1);
+            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             if(!bank.isAccountExist(account_id)){
                 std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
             }
@@ -98,7 +132,7 @@ void *atm(void *arg){
             int password = std::stoi(cmd[2]);
             int amount = std::stoi(cmd[3]);
             int new_balance;
-            sleep(1);
+            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             if(!bank.isAccountExist(account_id)){
                 std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
             }
@@ -121,7 +155,7 @@ void *atm(void *arg){
             int account_id = std::stoi(cmd[1]);
             int password = std::stoi(cmd[2]);
             int balance;
-            sleep(1);
+            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             if(!bank.isAccountExist(account_id)){
                 std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
             }
@@ -129,14 +163,14 @@ void *atm(void *arg){
                 std::cerr << "Error "<< input.id << ": Your transaction failed - password for account id "<< account_id <<" is incorrect" << std::endl;
             }
             else{
-                balance = bank.getBalance(account_id,password);
+                balance = bank.getBalance(account_id);
                 std::cout << input.id << ": Account " << account_id << "balance is " << balance << std::endl;
             }
             bank.readUnlock();
         }
         else if(cmd[0] == "Q"){ // Close account
             bank.writeLock();
-            sleep(1);
+            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             int account_id = std::stoi(cmd[1]);
             int password = std::stoi(cmd[2]);
             if(!bank.isAccountExist(account_id)){
@@ -152,7 +186,7 @@ void *atm(void *arg){
         }
         else if(cmd[0] == "T"){ // Transfer
             bank.readLock();
-            sleep(1);
+            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             int account_id = std::stoi(cmd[1]);
             int password = std::stoi(cmd[2]);
             int target_id = std::stoi(cmd[3]);

@@ -61,8 +61,8 @@ int Account::decreaseBalance_nolock(int value) {
 	this->balance = new_balance;
 	return new_balance;
 }
-int Account::decreaseBalance_tax_nolock(int ratio) {
-	int gain = (this->balance)*ratio;
+int Account::decreaseBalance_tax_nolock(int percentage) {
+	int gain = (int)(std::round(((this->balance) * percentage) / 100.0));
 	this->balance -= gain;
 	return gain;
 }

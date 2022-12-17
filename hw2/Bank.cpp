@@ -7,6 +7,12 @@ std::vector<std::string> split(std::string const& str, const char delim)
 	for (std::string each; std::getline(split, each, delim); tokens.push_back(each));
 	return tokens;
 }
+int random_percentage() {
+	std::random_device rd;  //Will be used to obtain a seed for the random number engine
+	std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+	std::uniform_int_distribution<> distrib(1, 5);
+	return distrib(gen);
+}
 
 /*
 *	Bank ADT definition
@@ -68,11 +74,11 @@ int Bank::getProfit() {
 int Bank::depositIntoAccount(int account_id, int password, int amount){ 
 	return (this->mp_ac[account_id].increaseBalance(amount));
 }
-bool Bank::withdrawalFromAccount(int account_id, int password, int amount){ 
+int Bank::withdrawalFromAccount(int account_id, int password, int amount){ 
 	return (this->mp_ac[account_id].decreaseBalance(amount));
 }
 
-int Bank::getBalance(int account_id, int password){ 
+int Bank::getBalance(int account_id){ 
 	return (this->mp_ac[account_id].getBalance());
 }
 
@@ -92,16 +98,27 @@ bool Bank::transferAmount(int account_id, int password, int target_id, int amoun
 }
 
 void Bank::tax(){
-	// int ratio = (std::experimental::randint(1, 5))/100; // Check if it compiles C11
-	int ratio = 3/100;
-	for (auto it = mp_ac.begin(); it != mp_ac.end(); ++it){
+	int percentage = random_percentage();
+	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it){
 		this->writeLock();
 		it->second.writeLock();
-		int gain = it->second.decreaseBalance_tax_nolock(ratio);
+		int gain = it->second.decreaseBalance_tax_nolock(percentage);
 		this->profit += gain;
-		std::cout << "Bank: commissions of " << ratio*100 << " % were charged, the bank gained "<< gain <<" $ from account "<< it->first << std::endl;
+		std::cout << "Bank: commissions of " << percentage << " % were charged, the bank gained "<< gain <<" $ from account "<< it->first << std::endl;
 		it->second.writeUnlock();
 		this->writeUnlock();
 	}
+}
+
+void Bank::print() {
+	this->readLock();
+	printf("\033[2J");
+	printf("\033[1;H");
+	std::cout << "Current Bank Status\n";
+	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it) {
+		std::cout << "Account " << it->first << ": Balance - " << this->getBalance(it->first) << " $, Account Password - " << this->mp_ac[it->first].getPassword() << std::endl;
+	}
+	std::cout << "The Bank has " << this->profit << " $\n";
+	this->readUnlock();
 }
 
