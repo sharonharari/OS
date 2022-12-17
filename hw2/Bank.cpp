@@ -93,6 +93,7 @@ std::queue<std::vector<std::string>>* valid_args(int argc, char* argv[]) {
 int main(int argc, char* argv[]) {
 	std::queue<std::vector<std::string>>* input_files = valid_args(argc, argv);
 	if (!input_files) {
+		std::cerr << "Bank error: illegal arguments" << std::endl;
 		return 1;
 	}
 	delete[] input_files;
