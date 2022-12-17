@@ -21,7 +21,6 @@ Account::~Account() {
 int Account::getBalance() {
 	int currentBalance = 0;
 	this->readLock();
-	sleep(1);
 	currentBalance = this->balance;
 	this->readUnlock();
 	return currentBalance;
@@ -29,31 +28,38 @@ int Account::getBalance() {
 int Account::getPassword() const {
 	return this->password;
 }
-void Account::increaseBalance(int value) {
+int Account::increaseBalance(int value) {
 	this->writeLock();
-	sleep(1);
-	this->balance += value;
+	int new_balance = this->balance +value;
+	this->balance = new_balance;
 	this->writeUnlock();
+	return new_balance;
 }
-bool Account::decreaseBalance(int value) {
+int Account::decreaseBalance(int value) {
 	this->writeLock();
-	sleep(1);
 	if(this->balance < value){
 		this->writeUnlock();
-		return false;
+		return -1;
 	}
-	this->balance -= value;
+	int new_balance = this->balance - value;
+	this->balance = new_balance;
 	this->writeUnlock();
+	return new_balance;
 }
-void Account::increaseBalance_nolock(int value) {
-	this->balance += value;
+int Account::increaseBalance_nolock(int value) {
+	int new_balance;
+	new_balance = this->balance + value;
+	this->balance = new_balance;
+	return new_balance;
 }
-bool Account::decreaseBalance_nolock(int value) {
+int Account::decreaseBalance_nolock(int value) {
 	if(this->balance < value){
-		return false;
+		return -1;
 	}
-	this->balance -= value;
-	return true;
+	int new_balance;
+	new_balance = this->balance - value;
+	this->balance = new_balance;
+	return new_balance;
 }
 int Account::decreaseBalance_tax_nolock(int ratio) {
 	int gain = (this->balance)*ratio;
