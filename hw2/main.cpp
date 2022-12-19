@@ -99,7 +99,7 @@ void *atm(void *arg){
             bank.writeLock();
             sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
             if(bank.isAccountExist(std::stoi(cmd[1]))){
-                std::cerr << "Error "<< input.id <<": Your transaction failed - account with the same id exists" << std::endl;
+                std::cerr << "Error "<< input.id <<": Your transaction failed - account with the same id exists" << cmd[1] << std::endl;
             }
             else{
                 bank.openAccount(std::stoi(cmd[1]),std::stoi(cmd[3]),std::stoi(cmd[2]));
@@ -164,7 +164,7 @@ void *atm(void *arg){
             }
             else{
                 balance = bank.getBalance(account_id);
-                std::cout << input.id << ": Account " << account_id << "balance is " << balance << std::endl;
+                std::cout << input.id << ": Account " << account_id << " balance is " << balance << std::endl;
             }
             bank.readUnlock();
         }

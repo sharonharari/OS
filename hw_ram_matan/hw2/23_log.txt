@@ -1,0 +1,1223 @@
+Error 6: Your transaction failed - account id 1001 does not exist
+Error 7: Your transaction failed - account id 1001 does not exist
+Error 5: Your transaction failed - account id 1001 does not exist
+Error 8: Your transaction failed - account id 1001 does not exist
+Error 9: Your transaction failed - account id 1001 does not exist
+Error 10: Your transaction failed - account id 1001 does not exist
+Error 11: Your transaction failed - account id 1001 does not exist
+Error 12: Your transaction failed - account id 1001 does not exist
+Error 14: Your transaction failed - account id 1001 does not exist
+Error 13: Your transaction failed - account id 1001 does not exist
+Error 15: Your transaction failed - account id 1001 does not exist
+Error 16: Your transaction failed - account id 1001 does not exist
+Error 17: Your transaction failed - account id 1001 does not exist
+Error 18: Your transaction failed - account id 1001 does not exist
+Error 19: Your transaction failed - account id 1001 does not exist
+Error 21: Your transaction failed - account id 1001 does not exist
+Error 20: Your transaction failed - account id 1001 does not exist
+Error 22: Your transaction failed - account id 1001 does not exist
+Error 23: Your transaction failed - account id 1001 does not exist
+Error 4: Your transaction failed - account id 1001 does not exist
+3: New account id is 3001 with password 0 and initial balance 0
+2: New account id is 2001 with password 0 and initial balance 0
+1: New account id is 1001 with password 0 and initial balance 10000
+6: Account 1001 balance is 10000
+7: Account 1001 balance is 10000
+9: Account 1001 balance is 10000
+8: Account 1001 balance is 10000
+12: Account 1001 balance is 10000
+15: Account 1001 balance is 10000
+14: Account 1001 balance is 10000
+11: Account 1001 balance is 10000
+10: Account 1001 balance is 10000
+13: Account 1001 balance is 10000
+5: Account 1001 balance is 10000
+16: Account 1001 balance is 10000
+17: Account 1001 balance is 10000
+18: Account 1001 balance is 10000
+19: Account 1001 balance is 10000
+21: Account 1001 balance is 10000
+20: Account 1001 balance is 10000
+22: Account 1001 balance is 10000
+23: Account 1001 balance is 10000
+4: Account 1001 balance is 10000
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2002 with password 1111 and initial balance 10000
+1: New account id is 1002 with password 0 and initial balance 10000
+9: Account 1001 balance is 9700
+7: Account 1001 balance is 9700
+8: Account 1001 balance is 9700
+12: Account 1001 balance is 9700
+15: Account 1001 balance is 9700
+6: Account 1001 balance is 9700
+14: Account 1001 balance is 9700
+11: Account 1001 balance is 9700
+10: Account 1001 balance is 9700
+13: Account 1001 balance is 9700
+5: Account 1001 balance is 9700
+16: Account 1001 balance is 9700
+17: Account 1001 balance is 9700
+18: Account 1001 balance is 9700
+19: Account 1001 balance is 9700
+21: Account 1001 balance is 9700
+20: Account 1001 balance is 9700
+22: Account 1001 balance is 9700
+23: Account 1001 balance is 9700
+4: Account 1001 balance is 9700
+Bank: commissions of 2 % were charged, the bank gained 194 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2003 with password 0 and initial balance 0
+1: New account id is 1003 with password 0 and initial balance 10000
+7: Account 1001 balance is 9506
+8: Account 1001 balance is 9506
+12: Account 1001 balance is 9506
+15: Account 1001 balance is 9506
+9: Account 1001 balance is 9506
+6: Account 1001 balance is 9506
+14: Account 1001 balance is 9506
+11: Account 1001 balance is 9506
+10: Account 1001 balance is 9506
+13: Account 1001 balance is 9506
+5: Account 1001 balance is 9506
+16: Account 1001 balance is 9506
+17: Account 1001 balance is 9506
+18: Account 1001 balance is 9506
+19: Account 1001 balance is 9506
+21: Account 1001 balance is 9506
+20: Account 1001 balance is 9506
+22: Account 1001 balance is 9506
+23: Account 1001 balance is 9506
+4: Account 1001 balance is 9506
+Bank: commissions of 3 % were charged, the bank gained 285 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 294 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 294 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2004 with password 1111 and initial balance 10000
+1: New account id is 1004 with password 0 and initial balance 10000
+17: Account 1001 balance is 9221
+18: Account 1001 balance is 9221
+20: Account 1001 balance is 9221
+12: Account 1001 balance is 9221
+16: Account 1001 balance is 9221
+9: Account 1001 balance is 9221
+8: Account 1001 balance is 9221
+10: Account 1001 balance is 9221
+11: Account 1001 balance is 9221
+13: Account 1001 balance is 9221
+21: Account 1001 balance is 9221
+5: Account 1001 balance is 9221
+15: Account 1001 balance is 9221
+19: Account 1001 balance is 9221
+14: Account 1001 balance is 9221
+7: Account 1001 balance is 9221
+23: Account 1001 balance is 9221
+22: Account 1001 balance is 9221
+6: Account 1001 balance is 9221
+4: Account 1001 balance is 9221
+Bank: commissions of 4 % were charged, the bank gained 368 $ from account 1001
+Bank: commissions of 4 % were charged, the bank gained 380 $ from account 1002
+Bank: commissions of 4 % were charged, the bank gained 388 $ from account 1003
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 1004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 4 % were charged, the bank gained 380 $ from account 2002
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 2004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2005 with password 0 and initial balance 0
+1: New account id is 1005 with password 0 and initial balance 10000
+20: Account 1001 balance is 8853
+12: Account 1001 balance is 8853
+9: Account 1001 balance is 8853
+16: Account 1001 balance is 8853
+8: Account 1001 balance is 8853
+18: Account 1001 balance is 8853
+10: Account 1001 balance is 8853
+11: Account 1001 balance is 8853
+5: Account 1001 balance is 8853
+21: Account 1001 balance is 8853
+17: Account 1001 balance is 8853
+15: Account 1001 balance is 8853
+19: Account 1001 balance is 8853
+13: Account 1001 balance is 8853
+14: Account 1001 balance is 8853
+7: Account 1001 balance is 8853
+23: Account 1001 balance is 8853
+22: Account 1001 balance is 8853
+6: Account 1001 balance is 8853
+4: Account 1001 balance is 8853
+Bank: commissions of 3 % were charged, the bank gained 265 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 273 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 273 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2006 with password 1111 and initial balance 10000
+1: New account id is 1006 with password 0 and initial balance 10000
+12: Account 1001 balance is 8588
+9: Account 1001 balance is 8588
+20: Account 1001 balance is 8588
+16: Account 1001 balance is 8588
+8: Account 1001 balance is 8588
+18: Account 1001 balance is 8588
+10: Account 1001 balance is 8588
+11: Account 1001 balance is 8588
+5: Account 1001 balance is 8588
+21: Account 1001 balance is 8588
+17: Account 1001 balance is 8588
+15: Account 1001 balance is 8588
+19: Account 1001 balance is 8588
+13: Account 1001 balance is 8588
+14: Account 1001 balance is 8588
+7: Account 1001 balance is 8588
+22: Account 1001 balance is 8588
+23: Account 1001 balance is 8588
+6: Account 1001 balance is 8588
+4: Account 1001 balance is 8588
+Bank: commissions of 3 % were charged, the bank gained 257 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 265 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 270 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 291 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 265 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2007 with password 0 and initial balance 0
+1: New account id is 1007 with password 0 and initial balance 10000
+8: Account 1001 balance is 8331
+16: Account 1001 balance is 8331
+9: Account 1001 balance is 8331
+10: Account 1001 balance is 8331
+18: Account 1001 balance is 8331
+21: Account 1001 balance is 8331
+5: Account 1001 balance is 8331
+17: Account 1001 balance is 8331
+15: Account 1001 balance is 8331
+19: Account 1001 balance is 8331
+11: Account 1001 balance is 8331
+13: Account 1001 balance is 8331
+20: Account 1001 balance is 8331
+14: Account 1001 balance is 8331
+7: Account 1001 balance is 8331
+12: Account 1001 balance is 8331
+22: Account 1001 balance is 8331
+23: Account 1001 balance is 8331
+6: Account 1001 balance is 8331
+4: Account 1001 balance is 8331
+Bank: commissions of 2 % were charged, the bank gained 166 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 171 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 175 $ from account 1003
+Bank: commissions of 2 % were charged, the bank gained 180 $ from account 1004
+Bank: commissions of 2 % were charged, the bank gained 188 $ from account 1005
+Bank: commissions of 2 % were charged, the bank gained 194 $ from account 1006
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 1007
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 171 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 2 % were charged, the bank gained 180 $ from account 2004
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 2 % were charged, the bank gained 194 $ from account 2006
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2008 with password 1111 and initial balance 10000
+1: New account id is 1008 with password 0 and initial balance 10000
+9: Account 1001 balance is 8165
+10: Account 1001 balance is 8165
+18: Account 1001 balance is 8165
+21: Account 1001 balance is 8165
+17: Account 1001 balance is 8165
+5: Account 1001 balance is 8165
+15: Account 1001 balance is 8165
+19: Account 1001 balance is 8165
+11: Account 1001 balance is 8165
+20: Account 1001 balance is 8165
+14: Account 1001 balance is 8165
+16: Account 1001 balance is 8165
+13: Account 1001 balance is 8165
+7: Account 1001 balance is 8165
+8: Account 1001 balance is 8165
+12: Account 1001 balance is 8165
+22: Account 1001 balance is 8165
+23: Account 1001 balance is 8165
+6: Account 1001 balance is 8165
+4: Account 1001 balance is 8165
+Bank: commissions of 2 % were charged, the bank gained 163 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 168 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 171 $ from account 1003
+Bank: commissions of 2 % were charged, the bank gained 177 $ from account 1004
+Bank: commissions of 2 % were charged, the bank gained 184 $ from account 1005
+Bank: commissions of 2 % were charged, the bank gained 190 $ from account 1006
+Bank: commissions of 2 % were charged, the bank gained 196 $ from account 1007
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 1008
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 168 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 2 % were charged, the bank gained 177 $ from account 2004
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 2 % were charged, the bank gained 190 $ from account 2006
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 2008
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2009 with password 0 and initial balance 0
+1: New account id is 1009 with password 0 and initial balance 10000
+21: Account 1001 balance is 8002
+5: Account 1001 balance is 8002
+17: Account 1001 balance is 8002
+18: Account 1001 balance is 8002
+15: Account 1001 balance is 8002
+10: Account 1001 balance is 8002
+19: Account 1001 balance is 8002
+11: Account 1001 balance is 8002
+20: Account 1001 balance is 8002
+14: Account 1001 balance is 8002
+16: Account 1001 balance is 8002
+9: Account 1001 balance is 8002
+8: Account 1001 balance is 8002
+12: Account 1001 balance is 8002
+22: Account 1001 balance is 8002
+13: Account 1001 balance is 8002
+7: Account 1001 balance is 8002
+23: Account 1001 balance is 8002
+6: Account 1001 balance is 8002
+4: Account 1001 balance is 8002
+Bank: commissions of 3 % were charged, the bank gained 240 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 247 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 252 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 271 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 1007
+Bank: commissions of 3 % were charged, the bank gained 294 $ from account 1008
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1009
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 247 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 3 % were charged, the bank gained 294 $ from account 2008
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2010 with password 1111 and initial balance 10000
+1: New account id is 1010 with password 0 and initial balance 10000
+17: Transfer 100 from account 1002 to account 1001 new account balance is 7902 new target account balance is 7862
+15: Transfer 100 from account 1001 to account 1002 new account balance is 7762 new target account balance is 8002
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 21: Your transaction failed - password for account id 1001 is incorrect
+11: Account 1001 balance is 7862
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 1001 is incorrect
+Error 9: Your transaction failed - password for account id 1001 is incorrect
+Error 8: Your transaction failed - account id 3002 does not exist
+12: Account 1001 balance is 7862
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 23: Your transaction failed - account id 2001 does not exist
+Error 6: Your transaction failed - password for account id 1001 is incorrect
+Error 5: Your transaction failed - account id 3002 does not exist
+16: Transfer 100 from account 1002 to account 1001 new account balance is 7902 new target account balance is 7862
+7: Account 1001 new balance is 7762 after 100 $ was withdrew
+4: Account 1001 new balance is 7862 after 100 $ was deposited
+Bank: commissions of 4 % were charged, the bank gained 314 $ from account 1001
+Bank: commissions of 4 % were charged, the bank gained 316 $ from account 1002
+Bank: commissions of 4 % were charged, the bank gained 326 $ from account 1003
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 1004
+Bank: commissions of 4 % were charged, the bank gained 350 $ from account 1005
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 1006
+Bank: commissions of 4 % were charged, the bank gained 372 $ from account 1007
+Bank: commissions of 4 % were charged, the bank gained 380 $ from account 1008
+Bank: commissions of 4 % were charged, the bank gained 388 $ from account 1009
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 1010
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 4 % were charged, the bank gained 320 $ from account 2002
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 2004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 2006
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 4 % were charged, the bank gained 380 $ from account 2008
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 2010
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2011 with password 0 and initial balance 0
+1: New account id is 1011 with password 0 and initial balance 10000
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 9: Your transaction failed - password for account id 1001 is incorrect
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+Error 21: Your transaction failed - password for account id 1001 is incorrect
+11: Account 1001 balance is 7548
+Error 14: Your transaction failed - password for account id 1001 is incorrect
+12: Account 1001 balance is 7548
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+15: Transfer 100 from account 1001 to account 1002 new account balance is 7448 new target account balance is 7686
+Error 23: Your transaction failed - account id 2001 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1001 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+7: Account 1001 new balance is 7348 after 100 $ was withdrew
+4: Account 1001 new balance is 7448 after 100 $ was deposited
+Bank: commissions of 3 % were charged, the bank gained 223 $ from account 1001
+17: Transfer 100 from account 1001 to account 1002 new account balance is 7125 new target account balance is 7786
+16: Transfer 100 from account 1002 to account 1001 new account balance is 7686 new target account balance is 7225
+Bank: commissions of 3 % were charged, the bank gained 233 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 235 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 252 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 1007
+Bank: commissions of 3 % were charged, the bank gained 273 $ from account 1008
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1009
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 1010
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1011
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 230 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 3 % were charged, the bank gained 273 $ from account 2008
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 2010
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2012 with password 1111 and initial balance 10000
+Error 3: Your transaction failed - account with the same id exists
+1: New account id is 1012 with password 0 and initial balance 10000
+Error 21: Your transaction failed - password for account id 1001 is incorrect
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 9: Your transaction failed - password for account id 1001 is incorrect
+11: Account 1001 balance is 7225
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 1001 is incorrect
+12: Account 1001 balance is 7225
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+15: Transfer 100 from account 1001 to account 1002 new account balance is 7125 new target account balance is 7553
+7: Account 1001 new balance is 7025 after 100 $ was withdrew
+4: Account 1001 new balance is 7125 after 100 $ was deposited
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1001 is incorrect
+Error 23: Your transaction failed - account id 2001 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Bank: commissions of 4 % were charged, the bank gained 285 $ from account 1001
+17: Transfer 100 from account 1002 to account 1001 new account balance is 7453 new target account balance is 6940
+16: Transfer 100 from account 1002 to account 1001 new account balance is 7353 new target account balance is 7040
+Bank: commissions of 4 % were charged, the bank gained 298 $ from account 1002
+Bank: commissions of 4 % were charged, the bank gained 304 $ from account 1003
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 1004
+Bank: commissions of 4 % were charged, the bank gained 326 $ from account 1005
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 1006
+Bank: commissions of 4 % were charged, the bank gained 347 $ from account 1007
+Bank: commissions of 4 % were charged, the bank gained 354 $ from account 1008
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 1009
+Bank: commissions of 4 % were charged, the bank gained 372 $ from account 1010
+Bank: commissions of 4 % were charged, the bank gained 388 $ from account 1011
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 1012
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 4 % were charged, the bank gained 298 $ from account 2002
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 2004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 2006
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 4 % were charged, the bank gained 354 $ from account 2008
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 4 % were charged, the bank gained 372 $ from account 2010
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 2012
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2013 with password 0 and initial balance 0
+Error 3: Your transaction failed - account with the same id exists
+1: New account id is 1013 with password 0 and initial balance 10000
+Error 9: Your transaction failed - password for account id 1002 is incorrect
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 8: Your transaction failed - account id 3002 does not exist
+11: Account 1001 balance is 7040
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+12: Account 1001 balance is 7040
+Error 14: Your transaction failed - password for account id 1002 is incorrect
+Error 21: Your transaction failed - password for account id 1002 is incorrect
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+15: Transfer 100 from account 1001 to account 1002 new account balance is 6940 new target account balance is 7155
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1002 is incorrect
+Error 23: Your transaction failed - account id 1001 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+7: Account 1001 new balance is 6840 after 100 $ was withdrew
+4: Account 1001 new balance is 6940 after 100 $ was deposited
+Bank: commissions of 3 % were charged, the bank gained 208 $ from account 1001
+17: Transfer 100 from account 1001 to account 1002 new account balance is 6632 new target account balance is 7255
+16: Transfer 100 from account 1002 to account 1001 new account balance is 7155 new target account balance is 6732
+Bank: commissions of 3 % were charged, the bank gained 217 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 219 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 225 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 235 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 249 $ from account 1007
+Bank: commissions of 3 % were charged, the bank gained 254 $ from account 1008
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 1009
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 1010
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1011
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 1012
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1013
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 214 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 225 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 3 % were charged, the bank gained 254 $ from account 2008
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 2010
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 2012
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2014 with password 1111 and initial balance 10000
+Error 3: Your transaction failed - account with the same id exists
+1: New account id is 1014 with password 0 and initial balance 10000
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+12: Account 1001 balance is 6732
+Error 14: Your transaction failed - password for account id 1002 is incorrect
+Error 21: Your transaction failed - password for account id 1002 is incorrect
+11: Account 1001 balance is 6732
+Error 9: Your transaction failed - password for account id 1002 is incorrect
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+15: Transfer 100 from account 1001 to account 1002 new account balance is 6632 new target account balance is 7038
+7: Account 1001 new balance is 6532 after 100 $ was withdrew
+4: Account 1001 new balance is 6632 after 100 $ was deposited
+Error 23: Your transaction failed - account id 1001 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1002 is incorrect
+Bank: commissions of 4 % were charged, the bank gained 265 $ from account 1001
+17: Transfer 100 from account 1002 to account 1001 new account balance is 6938 new target account balance is 6467
+16: Transfer 100 from account 1002 to account 1001 new account balance is 6838 new target account balance is 6567
+Bank: commissions of 4 % were charged, the bank gained 277 $ from account 1002
+Bank: commissions of 4 % were charged, the bank gained 283 $ from account 1003
+Bank: commissions of 4 % were charged, the bank gained 292 $ from account 1004
+Bank: commissions of 4 % were charged, the bank gained 304 $ from account 1005
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 1006
+Bank: commissions of 4 % were charged, the bank gained 323 $ from account 1007
+Bank: commissions of 4 % were charged, the bank gained 329 $ from account 1008
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 1009
+Bank: commissions of 4 % were charged, the bank gained 346 $ from account 1010
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 1011
+Bank: commissions of 4 % were charged, the bank gained 372 $ from account 1012
+Bank: commissions of 4 % were charged, the bank gained 388 $ from account 1013
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 1014
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 4 % were charged, the bank gained 277 $ from account 2002
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 4 % were charged, the bank gained 292 $ from account 2004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 2006
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 4 % were charged, the bank gained 329 $ from account 2008
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 4 % were charged, the bank gained 346 $ from account 2010
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 4 % were charged, the bank gained 372 $ from account 2012
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 2014
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2015 with password 0 and initial balance 0
+1: New account id is 1015 with password 0 and initial balance 10000
+Error 3: Your transaction failed - account with the same id exists
+12: Account 1002 balance is 6561
+Error 14: Your transaction failed - password for account id 1002 is incorrect
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+Error 21: Your transaction failed - password for account id 1002 is incorrect
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 8: Your transaction failed - account id 3002 does not exist
+11: Account 1001 balance is 6567
+Error 9: Your transaction failed - password for account id 1002 is incorrect
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+15: Transfer 100 from account 1003 to account 1004 new account balance is 6698 new target account balance is 7108
+7: Account 1001 new balance is 6467 after 100 $ was withdrew
+Error 23: Your transaction failed - account id 1001 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1002 is incorrect
+16: Transfer 100 from account 1005 to account 1006 new account balance is 7199 new target account balance is 7625
+17: Transfer 100 from account 1003 to account 1004 new account balance is 6598 new target account balance is 7208
+4: Account 1001 new balance is 6567 after 100 $ was deposited
+Bank: commissions of 3 % were charged, the bank gained 194 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 196 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 197 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 216 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 215 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 228 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 232 $ from account 1007
+Bank: commissions of 3 % were charged, the bank gained 237 $ from account 1008
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 1009
+Bank: commissions of 3 % were charged, the bank gained 249 $ from account 1010
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 1011
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 1012
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1013
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 1014
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1015
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 199 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 210 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 225 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 3 % were charged, the bank gained 237 $ from account 2008
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 3 % were charged, the bank gained 249 $ from account 2010
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 2012
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 2014
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2016 with password 1111 and initial balance 10000
+1: New account id is 1016 with password 0 and initial balance 10000
+Error 19: Your transaction failed - account id 3002 does not exist
+7: Account 1001 new balance is 6273 after 100 $ was withdrew
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 8: Your transaction failed - account id 3002 does not exist
+15: Transfer 100 from account 1004 to account 1003 new account balance is 6892 new target account balance is 6501
+11: Account 1001 balance is 6273
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 2003 balance is lower than 5000
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2003 balance is lower than 5000
+Error 23: Your transaction failed - account id 1004 does not exist
+12: Account 2001 balance is 0
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+16: Transfer 100 from account 1006 to account 1005 new account balance is 7297 new target account balance is 7084
+4: Account 1001 new balance is 6373 after 100 $ was deposited
+Bank: commissions of 2 % were charged, the bank gained 127 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 127 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 130 $ from account 1003
+17: Transfer 100 from account 1004 to account 1005 new account balance is 6792 new target account balance is 7184
+Bank: commissions of 2 % were charged, the bank gained 135 $ from account 1004
+Bank: commissions of 2 % were charged, the bank gained 143 $ from account 1005
+Bank: commissions of 2 % were charged, the bank gained 145 $ from account 1006
+Bank: commissions of 2 % were charged, the bank gained 150 $ from account 1007
+Bank: commissions of 2 % were charged, the bank gained 153 $ from account 1008
+Bank: commissions of 2 % were charged, the bank gained 156 $ from account 1009
+Bank: commissions of 2 % were charged, the bank gained 161 $ from account 1010
+Bank: commissions of 2 % were charged, the bank gained 168 $ from account 1011
+Bank: commissions of 2 % were charged, the bank gained 173 $ from account 1012
+Bank: commissions of 2 % were charged, the bank gained 180 $ from account 1013
+Bank: commissions of 2 % were charged, the bank gained 186 $ from account 1014
+Bank: commissions of 2 % were charged, the bank gained 194 $ from account 1015
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 1016
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 129 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 2 % were charged, the bank gained 135 $ from account 2004
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 2 % were charged, the bank gained 146 $ from account 2006
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 2 % were charged, the bank gained 153 $ from account 2008
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 2 % were charged, the bank gained 161 $ from account 2010
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 2 % were charged, the bank gained 173 $ from account 2012
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 2 % were charged, the bank gained 186 $ from account 2014
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 2016
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+Error 3: Your transaction failed - account with the same id exists
+2: New account id is 2017 with password 0 and initial balance 0
+1: New account id is 1017 with password 0 and initial balance 10000
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+7: Account 1001 new balance is 6146 after 100 $ was withdrew
+11: Account 1001 balance is 6146
+15: Transfer 100 from account 1003 to account 1004 new account balance is 6271 new target account balance is 6757
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 2003 balance is lower than 5000
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2003 balance is lower than 5000
+Error 23: Your transaction failed - account id 1004 does not exist
+12: Account 2002 balance is 6335
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+17: Transfer 100 from account 1005 to account 1006 new account balance is 6941 new target account balance is 7252
+4: Account 1001 new balance is 6246 after 100 $ was deposited
+16: Transfer 100 from account 1004 to account 1003 new account balance is 6657 new target account balance is 6371
+Bank: commissions of 2 % were charged, the bank gained 122 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 124 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 127 $ from account 1003
+Bank: commissions of 2 % were charged, the bank gained 133 $ from account 1004
+Bank: commissions of 2 % were charged, the bank gained 138 $ from account 1005
+Bank: commissions of 2 % were charged, the bank gained 145 $ from account 1006
+Bank: commissions of 2 % were charged, the bank gained 147 $ from account 1007
+Bank: commissions of 2 % were charged, the bank gained 150 $ from account 1008
+Bank: commissions of 2 % were charged, the bank gained 153 $ from account 1009
+Bank: commissions of 2 % were charged, the bank gained 158 $ from account 1010
+Bank: commissions of 2 % were charged, the bank gained 164 $ from account 1011
+Bank: commissions of 2 % were charged, the bank gained 169 $ from account 1012
+Bank: commissions of 2 % were charged, the bank gained 177 $ from account 1013
+Bank: commissions of 2 % were charged, the bank gained 182 $ from account 1014
+Bank: commissions of 2 % were charged, the bank gained 190 $ from account 1015
+Bank: commissions of 2 % were charged, the bank gained 196 $ from account 1016
+Bank: commissions of 2 % were charged, the bank gained 200 $ from account 1017
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 126 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 2 % were charged, the bank gained 133 $ from account 2004
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 2 % were charged, the bank gained 143 $ from account 2006
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 2 % were charged, the bank gained 150 $ from account 2008
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 2 % were charged, the bank gained 158 $ from account 2010
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 2 % were charged, the bank gained 169 $ from account 2012
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 2 % were charged, the bank gained 182 $ from account 2014
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 2 % were charged, the bank gained 196 $ from account 2016
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2018 with password 1111 and initial balance 10000
+Error 3: Your transaction failed - account with the same id exists
+1: New account id is 1018 with password 0 and initial balance 10000
+15: Transfer 100 from account 1004 to account 1003 new account balance is 6424 new target account balance is 6344
+11: Account 1001 balance is 6124
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+7: Account 1001 new balance is 6024 after 100 $ was withdrew
+4: Account 1001 new balance is 6124 after 100 $ was deposited
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 23: Your transaction failed - account id 1004 does not exist
+12: Account 1001 balance is 6024
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+17: Transfer 100 from account 1006 to account 1005 new account balance is 7007 new target account balance is 6903
+16: Transfer 100 from account 1003 to account 1004 new account balance is 6244 new target account balance is 6524
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Bank: commissions of 3 % were charged, the bank gained 183 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 183 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 187 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 195 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 207 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 210 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 216 $ from account 1007
+Bank: commissions of 3 % were charged, the bank gained 221 $ from account 1008
+Bank: commissions of 3 % were charged, the bank gained 225 $ from account 1009
+Bank: commissions of 3 % were charged, the bank gained 232 $ from account 1010
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 1011
+Bank: commissions of 3 % were charged, the bank gained 249 $ from account 1012
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 1013
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 1014
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1015
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 1016
+Bank: commissions of 3 % were charged, the bank gained 294 $ from account 1017
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1018
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 186 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 195 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 210 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 3 % were charged, the bank gained 221 $ from account 2008
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 3 % were charged, the bank gained 232 $ from account 2010
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 3 % were charged, the bank gained 249 $ from account 2012
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 3 % were charged, the bank gained 268 $ from account 2014
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 3 % were charged, the bank gained 288 $ from account 2016
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 2018
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2019 with password 0 and initial balance 0
+Error 3: Your transaction failed - account with the same id exists
+1: New account id is 1019 with password 0 and initial balance 10000
+11: Account 1001 balance is 5941
+15: Transfer 100 from account 1003 to account 1004 new account balance is 5957 new target account balance is 6429
+Error 19: Your transaction failed - account id 3002 does not exist
+7: Account 1001 new balance is 5841 after 100 $ was withdrew
+Error 9: Your transaction failed - password for account id 1001 is incorrect
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 14: Your transaction failed - password for account id 1001 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 23: Your transaction failed - account id 1005 does not exist
+12: Account 1001 balance is 5841
+Error 6: Your transaction failed - password for account id 1001 is incorrect
+Error 21: Your transaction failed - password for account id 1001 is incorrect
+17: Transfer 100 from account 1005 to account 1004 new account balance is 6596 new target account balance is 6529
+4: Account 1001 new balance is 5941 after 100 $ was deposited
+16: Transfer 100 from account 1004 to account 1003 new account balance is 6429 new target account balance is 6057
+Bank: commissions of 3 % were charged, the bank gained 178 $ from account 1001
+Bank: commissions of 3 % were charged, the bank gained 177 $ from account 1002
+Bank: commissions of 3 % were charged, the bank gained 181 $ from account 1003
+Bank: commissions of 3 % were charged, the bank gained 192 $ from account 1004
+Bank: commissions of 3 % were charged, the bank gained 197 $ from account 1005
+Bank: commissions of 3 % were charged, the bank gained 203 $ from account 1006
+Bank: commissions of 3 % were charged, the bank gained 210 $ from account 1007
+Bank: commissions of 3 % were charged, the bank gained 214 $ from account 1008
+Bank: commissions of 3 % were charged, the bank gained 219 $ from account 1009
+Bank: commissions of 3 % were charged, the bank gained 225 $ from account 1010
+Bank: commissions of 3 % were charged, the bank gained 235 $ from account 1011
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 1012
+Bank: commissions of 3 % were charged, the bank gained 252 $ from account 1013
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 1014
+Bank: commissions of 3 % were charged, the bank gained 271 $ from account 1015
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 1016
+Bank: commissions of 3 % were charged, the bank gained 285 $ from account 1017
+Bank: commissions of 3 % were charged, the bank gained 291 $ from account 1018
+Bank: commissions of 3 % were charged, the bank gained 300 $ from account 1019
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 3 % were charged, the bank gained 180 $ from account 2002
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 3 % were charged, the bank gained 190 $ from account 2004
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 3 % were charged, the bank gained 204 $ from account 2006
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 3 % were charged, the bank gained 214 $ from account 2008
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 3 % were charged, the bank gained 225 $ from account 2010
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 3 % were charged, the bank gained 242 $ from account 2012
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 3 % were charged, the bank gained 260 $ from account 2014
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 3 % were charged, the bank gained 279 $ from account 2016
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 3 % were charged, the bank gained 291 $ from account 2018
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 2019
+Bank: commissions of 3 % were charged, the bank gained 0 $ from account 3001
+2: New account id is 2020 with password 1111 and initial balance 10000
+1: New account id is 1020 with password 0 and initial balance 10000
+Error 3: Your transaction failed - account with the same id exists
+Error 21: Your transaction failed - password for account id 1001 is incorrect
+17: Transfer 100 from account 1004 to account 1003 new account balance is 6137 new target account balance is 5976
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1001 is incorrect
+7: Account 1002 new balance is 5654 after 100 $ was withdrew
+Error 9: Your transaction failed - password for account id 1001 is incorrect
+Error 10: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 1001 is incorrect
+Error 23: Your transaction failed - account id 1006 does not exist
+12: Account 1001 balance is 5763
+11: Account 1001 balance is 5763
+15: Transfer 100 from account 1004 to account 1003 new account balance is 6037 new target account balance is 6076
+16: Transfer 100 from account 1004 to account 1005 new account balance is 5937 new target account balance is 6499
+4: Account 1002 new balance is 5754 after 100 $ was deposited
+Bank: commissions of 4 % were charged, the bank gained 230 $ from account 1001
+Bank: commissions of 4 % were charged, the bank gained 230 $ from account 1002
+Bank: commissions of 4 % were charged, the bank gained 243 $ from account 1003
+Bank: commissions of 4 % were charged, the bank gained 237 $ from account 1004
+Bank: commissions of 4 % were charged, the bank gained 259 $ from account 1005
+Bank: commissions of 4 % were charged, the bank gained 263 $ from account 1006
+Bank: commissions of 4 % were charged, the bank gained 272 $ from account 1007
+Bank: commissions of 4 % were charged, the bank gained 277 $ from account 1008
+Bank: commissions of 4 % were charged, the bank gained 283 $ from account 1009
+Bank: commissions of 4 % were charged, the bank gained 292 $ from account 1010
+Bank: commissions of 4 % were charged, the bank gained 304 $ from account 1011
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 1012
+Bank: commissions of 4 % were charged, the bank gained 326 $ from account 1013
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 1014
+Bank: commissions of 4 % were charged, the bank gained 350 $ from account 1015
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 1016
+Bank: commissions of 4 % were charged, the bank gained 368 $ from account 1017
+Bank: commissions of 4 % were charged, the bank gained 376 $ from account 1018
+Bank: commissions of 4 % were charged, the bank gained 388 $ from account 1019
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 1020
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 4 % were charged, the bank gained 233 $ from account 2002
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 4 % were charged, the bank gained 245 $ from account 2004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 4 % were charged, the bank gained 263 $ from account 2006
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 4 % were charged, the bank gained 277 $ from account 2008
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 4 % were charged, the bank gained 292 $ from account 2010
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 2012
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 2014
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 2016
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 4 % were charged, the bank gained 376 $ from account 2018
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2019
+Bank: commissions of 4 % were charged, the bank gained 400 $ from account 2020
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 3001
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 9: Your transaction failed - password for account id 1001 is incorrect
+Error 8: Your transaction failed - account id 3002 does not exist
+17: Transfer 100 from account 1003 to account 1004 new account balance is 5733 new target account balance is 5800
+15: Transfer 100 from account 1003 to account 1004 new account balance is 5633 new target account balance is 5900
+16: Transfer 100 from account 1005 to account 1003 new account balance is 6140 new target account balance is 5733
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 6: Your transaction failed - password for account id 1001 is incorrect
+7: Account 1002 new balance is 5424 after 100 $ was withdrew
+4: Account 1002 new balance is 5524 after 100 $ was deposited
+Error 14: Your transaction failed - password for account id 1001 is incorrect
+11: Account 1001 balance is 5533
+Error 23: Your transaction failed - account id 2001 does not exist
+12: Account 1001 balance is 5533
+Error 21: Your transaction failed - password for account id 1001 is incorrect
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 3: Your transaction failed - account with the same id exists
+Error 9: Your transaction failed - password for account id 1002 is incorrect
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+15: Transfer 100 from account 1004 to account 1003 new account balance is 5800 new target account balance is 5833
+Error 20: Your transaction failed - account id 3002 does not exist
+7: Account 1002 new balance is 5424 after 100 $ was withdrew
+4: Account 1002 new balance is 5524 after 100 $ was deposited
+Error 10: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 5: Your transaction failed - account id 3002 does not exist
+11: Account 1001 balance is 5533
+Error 14: Your transaction failed - password for account id 1002 is incorrect
+16: Transfer 100 from account 1005 to account 1004 new account balance is 6040 new target account balance is 5900
+Error 23: Your transaction failed - account id 2002 does not exist
+12: Account 1001 balance is 5533
+Error 6: Your transaction failed - password for account id 1002 is incorrect
+Error 21: Your transaction failed - password for account id 1002 is incorrect
+Error 22: Your transaction failed – account id 1001 balance is lower than 1000000
+Error 19: Your transaction failed - account id 3002 does not exist
+17: Transfer 100 from account 1004 to account 1005 new account balance is 5800 new target account balance is 6140
+Bank: commissions of 4 % were charged, the bank gained 221 $ from account 1001
+Bank: commissions of 4 % were charged, the bank gained 220 $ from account 1002
+Bank: commissions of 4 % were charged, the bank gained 233 $ from account 1003
+Bank: commissions of 4 % were charged, the bank gained 232 $ from account 1004
+Bank: commissions of 4 % were charged, the bank gained 245 $ from account 1005
+Bank: commissions of 4 % were charged, the bank gained 253 $ from account 1006
+Bank: commissions of 4 % were charged, the bank gained 261 $ from account 1007
+Bank: commissions of 4 % were charged, the bank gained 266 $ from account 1008
+Bank: commissions of 4 % were charged, the bank gained 271 $ from account 1009
+Bank: commissions of 4 % were charged, the bank gained 280 $ from account 1010
+Bank: commissions of 4 % were charged, the bank gained 291 $ from account 1011
+Bank: commissions of 4 % were charged, the bank gained 301 $ from account 1012
+Bank: commissions of 4 % were charged, the bank gained 313 $ from account 1013
+Bank: commissions of 4 % were charged, the bank gained 323 $ from account 1014
+Bank: commissions of 4 % were charged, the bank gained 336 $ from account 1015
+Bank: commissions of 4 % were charged, the bank gained 347 $ from account 1016
+Bank: commissions of 4 % were charged, the bank gained 354 $ from account 1017
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 1018
+Bank: commissions of 4 % were charged, the bank gained 372 $ from account 1019
+Bank: commissions of 4 % were charged, the bank gained 384 $ from account 1020
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 4 % were charged, the bank gained 224 $ from account 2002
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 4 % were charged, the bank gained 236 $ from account 2004
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 4 % were charged, the bank gained 253 $ from account 2006
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 4 % were charged, the bank gained 266 $ from account 2008
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 4 % were charged, the bank gained 280 $ from account 2010
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 4 % were charged, the bank gained 301 $ from account 2012
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 4 % were charged, the bank gained 323 $ from account 2014
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 4 % were charged, the bank gained 347 $ from account 2016
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 4 % were charged, the bank gained 361 $ from account 2018
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 2019
+Bank: commissions of 4 % were charged, the bank gained 384 $ from account 2020
+Bank: commissions of 4 % were charged, the bank gained 0 $ from account 3001
+7: Account 1003 new balance is 5500 after 100 $ was withdrew
+4: Account 1003 new balance is 5600 after 100 $ was deposited
+15: Transfer 100 from account 1003 to account 1004 new account balance is 5500 new target account balance is 5668
+Error 21: Your transaction failed - password for account id 1002 is incorrect
+Error 23: Your transaction failed - account id 2002 does not exist
+Error 18: Your transaction failed - account id 3002 does not exist
+16: Transfer 100 from account 1006 to account 1005 new account balance is 5978 new target account balance is 5995
+Error 10: Your transaction failed – account id 2001 balance is lower than 5000
+Error 14: Your transaction failed - password for account id 1002 is incorrect
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+11: Account 1001 balance is 5312
+Error 20: Your transaction failed - account id 3002 does not exist
+12: Account 1001 balance is 5312
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 9: Your transaction failed - password for account id 1002 is incorrect
+Error 6: Your transaction failed - password for account id 1002 is incorrect
+Error 22: Your transaction failed – account id 2001 balance is lower than 5000
+17: Transfer 100 from account 1005 to account 1006 new account balance is 5895 new target account balance is 6078
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 1002 is incorrect
+12: Account 1001 balance is 5312
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2005 balance is lower than 5000
+4: Account 1004 new balance is 5768 after 100 $ was deposited
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 21: Your transaction failed - password for account id 1002 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 1002 is incorrect
+Error 23: Your transaction failed - account id 1005 does not exist
+Error 9: Your transaction failed - password for account id 1002 is incorrect
+16: Transfer 100 from account 1006 to account 1003 new account balance is 5978 new target account balance is 5600
+15: Transfer 100 from account 1004 to account 1003 new account balance is 5668 new target account balance is 5700
+Error 22: Your transaction failed – account id 2005 balance is lower than 5000
+Error 19: Your transaction failed - account id 3002 does not exist
+17: Transfer 100 from account 1006 to account 1005 new account balance is 5878 new target account balance is 5995
+11: Account 1001 balance is 5312
+7: Account 1004 new balance is 5568 after 100 $ was withdrew
+12: Account 1001 balance is 5312
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 10: Your transaction failed – account id 2005 balance is lower than 5000
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+4: Account 2001 new balance is 100 after 100 $ was deposited
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+Error 23: Your transaction failed - account id 1008 does not exist
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+Error 22: Your transaction failed – account id 2005 balance is lower than 5000
+15: Transfer 100 from account 1003 to account 1004 new account balance is 5600 new target account balance is 5668
+16: Transfer 100 from account 1004 to account 1005 new account balance is 5568 new target account balance is 6095
+17: Transfer 100 from account 1005 to account 1004 new account balance is 5995 new target account balance is 5668
+11: Account 1001 balance is 5312
+7: Account 2001 new balance is 0 after 100 $ was withdrew
+Error 19: Your transaction failed - account id 3002 does not exist
+Bank: commissions of 2 % were charged, the bank gained 106 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 106 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 112 $ from account 1003
+Bank: commissions of 2 % were charged, the bank gained 113 $ from account 1004
+Bank: commissions of 2 % were charged, the bank gained 119 $ from account 1005
+Bank: commissions of 2 % were charged, the bank gained 117 $ from account 1006
+Bank: commissions of 2 % were charged, the bank gained 125 $ from account 1007
+Bank: commissions of 2 % were charged, the bank gained 127 $ from account 1008
+Bank: commissions of 2 % were charged, the bank gained 130 $ from account 1009
+Bank: commissions of 2 % were charged, the bank gained 134 $ from account 1010
+Bank: commissions of 2 % were charged, the bank gained 140 $ from account 1011
+Bank: commissions of 2 % were charged, the bank gained 144 $ from account 1012
+Bank: commissions of 2 % were charged, the bank gained 150 $ from account 1013
+Bank: commissions of 2 % were charged, the bank gained 155 $ from account 1014
+Bank: commissions of 2 % were charged, the bank gained 161 $ from account 1015
+Bank: commissions of 2 % were charged, the bank gained 166 $ from account 1016
+Bank: commissions of 2 % were charged, the bank gained 169 $ from account 1017
+Bank: commissions of 2 % were charged, the bank gained 173 $ from account 1018
+Bank: commissions of 2 % were charged, the bank gained 178 $ from account 1019
+Bank: commissions of 2 % were charged, the bank gained 184 $ from account 1020
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 107 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 2 % were charged, the bank gained 113 $ from account 2004
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 2 % were charged, the bank gained 121 $ from account 2006
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 2 % were charged, the bank gained 127 $ from account 2008
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 2 % were charged, the bank gained 134 $ from account 2010
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 2 % were charged, the bank gained 144 $ from account 2012
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 2 % were charged, the bank gained 155 $ from account 2014
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 2 % were charged, the bank gained 166 $ from account 2016
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 2 % were charged, the bank gained 173 $ from account 2018
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2019
+Bank: commissions of 2 % were charged, the bank gained 184 $ from account 2020
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+12: Account 1001 balance is 5206
+Error 23: Your transaction failed - account id 1009 does not exist
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2003 balance is lower than 5000
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+Error 20: Your transaction failed - account id 3002 does not exist
+4: Account 2002 new balance is 5379 after 100 $ was deposited
+Error 19: Your transaction failed - account id 3002 does not exist
+17: Transfer 100 from account 1004 to account 1003 new account balance is 5455 new target account balance is 5588
+11: Account 1001 balance is 5206
+7: Account 2002 new balance is 5279 after 100 $ was withdrew
+Error 22: Your transaction failed – account id 2003 balance is lower than 5000
+16: Transfer 100 from account 1003 to account 1004 new account balance is 5488 new target account balance is 5555
+15: Transfer 100 from account 1004 to account 1003 new account balance is 5455 new target account balance is 5588
+Error 23: Your transaction failed - account id 1009 does not exist
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2003 balance is lower than 5000
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+4: Account 2001 new balance is 100 after 100 $ was deposited
+12: Account 1001 balance is 5206
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 5: Your transaction failed - account id 3002 does not exist
+7: Account 2001 new balance is 0 after 100 $ was withdrew
+15: Transfer 100 from account 1003 to account 1004 new account balance is 5488 new target account balance is 5555
+11: Account 1001 balance is 5206
+Error 22: Your transaction failed – account id 2003 balance is lower than 5000
+Error 19: Your transaction failed - account id 3002 does not exist
+16: Transfer 100 from account 1004 to account 1003 new account balance is 5455 new target account balance is 5588
+17: Transfer 100 from account 1003 to account 1004 new account balance is 5488 new target account balance is 5555
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 8: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+4: Account 2002 new balance is 5379 after 100 $ was deposited
+Error 20: Your transaction failed - account id 3002 does not exist
+12: Account 1001 balance is 5206
+Error 23: Your transaction failed - account id 1010 does not exist
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 10: Your transaction failed – account id 2003 balance is lower than 5000
+Error 5: Your transaction failed - account id 3002 does not exist
+17: Transfer 100 from account 1004 to account 1003 new account balance is 5455 new target account balance is 5588
+11: Account 1001 balance is 5206
+15: Transfer 100 from account 1004 to account 1003 new account balance is 5355 new target account balance is 5688
+16: Transfer 100 from account 1003 to account 1005 new account balance is 5588 new target account balance is 5976
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 2003 balance is lower than 5000
+7: Account 2002 new balance is 5279 after 100 $ was withdrew
+Bank: commissions of 2 % were charged, the bank gained 104 $ from account 1001
+Bank: commissions of 2 % were charged, the bank gained 103 $ from account 1002
+Bank: commissions of 2 % were charged, the bank gained 111 $ from account 1003
+Bank: commissions of 2 % were charged, the bank gained 107 $ from account 1004
+Bank: commissions of 2 % were charged, the bank gained 119 $ from account 1005
+Bank: commissions of 2 % were charged, the bank gained 115 $ from account 1006
+Bank: commissions of 2 % were charged, the bank gained 122 $ from account 1007
+Bank: commissions of 2 % were charged, the bank gained 125 $ from account 1008
+Bank: commissions of 2 % were charged, the bank gained 127 $ from account 1009
+Bank: commissions of 2 % were charged, the bank gained 131 $ from account 1010
+Bank: commissions of 2 % were charged, the bank gained 137 $ from account 1011
+Bank: commissions of 2 % were charged, the bank gained 141 $ from account 1012
+Bank: commissions of 2 % were charged, the bank gained 147 $ from account 1013
+Bank: commissions of 2 % were charged, the bank gained 152 $ from account 1014
+Bank: commissions of 2 % were charged, the bank gained 158 $ from account 1015
+Bank: commissions of 2 % were charged, the bank gained 163 $ from account 1016
+Bank: commissions of 2 % were charged, the bank gained 166 $ from account 1017
+Bank: commissions of 2 % were charged, the bank gained 169 $ from account 1018
+Bank: commissions of 2 % were charged, the bank gained 175 $ from account 1019
+Bank: commissions of 2 % were charged, the bank gained 180 $ from account 1020
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2001
+Bank: commissions of 2 % were charged, the bank gained 105 $ from account 2002
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2003
+Bank: commissions of 2 % were charged, the bank gained 111 $ from account 2004
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2005
+Bank: commissions of 2 % were charged, the bank gained 119 $ from account 2006
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2007
+Bank: commissions of 2 % were charged, the bank gained 125 $ from account 2008
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2009
+Bank: commissions of 2 % were charged, the bank gained 131 $ from account 2010
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2011
+Bank: commissions of 2 % were charged, the bank gained 141 $ from account 2012
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2013
+Bank: commissions of 2 % were charged, the bank gained 152 $ from account 2014
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2015
+Bank: commissions of 2 % were charged, the bank gained 163 $ from account 2016
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2017
+Bank: commissions of 2 % were charged, the bank gained 169 $ from account 2018
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 2019
+Bank: commissions of 2 % were charged, the bank gained 180 $ from account 2020
+Bank: commissions of 2 % were charged, the bank gained 0 $ from account 3001
+Error 9: Your transaction failed - password for account id 2002 is incorrect
+Error 8: Your transaction failed - account id 3002 does not exist
+12: Account 1001 balance is 5102
+Error 13: Your transaction failed - account id 3002 does not exist
+Error 20: Your transaction failed - account id 3002 does not exist
+Error 14: Your transaction failed - password for account id 2002 is incorrect
+4: Account 1001 new balance is 5202 after 100 $ was deposited
+Error 18: Your transaction failed - account id 3002 does not exist
+Error 21: Your transaction failed - password for account id 2002 is incorrect
+Error 5: Your transaction failed - account id 3002 does not exist
+Error 10: Your transaction failed – account id 2003 balance is lower than 5000
+Error 23: Your transaction failed - account id 1010 does not exist
+Error 6: Your transaction failed - password for account id 2002 is incorrect
+17: Transfer 100 from account 1005 to account 1003 new account balance is 5757 new target account balance is 5577
+Error 19: Your transaction failed - account id 3002 does not exist
+Error 22: Your transaction failed – account id 2003 balance is lower than 5000
+11: Account 1001 balance is 5202
+7: Account 1001 new balance is 5102 after 100 $ was withdrew
+16: Transfer 100 from account 1005 to account 1003 new account balance is 5657 new target account balance is 5677
+15: Transfer 100 from account 1004 to account 1003 new account balance is 5148 new target account balance is 5777
