@@ -18,6 +18,7 @@ const int TAX_ROUTINE_SLEEP_TIME_IN_SECONDS = 3, COMMAND_SLEEP_TIME_IN_SECODNS =
 const long MILLISEC_TO_NANOSEC_CONVERTOR = 1000000L;
 const long PRINTOUT_ROUTINE_SLEEP_TIME_IN_MILLISEC = 500L, ATM_ROUTINE_SLEEP_TIME_IN_MILLISEC = 100L;
 std::vector<std::string> split(std::string const& str, const char delim = ' ');
+void milli_sleep(long milliseconds);
 
 class Bank {
 private:

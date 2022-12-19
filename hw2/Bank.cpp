@@ -99,21 +99,22 @@ bool Bank::transferAmount(int account_id, int password, int target_id, int amoun
 
 void Bank::tax(){
 	int percentage = random_percentage();
+	this->readLock();
 	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it){
-		this->writeLock();
 		it->second.writeLock();
 		int gain = it->second.decreaseBalance_tax_nolock(percentage);
 		this->profit += gain;
 		std::cout << "Bank: commissions of " << percentage << " % were charged, the bank gained "<< gain <<" $ from account "<< it->first << std::endl;
 		it->second.writeUnlock();
-		this->writeUnlock();
+		
 	}
+	this->readUnlock();
 }
 
 void Bank::print() {
 	this->readLock();
 	printf("\033[2J");
-	printf("\033[1;H");
+	printf("\033[1;1H");
 	std::cout << "Current Bank Status\n";
 	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it) {
 		std::cout << "Account " << it->first << ": Balance - " << this->getBalance(it->first) << " $, Account Password - " << this->mp_ac[it->first].getPassword() << std::endl;
