@@ -100,24 +100,28 @@ bool Bank::transferAmount(int account_id, int password, int target_id, int amoun
 void Bank::tax(){
 	int percentage = random_percentage();
 	this->readLock();
+	
 	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it){
 		it->second.writeLock();
+		pthread_mutex_lock(&log_mutex);
 		int gain = it->second.decreaseBalance_tax_nolock(percentage);
 		this->profit += gain;
 		std::cout << "Bank: commissions of " << percentage << " % were charged, the bank gained "<< gain <<" $ from account "<< it->first << std::endl;
+		pthread_mutex_unlock(&log_mutex);
 		it->second.writeUnlock();
-		
 	}
 	this->readUnlock();
 }
 
 void Bank::print() {
 	this->readLock();
-	printf("\033[2J");
-	printf("\033[1;1H");
-	std::cout << "Current Bank Status\n";
+	printf("\033[2J\033[1;1HCurrent Bank Status\n");
 	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it) {
+		// it->second.readLock();
+		pthread_mutex_lock(&log_mutex);
 		std::cout << "Account " << it->first << ": Balance - " << this->getBalance(it->first) << " $, Account Password - " << this->mp_ac[it->first].getPassword() << std::endl;
+		pthread_mutex_unlock(&log_mutex);
+		// it->second.readLock();
 	}
 	std::cout << "The Bank has " << this->profit << " $\n";
 	this->readUnlock();

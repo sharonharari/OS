@@ -25,6 +25,7 @@ int Account::getBalance() {
 	this->readUnlock();
 	return currentBalance;
 }
+
 int Account::getPassword() const {
 	return this->password;
 }
