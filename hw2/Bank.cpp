@@ -92,6 +92,7 @@ bool Bank::transferAmount(int account_id, int password, int target_id, int amoun
 		return false;
 	}
 	*newTargetBalance = this->mp_ac[target_id].increaseBalance_nolock(amount);
+	
 	this->mp_ac[account_id].writeUnlock();
 	this->mp_ac[target_id].writeUnlock();
 	return true;
@@ -115,7 +116,9 @@ void Bank::tax(){
 
 void Bank::print() {
 	this->readLock();
+	pthread_mutex_lock(&log_mutex);
 	printf("\033[2J\033[1;1HCurrent Bank Status\n");
+	pthread_mutex_unlock(&log_mutex);
 	for (auto it = this->mp_ac.begin(); it != this->mp_ac.end(); ++it) {
 		// it->second.readLock();
 		pthread_mutex_lock(&log_mutex);
