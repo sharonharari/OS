@@ -83,8 +83,14 @@ int Bank::getBalance(int account_id){
 }
 
 bool Bank::transferAmount(int account_id, int password, int target_id, int amount, int *newAccountBalance, int *newTargetBalance){ 
-	this->mp_ac[account_id].writeLock();
-	this->mp_ac[target_id].writeLock();
+	if (account_id < target_id) {
+		this->mp_ac[account_id].writeLock();
+		this->mp_ac[target_id].writeLock();
+	}
+	else {
+		this->mp_ac[target_id].writeLock();
+		this->mp_ac[account_id].writeLock();
+	}
 	*newAccountBalance = this->mp_ac[account_id].decreaseBalance_nolock(amount);
 	if((*newAccountBalance) == -1){
 		this->mp_ac[account_id].writeUnlock();
@@ -92,9 +98,14 @@ bool Bank::transferAmount(int account_id, int password, int target_id, int amoun
 		return false;
 	}
 	*newTargetBalance = this->mp_ac[target_id].increaseBalance_nolock(amount);
-	
-	this->mp_ac[account_id].writeUnlock();
-	this->mp_ac[target_id].writeUnlock();
+	if (account_id < target_id) {
+		this->mp_ac[target_id].writeUnlock();
+		this->mp_ac[account_id].writeUnlock();
+	}
+	else {
+		this->mp_ac[account_id].writeUnlock();
+		this->mp_ac[target_id].writeUnlock();
+	}
 	return true;
 }
 
