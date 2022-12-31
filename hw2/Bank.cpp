@@ -57,14 +57,14 @@ void Bank::openAccount(int atm_id, int account_id, std::string password, int bal
 	this->writeLock();
 	if (this->isAccountExist(account_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account with the same id exists" << account_id << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account with the same id exists" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else {
 		Account newAccount(balance, password);
 		this->mp_ac.emplace(account_id, newAccount).second;
 		pthread_mutex_lock(&log_mutex);
-		std::cout << atm_id << ": New account id is " << account_id << " with password " << password << " and initial balance " << balance << std::endl;
+		log_output_file << atm_id << ": New account id is " << account_id << " with password " << password << " and initial balance " << balance << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
@@ -75,19 +75,19 @@ void Bank::closeAccount(int atm_id, int account_id, std::string password) {
 	this->writeLock();
 	if (!this->isAccountExist(account_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else if (!this->passwordCompare(account_id, password)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else {
 		int balance = this->mp_ac[account_id].getBalance_wo_password_check();
 		this->mp_ac.erase(account_id);
 		pthread_mutex_lock(&log_mutex);
-		std::cout << atm_id << ": Account " << account_id << " is now closed. Balance was" << balance << std::endl;
+		log_output_file << atm_id << ": Account " << account_id << " is now closed. Balance was" << balance << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
@@ -106,7 +106,7 @@ void Bank::depositIntoAccount(int atm_id,int account_id, std::string password, i
 	this->readLock();
 	if (!this->isAccountExist(account_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else {
@@ -119,7 +119,7 @@ void Bank::withdrawalFromAccount(int atm_id, int account_id, std::string passwor
 	this->readLock();
 	if (!this->isAccountExist(account_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else {
@@ -133,7 +133,7 @@ void Bank::getBalance(int atm_id, int account_id, std::string password) {
 	this->readLock();
 	if (!this->isAccountExist(account_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else {
@@ -147,17 +147,17 @@ void Bank::transferAmount(int atm_id, int account_id,std::string password, int t
 	this->readLock();
 	if (!this->isAccountExist(account_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " does not exist" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else if (!this->isAccountExist(target_id)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << target_id << " does not exist" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << target_id << " does not exist" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else if (!this->passwordCompare(account_id, password)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 	}
 	else {
@@ -172,13 +172,13 @@ void Bank::transferAmount(int atm_id, int account_id,std::string password, int t
 		int account_new_balance = this->mp_ac[account_id].decreaseBalance_nolock(amount);
 		if (account_new_balance == -1) {
 			pthread_mutex_lock(&log_mutex);
-			std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " balance is lower than " << amount << std::endl;
+			log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " balance is lower than " << amount << std::endl;
 			pthread_mutex_unlock(&log_mutex);
 		}
 		else {
 			int target_new_balance = this->mp_ac[target_id].increaseBalance_nolock(amount);
 			pthread_mutex_lock(&log_mutex);
-			std::cout << atm_id << ": Transfer " << amount << " from account " << account_id << " to account " << target_id <<
+			log_output_file << atm_id << ": Transfer " << amount << " from account " << account_id << " to account " << target_id <<
 				" new account balance is " << account_new_balance << " new target account balance is " << target_new_balance << std::endl;
 			pthread_mutex_unlock(&log_mutex);
 		}
@@ -203,7 +203,7 @@ void Bank::tax(){
 		int gain = it->second.decreaseBalance_tax_nolock(percentage);
 		this->profit += gain;
 		pthread_mutex_lock(&log_mutex);
-		std::cout << "Bank: commissions of " << percentage << " % were charged, the bank gained "<< gain <<" $ from account "<< it->first << std::endl;
+		log_output_file << "Bank: commissions of " << percentage << " % were charged, the bank gained "<< gain <<" $ from account "<< it->first << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 		it->second.writeUnlock();
 	}
@@ -222,7 +222,7 @@ void Bank::print() {
 		pthread_mutex_lock(&log_mutex);
 		std::cout << "Account " << it->first << ": Balance - " << balance << " $, Account Password - " << password << std::endl;
 		pthread_mutex_unlock(&log_mutex);
-		it->second.readLock();
+		it->second.readUnlock();
 	}
 	std::cout << "The Bank has " << this->profit << " $\n";
 	this->readUnlock();

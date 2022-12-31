@@ -21,13 +21,13 @@ Account::~Account() {
 void Account::getBalance(int atm_id, int account_id, std::string password) {
 	if (!this->passwordCompare(password)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 		return;
 	}
 	this->readLock();
 	pthread_mutex_lock(&log_mutex);
-	std::cout << atm_id << ": Account " << account_id << " balance is " << this->balance << std::endl;
+	log_output_file << atm_id << ": Account " << account_id << " balance is " << this->balance << std::endl;
 	pthread_mutex_unlock(&log_mutex);
 	this->readUnlock();
 }
@@ -58,7 +58,7 @@ bool Account::passwordCompare(std::string password) const {
 void Account::deposit(int atm_id, int account_id, std::string password, int amount) {
 	if (!this->passwordCompare(password)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 		return;
 	}
@@ -66,7 +66,7 @@ void Account::deposit(int atm_id, int account_id, std::string password, int amou
 	int new_balance = this->balance + amount;
 	this->balance = new_balance;
 	pthread_mutex_lock(&log_mutex);
-	std::cout << atm_id << ": Account " << account_id << " new balance is " << new_balance << " after " << amount << " $ was deposited" << std::endl;
+	log_output_file << atm_id << ": Account " << account_id << " new balance is " << new_balance << " after " << amount << " $ was deposited" << std::endl;
 	pthread_mutex_unlock(&log_mutex);
 	this->writeUnlock();
 }
@@ -84,14 +84,14 @@ void Account::deposit(int atm_id, int account_id, std::string password, int amou
 void Account::withdrawal(int atm_id, int account_id, std::string password, int amount) {
 	if (!this->passwordCompare(password)) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - password for account id " << account_id << " is incorrect" << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 		return;
 	}
 	this->writeLock();
 	if (this->balance < amount) {
 		pthread_mutex_lock(&log_mutex);
-		std::cerr << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " balance is lower than " << amount << std::endl;
+		log_output_file << "Error " << atm_id << ": Your transaction failed - account id " << account_id << " balance is lower than " << amount << std::endl;
 		pthread_mutex_unlock(&log_mutex);
 		this->writeUnlock();
 		return;
@@ -99,7 +99,7 @@ void Account::withdrawal(int atm_id, int account_id, std::string password, int a
 	int new_balance = this->balance - amount;
 	this->balance = new_balance;
 	pthread_mutex_lock(&log_mutex);
-	std::cout << atm_id << ": Account " << account_id << " new balance is " << new_balance << " after " << amount << " $ was withdrew" << std::endl;
+	log_output_file << atm_id << ": Account " << account_id << " new balance is " << new_balance << " after " << amount << " $ was withdrew" << std::endl;
 	pthread_mutex_unlock(&log_mutex);
 	this->writeUnlock();
 }

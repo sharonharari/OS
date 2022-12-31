@@ -2,6 +2,7 @@
 #define ACCOUNT_H
 #include <pthread.h>
 #include <iostream>
+#include <fstream>
 #include <cstdint>
 #include <unistd.h>
 #include <cmath>
@@ -9,6 +10,7 @@
 
 const int INITIAL_NUMBER_OF_READERS = 0;
 extern pthread_mutex_t log_mutex;
+extern std::ofstream log_output_file;
 class Account {
 private:
 	int balance;

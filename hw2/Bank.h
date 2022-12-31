@@ -9,6 +9,7 @@
 #include <random>
 #include "Account.h"
 extern pthread_mutex_t log_mutex;
+extern std::ofstream log_output_file;
 const int INITIAL_BANK_PROFIT = 0, MINIMUM_NUM_VALID_ARGC = 2;
 const int TAX_ROUTINE_SLEEP_TIME_IN_SECONDS = 3, COMMAND_SLEEP_TIME_IN_SECODNS = 1;
 const long MILLISEC_TO_NANOSEC_CONVERTOR = 1000000L;

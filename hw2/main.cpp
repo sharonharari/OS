@@ -25,7 +25,7 @@ public:
 std::queue<std::vector<std::string>>* valid_args(int argc, char* argv[]);
 
 pthread_mutex_t log_mutex;
-
+std::ofstream log_output_file("log.txt", std::ofstream::out);
 int main(int argc, char* argv[]) {
     pthread_mutex_init(&log_mutex, NULL);
 	std::queue<std::vector<std::string>>* input_files = valid_args(argc, argv);
@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
     delete[] input_files;
     delete[] atm_inputs;
     pthread_mutex_destroy(&log_mutex);
+    log_output_file.close();
     return 0;
 }
 
