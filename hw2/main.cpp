@@ -97,160 +97,32 @@ void *atm(void *arg){
         milli_sleep(ATM_ROUTINE_SLEEP_TIME_IN_MILLISEC);
         std::vector<std::string> cmd = input.file.front();
         input.file.pop();
-        // Assuming cmd entered is valid
+        int atm_id = input.id;
+        int account_id = std::stoi(cmd[1]);
+        std::string password(cmd[2]);
         if(cmd[0] == "O"){ // Open account
-            bank.writeLock();
-            if(bank.isAccountExist(std::stoi(cmd[1]))){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id <<": Your transaction failed - account with the same id exists" << cmd[1] << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else{
-                bank.openAccount(std::stoi(cmd[1]),std::stoi(cmd[3]),std::stoi(cmd[2]));
-                pthread_mutex_lock(&log_mutex);
-                std::cout <<input.id<<": New account id is "<<cmd[1] <<" with password "<< cmd[2] <<" and initial balance "<< cmd[3] <<std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            bank.writeUnlock();
+            int initial_amount = std::stoi(cmd[3]);
+            bank.openAccount(atm_id, account_id, password,initial_amount);
         }
         else if(cmd[0] == "D"){ // Deposit
-            bank.readLock();
-            int account_id = std::stoi(cmd[1]);
-            int password = std::stoi(cmd[2]);
             int amount = std::stoi(cmd[3]);
-            int new_balance;
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            if(!bank.isAccountExist(account_id)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.passwordCompare(account_id,password)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - password for account id "<< account_id <<" is incorrect" << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else {
-                pthread_mutex_lock(&log_mutex);
-                new_balance =  bank.depositIntoAccount(account_id,password,amount);
-                std::cout << input.id << ": Account " <<account_id <<" new balance is "<< new_balance <<" after "<< amount <<" $ was deposited" << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            bank.readUnlock();
+            bank.depositIntoAccount(atm_id,account_id, password, amount);
         }
         else if(cmd[0] == "W"){ // Withdrawl
-            bank.readLock();
-            int account_id = std::stoi(cmd[1]);
-            int password = std::stoi(cmd[2]);
             int amount = std::stoi(cmd[3]);
-            int new_balance;
-            if(!bank.isAccountExist(account_id)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.passwordCompare(account_id,password)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - password for account id "<< account_id <<" is incorrect" << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else {
-                new_balance =  bank.withdrawalFromAccount(account_id,password,amount);
-                if (new_balance == -1){
-                    pthread_mutex_lock(&log_mutex);
-                    std::cerr << "Error "<< input.id <<": Your transaction failed - account id "<< account_id <<" balance is lower than "<< amount << std::endl;
-                    pthread_mutex_unlock(&log_mutex);
-                }
-                else{
-                    pthread_mutex_lock(&log_mutex);
-                    std::cout << input.id << ": Account " <<account_id <<" new balance is "<< new_balance <<" after "<< amount <<" $ was withdrew" << std::endl;
-                    pthread_mutex_unlock(&log_mutex);
-                }
-            }
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            bank.readUnlock();
+            bank.withdrawalFromAccount(atm_id, account_id, password, amount);
+
         }
         else if(cmd[0] == "B"){ // get Balance
-            bank.readLock();
-            int account_id = std::stoi(cmd[1]);
-            int password = std::stoi(cmd[2]);
-            int balance;
-            if(!bank.isAccountExist(account_id)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.passwordCompare(account_id,password)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - password for account id "<< account_id <<" is incorrect" << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else{
-                pthread_mutex_lock(&log_mutex);
-                balance = bank.getBalance(account_id);
-                std::cout << input.id << ": Account " << account_id << " balance is " << balance << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            bank.readUnlock();
+            bank.getBalance(atm_id, account_id, password);
         }
         else if(cmd[0] == "Q"){ // Close account
-            bank.writeLock();
-            int account_id = std::stoi(cmd[1]);
-            int password = std::stoi(cmd[2]);
-            if(!bank.isAccountExist(account_id)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.passwordCompare(account_id,password)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - password for account id "<< account_id <<" is incorrect" << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else{
-                bank.closeAccount(account_id,password);
-            }
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            bank.writeUnlock();
+            bank.closeAccount(atm_id, account_id, password);
         }
-        else if(cmd[0] == "T"){ // Transfer
-            bank.readLock();
-            int account_id = std::stoi(cmd[1]);
-            int password = std::stoi(cmd[2]);
+        else if (cmd[0] == "T") { // Transfer
             int target_id = std::stoi(cmd[3]);
             int amount = std::stoi(cmd[4]);
-            int account_new_balance, target_new_balance;
-            if(!bank.isAccountExist(account_id)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" does not exist"<< std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.isAccountExist(target_id)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< target_id <<" does not exist"<< std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.passwordCompare(account_id,password)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - password for account id "<< account_id <<" is incorrect" << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else if(!bank.transferAmount(account_id,password,target_id,amount,&account_new_balance, &target_new_balance)){
-                pthread_mutex_lock(&log_mutex);
-                std::cerr << "Error "<< input.id << ": Your transaction failed - account id "<< account_id <<" balance is lower than "<< amount << std::endl;
-                pthread_mutex_unlock(&log_mutex);
-            }
-            else{
-                pthread_mutex_lock(&log_mutex);
-                std::cout << input.id << ": Transfer "<< amount << " from account "<< account_id << " to account "<< target_id <<
-                 " new account balance is " << account_new_balance<< " new target account balance is "<< target_new_balance << std::endl;
-                 pthread_mutex_unlock(&log_mutex);
-            }
-            sleep(COMMAND_SLEEP_TIME_IN_SECODNS);
-            bank.readUnlock();
+            bank.transferAmount(atm_id, account_id, password, target_id, amount);
         }
         else {
             // error - shouldn't get here

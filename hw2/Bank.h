@@ -1,11 +1,7 @@
 #ifndef BANK_H
 #define BANK_H
 #include <map>
-#include <pthread.h>
-#include <iostream> 
-#include <fstream> 
-#include <string>
-#include <cstdint>
+#include <fstream>
 #include <unistd.h>
 #include <queue>
 #include <sstream>
@@ -30,19 +26,19 @@ private:
 public:
 	Bank();
 	~Bank();
-	bool passwordCompare(int account_id, int password);
+	bool passwordCompare(int account_id, std::string password);
 	bool isAccountExist(int account_id);
 	void readLock();
 	void readUnlock();
 	void writeLock();
 	void writeUnlock();
-	bool openAccount(int account_id,int balance, int password);
-	void closeAccount(int account_id, int password);
-	int depositIntoAccount(int account_id, int password, int amount);
-	int withdrawalFromAccount(int account_id, int password, int amount);
-	int getBalance(int account_id);
-	bool transferAmount(int account_id, int password, int target_id, int amount, int *newAccountBalance, int *newTargetBalance);
+	void openAccount(int atm_id, int account_id, std::string password, int balance);
+	void closeAccount(int atm_id, int account_id, std::string password);
 	int getProfit();
+	void depositIntoAccount(int atm_id, int account_id, std::string password, int amount);
+	void withdrawalFromAccount(int atm_id, int account_id, std::string password, int amount);
+	void getBalance(int atm_id, int account_id, std::string password);
+	void transferAmount(int atm_id, int account_id, std::string password, int target_id, int amount);
 	void tax();
 	void print();
 };
