@@ -1,9 +1,8 @@
 #include "adt.h"
 /*
 *  Missions left:
-*	1)Error handling and full implanations. (Error counter for etc.)
-*	2) Timing handling (select())
-*	3)Recheck requirements been achieved.
+*	1) Failure counter && timing handling(Select)
+*	2) Recheck requirements been achieved.
 */
 
 bool is_number(std::string& str)
@@ -34,101 +33,183 @@ bool is_valid_args(int argc, char* argv[], uint16_t(&args)[3]) {
 }
 
 
-
 int main(int argc, char* argv[]) {
+	int failure_counter = 0;
 	uint16_t args[3];
+	char ackBuffer[4];
 	if (!is_valid_args(argc,argv,args)) {
 		std::cerr << "TTFTP_ERROR: illegal arguments" << std::endl;
 		exit(1);
 	}
 	uint16_t port = args[0], timeout = args[1], max_num_of_resends = args[2];
+	struct timeval timeout_struct;
+	timeout_struct.tv_sec = (int)timeout;
+	timeout_struct.tv_usec = 0;
 	int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0) {
 		std::perror("TTFTP_ERROR:");
 		exit(1);
 	}
-	struct sockaddr_in echoServAddr;
-	std::memset(&echoServAddr, 0, sizeof(echoServAddr));
-	if (!echoServAddr) {
-		std::perror("TTFTP_ERROR:");//is syscall?
-		exit(1);
-	}
+	fd_set rfds;
+	FD_ZERO(&rfds);
+	FD_SET(sock, &rfds);
+	struct sockaddr_in echoServAddr = {0};
+	// memset(&echoServAddr, 0, sizeof(echoServAddr));
+	// if (!(&echoServAddr)) {
+	// 	std::perror("TTFTP_ERROR:");//is syscall?
+	// 	exit(1);
+	// }
 	echoServAddr.sin_family = AF_INET;
 	echoServAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	echoServ.sin_port = htons(port);
+	echoServAddr.sin_port = htons(port);
 	if (bind(sock, (struct sockaddr*)&echoServAddr, sizeof(echoServAddr))) {
 		std::perror("TTFTP_ERROR:");
 		exit(1);
 	}
+
+
+
+
+
 	while(true) {
+		// waiting for WRQ
+		failure_counter = 0;
 		char buffer[MAX_PACKET_SIZE] = { 0 };
 		struct sockaddr_in ClientAddr = { 0 };
 		socklen_t ClientAddrLen;
-		ssize_t recvMsgSize = recvfrom(sock, (void*)buffer, ECHOMAX, 0,
+		
+		ssize_t recvMsgSize = recvfrom(sock, (void*)buffer, MAX_PACKET_SIZE, 0,
 			(struct sockaddr*)&ClientAddr, &ClientAddrLen);
 		if (recvMsgSize < 0) {
 			std::perror("TTFTP_ERROR:");
 			exit(1);
 		}
-		size_t recvMsgSize_positive = (size_t)recvMsgSize;
-		char opcode_network[2] = { buffer[0],buffer[1] };
-		uint16_t opcode = ntohs((uint16_t)opcode_network);
-		if (opcode == WRQ_OPCODE) {
+		// size_t recvMsgSize_positive_wrq = (size_t)recvMsgSize;
+		uint16_t opcode_network_wrq = ( buffer[0] << 8) + buffer[1];
+		uint16_t opcode_wrq = ntohs(opcode_network_wrq);
+		if (opcode_wrq == WRQ_OPCODE) {
 			std::string filename(buffer + 2);
 			std::string transmission_mode(buffer + 2 + filename.size() + 1);
 			std::ifstream file(filename);
 			if (file.is_open())//file exist and can be read from
 			{
 				//Error file exists
+				error_handling(sock, ClientAddr, (uint16_t)6);
 				file.close();
+				// if(std::remove(filename)){
+				// 	// Error deleting the file!
+				// 	std::perror("TTFTP_ERROR:");
+				// 	exit(1);
+				// }
 			}
 			else {
 				std::ofstream output_file(filename, std::ofstream::out);
-				char ackBuffer[4] = { 0 };
-				create_ack(&ackBuffer);
+				ackBuffer[4] = { 0 };
+				create_ack(ackBuffer);
 				if (sendto(sock, (void*)ackBuffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
 					//error("sendto() failed");
 					//syscall
+					std::perror("TTFTP_ERROR:");
+					output_file.close();
+					if(std::remove(const_cast<char*>(filename.c_str()))){
+						// Error deleting the file!
+						std::perror("TTFTP_ERROR:");
+					}
+					exit(1);
 				}
 				bool is_finished = false;
 				uint16_t wanted_block_number = (uint16_t)0;
+				// reading data in while loop
 				while (!is_finished) {
 					struct sockaddr_in SessionAddr = { 0 };
 					socklen_t SessionAddrLen;
-					ssize_t recvMsgSize = recvfrom(sock, (void*)buffer, ECHOMAX, 0,
-						(struct sockaddr*)&SessionAddr, &SessionAddrLen);
-					if (recvMsgSize < 0) {
+					int retval = select(1, &rfds, NULL, NULL, &timeout_struct);
+					if (retval == -1){
+						// select error
 						std::perror("TTFTP_ERROR:");
 						exit(1);
 					}
+					else if (retval){
+						ssize_t recvMsgSize = recvfrom(sock, (void*)buffer, MAX_PACKET_SIZE, 0,
+						(struct sockaddr*)&SessionAddr, &SessionAddrLen);
+						if (recvMsgSize < 0) {
+							std::perror("TTFTP_ERROR:");
+							output_file.close();
+							if(std::remove(const_cast<char*>(filename.c_str()))){
+								// Error deleting the file!
+								std::perror("TTFTP_ERROR:");
+							}
+							exit(1);
+						}
+					}
+					else {
+						// timeout!!
+						failure_counter++;
+					}
+					
 					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr)){
 						//Error recieved a packet from a different endpoint than the one in session.
+						error_handling(sock, ClientAddr, (uint16_t)4); // ClientAddr or SessionAddr?????
+						output_file.close();
+						if(std::remove(const_cast<char*>(filename.c_str()))){
+							// Error deleting the file!
+							std::perror("TTFTP_ERROR:");
+							exit(1);
+						}
 						continue;
 					}
-					size_t recvMsgSize_positive = (size_t)recvMsgSize;
-					char opcode_network[2] = { buffer[0],buffer[1] };
-					uint16_t opcode = ntohs((uint16_t)opcode_network);
-					if (opcode != DATA_OPCODE) {
-						//Error not a data packet
+					size_t recvMsgSize_positive_data = (size_t)recvMsgSize;
+					uint16_t opcode_network_data = ( buffer[0] << 8) + buffer[1];
+					uint16_t opcode_data = ntohs((uint16_t)opcode_network_data);
+					if (opcode_data != DATA_OPCODE) {
+						//Error not a data packet - must be WRQ request from the same client!
+						error_handling(sock, ClientAddr, (uint16_t)4);
+						output_file.close();
+						if(std::remove(const_cast<char*>(filename.c_str()))){
+							// Error deleting the file!
+							std::perror("TTFTP_ERROR:");
+							exit(1);
+						}
 						continue;
 					}
 					else {
-						Data data_block(buffer);
-						if (data_block.get_block_number() != wanted_block_number + 1) {
+						Data data_block(buffer, recvMsgSize_positive_data);
+						if (data_block.block_number != wanted_block_number + 1) {
 							//Error Bad block number
+							error_handling(sock, ClientAddr, (uint16_t)0);
+							output_file.close();
+							if(std::remove(const_cast<char*>(filename.c_str()))){
+								// Error deleting the file!
+								std::perror("TTFTP_ERROR:");
+								exit(1);
+							}
 							continue;
 						}
 						else {
-							wanted_block_number = data_block.get_block_number();
-							output_file << data_block.get_data;
-							char ackBuffer[4] = { 0 };
-							create_ack(&ackBuffer, wanted_block_number);
+							wanted_block_number = data_block.block_number;
+							output_file << data_block.data;
+							ackBuffer[4] = { 0 };
+							create_ack(ackBuffer, wanted_block_number);
 							if (sendto(sock, (void*)ackBuffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
 								//error("sendto() failed");
 								//syscall
+								//check if necessary:
+								output_file.close();
+								std::perror("TTFTP_ERROR:");
+
+								if(std::remove(const_cast<char*>(filename.c_str()))){
+									// Error deleting the file!
+									std::perror("TTFTP_ERROR:");
+								}
+								exit(1);
 							}
-							if (data_block.get_data_size < MAX_DATA_SIZE) {
+							
+							if (data_block.data_size < MAX_DATA_SIZE) {
 								is_finished = true;
+							}
+							else{
+								int select(int nfds, fd_set *readfds, fd_set *writefds,
+								fd_set *exceptfds, const struct timeval *timeout);
 							}
 						}
 					}
@@ -140,7 +221,8 @@ int main(int argc, char* argv[]) {
 		//if (sendto(sock, echoBuffer, recvMsgSize, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != recvMsgSize)
 		//	error("sendto() failed");
 		else {
-			//recived an non WRQ packet first. //Error handling?
+			//recived an non WRQ packet first. Error handling
+			error_handling(sock, ClientAddr, (uint16_t)7);
 		}
 
 	}
