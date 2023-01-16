@@ -96,6 +96,7 @@ int main(int argc, char* argv[]) {
 				//Error file exists
 				error_handling(sock, ClientAddr, (uint16_t)6);
 				file.close();
+				// need to check:
 				// if(std::remove(filename)){
 				// 	// Error deleting the file!
 				// 	std::perror("TTFTP_ERROR:");
@@ -119,7 +120,8 @@ int main(int argc, char* argv[]) {
 				}
 				bool is_finished = false;
 				uint16_t wanted_block_number = (uint16_t)0;
-				// reading data in while loop
+
+				// Reading data in while loop
 				while (!is_finished) {
 					struct sockaddr_in SessionAddr = { 0 };
 					socklen_t SessionAddrLen;
@@ -127,6 +129,11 @@ int main(int argc, char* argv[]) {
 					if (retval == -1){
 						// select error
 						std::perror("TTFTP_ERROR:");
+						output_file.close();
+						if(std::remove(const_cast<char*>(filename.c_str()))){
+							// Error deleting the file!
+							std::perror("TTFTP_ERROR:");
+						}
 						exit(1);
 					}
 					else if (retval){
@@ -146,7 +153,7 @@ int main(int argc, char* argv[]) {
 						// timeout!!
 						failure_counter++;
 					}
-					
+					// Continue implement Failure counter handling!!
 					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr)){
 						//Error recieved a packet from a different endpoint than the one in session.
 						error_handling(sock, ClientAddr, (uint16_t)4); // ClientAddr or SessionAddr?????
@@ -192,18 +199,15 @@ int main(int argc, char* argv[]) {
 							create_ack(ackBuffer, wanted_block_number);
 							if (sendto(sock, (void*)ackBuffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
 								//error("sendto() failed");
-								//syscall
 								//check if necessary:
 								output_file.close();
 								std::perror("TTFTP_ERROR:");
-
 								if(std::remove(const_cast<char*>(filename.c_str()))){
 									// Error deleting the file!
 									std::perror("TTFTP_ERROR:");
 								}
 								exit(1);
 							}
-							
 							if (data_block.data_size < MAX_DATA_SIZE) {
 								is_finished = true;
 							}
