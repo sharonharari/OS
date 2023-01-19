@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 	timeout_struct.tv_usec = 0;
 	int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0) {
-		std::perror("TTFTP_ERROR:");
+		std::perror("TTFTP_ERROR");
 		exit(1);
 	}
 	fd_set rfds;
@@ -56,14 +56,14 @@ int main(int argc, char* argv[]) {
 	struct sockaddr_in echoServAddr = {0};
 	// memset(&echoServAddr, 0, sizeof(echoServAddr));
 	// if (!(&echoServAddr)) {
-	// 	std::perror("TTFTP_ERROR:");//is syscall?
+	// 	std::perror("TTFTP_ERROR");//is syscall?
 	// 	exit(1);
 	// }
 	echoServAddr.sin_family = AF_INET;
 	echoServAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	echoServAddr.sin_port = htons(port);
 	if (bind(sock, (struct sockaddr*)&echoServAddr, sizeof(echoServAddr))) {
-		std::perror("TTFTP_ERROR:");
+		std::perror("TTFTP_ERROR");
 		exit(1);
 	}
 
@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
 		ssize_t recvMsgSize = recvfrom(sock, (void*)buffer, MAX_PACKET_SIZE, 0,
 			(struct sockaddr*)&ClientAddr, &ClientAddrLen);
 		if (recvMsgSize < 0) {
-			std::perror("TTFTP_ERROR:");
+			std::perror("TTFTP_ERROR");
 			exit(1);
 		}
 		// size_t recvMsgSize_positive_wrq = (size_t)recvMsgSize;
@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
 				// need to check:
 				// if(std::remove(filename)){
 				// 	// Error deleting the file!
-				// 	std::perror("TTFTP_ERROR:");
+				// 	std::perror("TTFTP_ERROR");
 				// 	exit(1);
 				// }
 			}
@@ -110,11 +110,11 @@ int main(int argc, char* argv[]) {
 				if (sendto(sock, (void*)ackBuffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
 					//error("sendto() failed");
 					//syscall
-					std::perror("TTFTP_ERROR:");
+					std::perror("TTFTP_ERROR");
 					output_file.close();
 					if(std::remove(const_cast<char*>(filename.c_str()))){
 						// Error deleting the file!
-						std::perror("TTFTP_ERROR:");
+						std::perror("TTFTP_ERROR");
 					}
 					exit(1);
 				}
@@ -128,11 +128,11 @@ int main(int argc, char* argv[]) {
 					int retval = select(1, &rfds, NULL, NULL, &timeout_struct);
 					if (retval == -1){
 						// select error
-						std::perror("TTFTP_ERROR:");
+						std::perror("TTFTP_ERROR");
 						output_file.close();
 						if(std::remove(const_cast<char*>(filename.c_str()))){
 							// Error deleting the file!
-							std::perror("TTFTP_ERROR:");
+							std::perror("TTFTP_ERROR");
 						}
 						exit(1);
 					}
@@ -140,11 +140,11 @@ int main(int argc, char* argv[]) {
 						ssize_t recvMsgSize = recvfrom(sock, (void*)buffer, MAX_PACKET_SIZE, 0,
 						(struct sockaddr*)&SessionAddr, &SessionAddrLen);
 						if (recvMsgSize < 0) {
-							std::perror("TTFTP_ERROR:");
+							std::perror("TTFTP_ERROR");
 							output_file.close();
 							if(std::remove(const_cast<char*>(filename.c_str()))){
 								// Error deleting the file!
-								std::perror("TTFTP_ERROR:");
+								std::perror("TTFTP_ERROR");
 							}
 							exit(1);
 						}
@@ -154,13 +154,13 @@ int main(int argc, char* argv[]) {
 						failure_counter++;
 					}
 					// Continue implement Failure counter handling!!
-					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr)){
+					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr)){//make sure that you match IP and port!
 						//Error recieved a packet from a different endpoint than the one in session.
 						error_handling(sock, ClientAddr, (uint16_t)4); // ClientAddr or SessionAddr?????
 						output_file.close();
 						if(std::remove(const_cast<char*>(filename.c_str()))){
 							// Error deleting the file!
-							std::perror("TTFTP_ERROR:");
+							std::perror("TTFTP_ERROR");
 							exit(1);
 						}
 						continue;
@@ -174,7 +174,7 @@ int main(int argc, char* argv[]) {
 						output_file.close();
 						if(std::remove(const_cast<char*>(filename.c_str()))){
 							// Error deleting the file!
-							std::perror("TTFTP_ERROR:");
+							std::perror("TTFTP_ERROR");
 							exit(1);
 						}
 						continue;
@@ -187,7 +187,7 @@ int main(int argc, char* argv[]) {
 							output_file.close();
 							if(std::remove(const_cast<char*>(filename.c_str()))){
 								// Error deleting the file!
-								std::perror("TTFTP_ERROR:");
+								std::perror("TTFTP_ERROR");
 								exit(1);
 							}
 							continue;
@@ -201,10 +201,10 @@ int main(int argc, char* argv[]) {
 								//error("sendto() failed");
 								//check if necessary:
 								output_file.close();
-								std::perror("TTFTP_ERROR:");
+								std::perror("TTFTP_ERROR");
 								if(std::remove(const_cast<char*>(filename.c_str()))){
 									// Error deleting the file!
-									std::perror("TTFTP_ERROR:");
+									std::perror("TTFTP_ERROR");
 								}
 								exit(1);
 							}

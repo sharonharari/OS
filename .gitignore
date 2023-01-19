@@ -2,3 +2,6 @@
 *.o
 hw1/smash
 hw1/test
+*.zip
+hw2/final/check_submission.py
+hw2/README
