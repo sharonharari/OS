@@ -133,6 +133,7 @@ int main(int argc, char* argv[]) {
 				}
 				std::cout << "Sent WRQ ack" << std::endl;
 				bool is_finished = false;
+				bool is_failed_session = false;
 				uint16_t wanted_block_number = (uint16_t)0;
 
 
@@ -182,7 +183,9 @@ int main(int argc, char* argv[]) {
 							if(std::remove(const_cast<char*>(filename.c_str()))){
 								// Error deleting the file!
 								std::perror("TTFTP_ERROR");
+								exit(1);
 							}
+							is_failed_session = true;
 							break;
 						}
 						// ackBuffer[4] = { 0 };
@@ -220,7 +223,8 @@ int main(int argc, char* argv[]) {
 							std::perror("TTFTP_ERROR");
 							exit(1);
 						}
-						continue;
+						is_failed_session = true;
+						break;
 					}
 					std::cout << "recvMsgSize = "<< recvMsgSize << std::endl;
 					uint16_t opcode_network_data = ( buffer[1] << 8) + buffer[0];
@@ -236,7 +240,8 @@ int main(int argc, char* argv[]) {
 							std::perror("TTFTP_ERROR");
 							exit(1);
 						}
-						continue;
+						is_failed_session = true;
+						break;
 					}
 					else {
 						Data data_block(buffer, recvMsgSize);
@@ -250,7 +255,8 @@ int main(int argc, char* argv[]) {
 								std::perror("TTFTP_ERROR");
 								exit(1);
 							}
-							continue;
+							is_failed_session = true;
+							break;
 						}
 						else {
 							wanted_block_number = data_block.block_number;
@@ -275,7 +281,7 @@ int main(int argc, char* argv[]) {
 						}
 					}
 				}
-				if(failure_counter <= max_num_of_resends){ // not a failure (incase of a failure the file was closed already)
+				if(!is_failed_session){ // not a failure (incase of a failure the file was closed already)
 					output_file.close();
 				}
 			}

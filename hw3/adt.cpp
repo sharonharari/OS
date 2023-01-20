@@ -3,10 +3,11 @@
 
 Data::Data(char raw_packet[MAX_PACKET_SIZE], int raw_size) {
 	uint16_t block_number_network = ( raw_packet[3] << 8) + raw_packet[2];
+	std::cout << "raw_packet[3]: " << std::hex << raw_packet[3] << " , raw_packet[2]: " << std::hex << raw_packet[2] << std::endl;
+	std::cout << "block_number_network = " << block_number_network << std::endl;
 	block_number = ntohs(block_number_network);
-	std::cout << "raw_size in Data = "<< raw_size << std::endl;
+	std::cout << "block_number = " << block_number << std::endl;
 	data_size = raw_size - (int)4;
-	std::cout << "data_size in Data = "<< data_size << std::endl;
 	std::memcpy(data, raw_packet + 4, data_size);
 }
 
