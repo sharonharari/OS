@@ -23,7 +23,11 @@ struct error_packet{
 	char * error_message;
 }__attribute__((packed));
 
-
+struct data_packet{
+	uint16_t data_opcode;
+	uint16_t block_num;
+	char data[512];
+}__attribute__((packed));
 // struct data_packet{
 // 	uint16_t data_opcode;
 // 	uint16_t block_num;
@@ -55,7 +59,7 @@ public:
 	char data[MAX_DATA_SIZE];
 	int data_size;
 	Data();
-	Data(char raw_packet[MAX_PACKET_SIZE], int raw_size);
+	Data(char raw_packet[MAX_PACKET_SIZE], int raw_size, uint16_t block_num) ;
 	~Data();
 };
 

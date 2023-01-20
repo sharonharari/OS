@@ -1,12 +1,13 @@
 #include "adt.h"
 
 
-Data::Data(char raw_packet[MAX_PACKET_SIZE], int raw_size) {
-	uint16_t block_number_network = ( raw_packet[3] << 8) + raw_packet[2];
-	std::cout << "raw_packet[3]: " << std::hex << raw_packet[3] << " , raw_packet[2]: " << std::hex << raw_packet[2] << std::endl;
-	std::cout << "block_number_network = " << block_number_network << std::endl;
-	block_number = ntohs(block_number_network);
-	std::cout << "block_number = " << block_number << std::endl;
+Data::Data(char raw_packet[MAX_PACKET_SIZE], int raw_size, uint16_t block_num) {
+	// uint16_t block_number_network = ( raw_packet[3] << 8) + raw_packet[2];
+	// std::cout << "raw_packet[3]: "<< raw_packet[3] << " , raw_packet[2]: " << std::hex << raw_packet[2] << std::endl;
+	// std::cout << "block_number_network = " << block_number_network << std::endl;
+	// uint16_t block_number2 = ntohs(block_number_network);
+	block_number = block_num;
+	// std::cout << "block_number = " << block_number << "   block_number2 = " << block_number2 <<std::endl;
 	data_size = raw_size - (int)4;
 	std::memcpy(data, raw_packet + 4, data_size);
 }
