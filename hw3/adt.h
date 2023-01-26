@@ -28,22 +28,11 @@ struct data_packet{
 	uint16_t block_num;
 	char data[512];
 }__attribute__((packed));
-// struct data_packet{
-// 	uint16_t data_opcode;
-// 	uint16_t block_num;
-// 	char data[512];
-// }__attribute__((packed));
 
 const int MAX_PACKET_SIZE = 516, MAX_DATA_SIZE = 512;
 const uint16_t WRQ_OPCODE = (uint16_t)2, DATA_OPCODE = (uint16_t)3, ACK_OPCODE = (uint16_t)4, ERROR_OPCODE = (uint16_t)5;
 const size_t ACK_SIZE = (size_t)4;
 const size_t ERROR_HEADER_SIZE = (size_t)4;
-// includes \0
-// const size_t ERROR_7_MESSAGE_SIZE = (size_t)13;
-// const size_t ERROR_6_MESSAGE_SIZE = (size_t)20;
-// const size_t ERROR_4_MESSAGE_SIZE = (size_t)18;
-// const size_t ERROR_0_MESSAGE_BAD_SIZE = (size_t)17; // Bad block number
-// const size_t ERROR_0_MESSAGE_COUNTER_SIZE = (size_t)29; // Error counter larger than maximum
 const std::string ERROR_7_MESSAGE = "Unknown user";
 const std::string ERROR_6_MESSAGE = "File already exists";
 const std::string ERROR_4_MESSAGE = "Unexpected packet";

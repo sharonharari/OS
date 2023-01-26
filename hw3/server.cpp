@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 	struct timeval timeout_struct;
 	timeout_struct.tv_sec = (int)timeout;
 	timeout_struct.tv_usec = 0;
-	std::cout << "timeout [sec] = "<< timeout << std::endl;
+	// std::cout << "timeout [sec] = "<< timeout << std::endl;
 	int sock = socket(AF_INET, SOCK_DGRAM, 0);
 	if (sock < 0) {
 		std::perror("TTFTP_ERROR");
@@ -60,10 +60,6 @@ int main(int argc, char* argv[]) {
 	ack_packet ack_buffer = {0};
 	struct sockaddr_in echoServAddr;
 	memset(&echoServAddr, 0, sizeof(echoServAddr));
-	// if (!(&echoServAddr)) {
-	// 	std::perror("TTFTP_ERROR");//is syscall?
-	// 	exit(1);
-	// }
 	echoServAddr.sin_family = AF_INET;
 	echoServAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	echoServAddr.sin_port = htons(port);
@@ -71,7 +67,7 @@ int main(int argc, char* argv[]) {
 		std::perror("TTFTP_ERROR");
 		exit(1);
 	}
-	std::cout << "created socket port "<< port << std::endl;
+	// std::cout << "created socket port "<< port << std::endl;
 	char buffer[MAX_PACKET_SIZE] = { 0 };
 	struct sockaddr_in ClientAddr;
 	memset(&ClientAddr, 0, sizeof(ClientAddr));
@@ -95,13 +91,13 @@ int main(int argc, char* argv[]) {
 		uint16_t opcode_network_wrq = ( buffer[1] << 8) + buffer[0];
 		uint16_t opcode_wrq = ntohs(opcode_network_wrq);
 
-		std::cout << "recieved packet opcode "<< opcode_wrq << std::endl;
+		// std::cout << "recieved packet opcode "<< opcode_wrq << std::endl;
 		
 		if (opcode_wrq == WRQ_OPCODE) {
-			std::cout << "received a WRQ packet" << std::endl;
+			// std::cout << "received a WRQ packet" << std::endl;
 			if(recvMsgSize <= 9) { //WRQ req is MINIMUM 9 bytes! 9 is a req with filename with length zero
 				//filename is empty
-				std::cout << "file name is empty" << std::endl;
+				// std::cout << "file name is empty" << std::endl;
 				continue;
 			}
 			std::string filename(buffer + 2);
@@ -110,21 +106,15 @@ int main(int argc, char* argv[]) {
 			if (file.is_open())//file exist and can be read from
 			{
 				//Error file exists
+				// std::cout << "file exists" << std::endl;
 				error_handling(sock, ClientAddr, (uint16_t)6);
 				file.close();
-				// need to check:
-				// if(std::remove(filename)){
-				// 	// Error deleting the file!
-				// 	std::perror("TTFTP_ERROR");
-				// 	exit(1);
-				// }
 			}
 			else {
-				std::cout << "file does not exist" << std::endl;
+				// std::cout << "file does not exist" << std::endl;
 				std::ofstream output_file(filename, std::ofstream::out);
-				// ackBuffer[4] = { 0 };
 				ack_buffer  = create_ack();
-				std::cout << "size of ack buffer  "<< sizeof(struct ack_packet) << std::endl;
+				// std::cout << "size of ack buffer  "<< sizeof(struct ack_packet) << std::endl;
 				if (sendto(sock, (void*)&ack_buffer, sizeof(struct ack_packet), 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != sizeof(struct  ack_packet)) {
 					//error("sendto() failed");
 					//syscall
@@ -136,22 +126,24 @@ int main(int argc, char* argv[]) {
 					}
 					exit(1);
 				}
-				std::cout << "Sent WRQ ack" << std::endl;
+				// std::cout << "Sent WRQ ack" << std::endl;
 				bool is_finished = false;
 				bool is_failed_session = false;
 				bool is_need_to_reset_timeout = true;
 				uint16_t wanted_block_number = (uint16_t)0;
-
-
+				struct sockaddr_in SessionAddr;
+				socklen_t SessionAddrLen;
+				memset(&buffer, 0, sizeof(buffer));
+				memset(&SessionAddr, 0, sizeof(SessionAddr));
+				SessionAddrLen = sizeof(SessionAddr);
 				// Reading data in while loop
 				while (!is_finished) {
-					std::cout << "waiting for data" << std::endl;
-					struct sockaddr_in SessionAddr;
+					// std::cout << "waiting for data" << std::endl;
 					memset(&buffer, 0, sizeof(buffer));
 					memset(&SessionAddr, 0, sizeof(SessionAddr));
-					socklen_t SessionAddrLen = sizeof(SessionAddr);
-					retval = 0;
+					// SessionAddrLen = sizeof(SessionAddr);
 					if(is_need_to_reset_timeout){
+						retval = 0;
 						timeout_struct.tv_sec = (int)timeout;
 						timeout_struct.tv_usec = 0;
 					}
@@ -178,12 +170,12 @@ int main(int argc, char* argv[]) {
 							}
 							exit(1);
 						}
-						std::cout << "Recieved some packet. recvMsgSize = "<< recvMsgSize << std::endl;
+						// std::cout << "Recieved some packet. recvMsgSize = "<< recvMsgSize << std::endl;
 					}
 					else {
 						// timeout!!
 						is_need_to_reset_timeout = true;
-						std::cout << "Timeout!" << std::endl;
+						// std::cout << "Timeout!" << std::endl;
 						failure_counter++;
 						if(failure_counter > max_num_of_resends){
 							// reached maximum failures
@@ -201,14 +193,14 @@ int main(int argc, char* argv[]) {
 						if (wanted_block_number>0){
 							// data ack
 							ack_buffer = create_ack(wanted_block_number);
-							std::cout << "prepare for last data ack" << std::endl;
+							// std::cout << "prepare for last data ack" << std::endl;
 						}
 						else{
 							// WRQ ack
 							ack_buffer = create_ack();
-							std::cout << "prepare for last WRQ ack" << std::endl;
+							// std::cout << "prepare for last WRQ ack" << std::endl;
 						}
-						if (sendto(sock, /*(void*)*/&ack_buffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
+						if (sendto(sock, &ack_buffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
 							//error("sendto() failed");
 							output_file.close();
 							std::perror("TTFTP_ERROR");
@@ -218,28 +210,27 @@ int main(int argc, char* argv[]) {
 							}
 							exit(1);
 						}
-						std::cout << "Sent ack" << std::endl;
+						// std::cout << "Sent ack" << std::endl;
 						continue;
 					}
 					// Continue implement Failure counter handling!!
-
+					// std::cout << "SessionAddrLen = "<< SessionAddrLen << " ClientAddrLen = "<< ClientAddrLen <<  std::endl;
+					// std::cout << "SessionAddr.sin_addr.s_addr = "<< SessionAddr.sin_addr.s_addr << " ClientAddr.sin_addr.s_addr = "<< ClientAddr.sin_addr.s_addr << std::endl;
+					// std::cout << "SessionAddr.sin_port = "<< SessionAddr.sin_port << " ClientAddr.sin_port = "<< ClientAddr.sin_port <<  std::endl;
 					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr) || (SessionAddr.sin_port != ClientAddr.sin_port) ){//make sure that you match IP and port!
 						//std::cout << "Wrong IP or Port " << std::endl;
 						//Error recieved a packet from a different endpoint than the one in session.
-						// std::cout << "SessionAddrLen = "<< SessionAddrLen << " ClientAddrLen = "<< ClientAddrLen <<  std::endl;
-						// std::cout << "SessionAddr.sin_addr.s_addr = "<< SessionAddr.sin_addr.s_addr << " ClientAddr.sin_addr.s_addr = "<< ClientAddr.sin_addr.s_addr << std::endl;
-						// std::cout << "SessionAddr.sin_port = "<< SessionAddr.sin_port << " ClientAddr.sin_port = "<< ClientAddr.sin_port <<  std::endl;
 						error_handling(sock, SessionAddr, (uint16_t)4); 
 						is_need_to_reset_timeout = false;
 						continue;
 					}
 					is_need_to_reset_timeout = true;
-					std::cout << "recvMsgSize = "<< recvMsgSize << std::endl;
+					// std::cout << "recvMsgSize = "<< recvMsgSize << std::endl;
 					uint16_t opcode_network_data = ( buffer[1] << 8) + buffer[0];
 					uint16_t opcode_data = ntohs((uint16_t)opcode_network_data);
-					std::cout << "data opcode = "<< opcode_data << std::endl;
+					// std::cout << "data opcode = "<< opcode_data << std::endl;
 					if (opcode_data != DATA_OPCODE) {
-						std::cout << "Received WRQ packet mistakenly" << std::endl;
+						// std::cout << "Received WRQ packet mistakenly" << std::endl;
 						//Error not a data packet - must be WRQ request from the same client!
 						error_handling(sock, ClientAddr, (uint16_t)4);
 						output_file.close();
@@ -254,7 +245,7 @@ int main(int argc, char* argv[]) {
 					else {
 						uint16_t curr_blck_num = ntohs(((struct data_packet *)buffer)->block_num);
 						Data data_block(buffer, recvMsgSize, curr_blck_num);
-						std::cout << "Its a data packet. block number = "<< data_block.block_number << " data size = "<<  data_block.data_size<< std::endl;
+						// std::cout << "Its a data packet. block number = "<< data_block.block_number << " data size = "<<  data_block.data_size<< std::endl;
 						if (data_block.block_number != wanted_block_number + 1) {
 							//Error Bad block number
 							error_handling(sock, ClientAddr, (uint16_t)0);
@@ -270,8 +261,6 @@ int main(int argc, char* argv[]) {
 						else {
 							wanted_block_number = data_block.block_number;
 							output_file.write(data_block.data, data_block.data_size);
-
-							// ackBuffer[4] = { 0 };
 							ack_buffer = create_ack(wanted_block_number);
 							if (sendto(sock, /*(void*)*/ &ack_buffer, ACK_SIZE, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != (ssize_t)ACK_SIZE) {
 								//error("sendto() failed");
@@ -295,15 +284,12 @@ int main(int argc, char* argv[]) {
 				}
 			}
 		}
-		//std::cout << "Handling client " << inet_ntoa(ClientAddr.sin_addr) << std::endl;//prints address shit
-		//if (sendto(sock, echoBuffer, recvMsgSize, 0, (struct sockaddr*)&ClientAddr, sizeof(ClientAddr)) != recvMsgSize)
-		//	error("sendto() failed");
 		else {
 			//recived an non WRQ packet first. Error handling
 			error_handling(sock, ClientAddr, (uint16_t)7);
 		}
 
 	}
-	std::cout << port + timeout + max_num_of_resends;
+	// std::cout << port + timeout + max_num_of_resends;
 	return 0;
 }
