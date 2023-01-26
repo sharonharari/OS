@@ -91,11 +91,7 @@ int main(int argc, char* argv[]) {
 			std::perror("TTFTP_ERROR");
 			exit(1);
 		}
-		if(recvMsgSize <= 9) { //WRQ req is MINIMUM 9 bytes! 9 is a req with filename with length zero
-			//filename is empty
-			std::cout << "file name is empty" << std::endl;
-			continue;
-		}
+		
 		uint16_t opcode_network_wrq = ( buffer[1] << 8) + buffer[0];
 		uint16_t opcode_wrq = ntohs(opcode_network_wrq);
 
@@ -103,6 +99,11 @@ int main(int argc, char* argv[]) {
 		
 		if (opcode_wrq == WRQ_OPCODE) {
 			std::cout << "received a WRQ packet" << std::endl;
+			if(recvMsgSize <= 9) { //WRQ req is MINIMUM 9 bytes! 9 is a req with filename with length zero
+				//filename is empty
+				std::cout << "file name is empty" << std::endl;
+				continue;
+			}
 			std::string filename(buffer + 2);
 			std::string transmission_mode(buffer + 2 + filename.size() + 1);
 			std::ifstream file(filename);
@@ -221,17 +222,17 @@ int main(int argc, char* argv[]) {
 					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr) || (SessionAddr.sin_port != ClientAddr.sin_port) ){//make sure that you match IP and port!
 						std::cout << "Wrong IP or Port " << std::endl;
 						//Error recieved a packet from a different endpoint than the one in session.
-						std::cout << "SessionAddrLen = "<< SessionAddrLen << " ClientAddrLen = "<< ClientAddrLen <<  std::endl;
-						std::cout << "SessionAddr.sin_addr.s_addr = "<< SessionAddr.sin_addr.s_addr << " ClientAddr.sin_addr.s_addr = "<< ClientAddr.sin_addr.s_addr << std::endl;
-						std::cout << "SessionAddr.sin_port = "<< SessionAddr.sin_port << " ClientAddr.sin_port = "<< ClientAddr.sin_port <<  std::endl;
-						error_handling(sock, SessionAddr, (uint16_t)4); // ClientAddr or SessionAddr?????
+						// std::cout << "SessionAddrLen = "<< SessionAddrLen << " ClientAddrLen = "<< ClientAddrLen <<  std::endl;
+						// std::cout << "SessionAddr.sin_addr.s_addr = "<< SessionAddr.sin_addr.s_addr << " ClientAddr.sin_addr.s_addr = "<< ClientAddr.sin_addr.s_addr << std::endl;
+						// std::cout << "SessionAddr.sin_port = "<< SessionAddr.sin_port << " ClientAddr.sin_port = "<< ClientAddr.sin_port <<  std::endl;
+						error_handling(sock, SessionAddr, (uint16_t)4); 
 						// output_file.close();
 						// if(std::remove(const_cast<char*>(filename.c_str()))){
 						// 	// Error deleting the file!
 						// 	std::perror("TTFTP_ERROR");
 						// 	exit(1);
 						// }
-						is_failed_session = true;
+						// is_failed_session = true;
 						continue;
 					}
 					std::cout << "recvMsgSize = "<< recvMsgSize << std::endl;

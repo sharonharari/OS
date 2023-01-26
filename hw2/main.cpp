@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
     pthread_t* atms_threads = new pthread_t[argc - 1];
     atm_input* atm_inputs = new atm_input[argc - 1];
     for(int i = 0; i < argc-1; i++) {
-        atm_inputs[i].id = i+1; 
+        atm_inputs[i].id = i+1;
         atm_inputs[i].file = input_files[i];
         if(pthread_create( &atms_threads[i], NULL, atm, (void *)&atm_inputs[i])){
             std::perror("Bank error: pthread_create failed");
