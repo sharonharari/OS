@@ -139,6 +139,7 @@ int main(int argc, char* argv[]) {
 				std::cout << "Sent WRQ ack" << std::endl;
 				bool is_finished = false;
 				bool is_failed_session = false;
+				bool is_need_to_reset_timeout = true;
 				uint16_t wanted_block_number = (uint16_t)0;
 
 
@@ -150,8 +151,10 @@ int main(int argc, char* argv[]) {
 					memset(&SessionAddr, 0, sizeof(SessionAddr));
 					socklen_t SessionAddrLen = sizeof(SessionAddr);
 					retval = 0;
-					timeout_struct.tv_sec = (int)timeout;
-					timeout_struct.tv_usec = 0;
+					if(is_need_to_reset_timeout){
+						timeout_struct.tv_sec = (int)timeout;
+						timeout_struct.tv_usec = 0;
+					}
 					retval = select(sock+1, &rfds, NULL, NULL, &timeout_struct);
 					if (retval == -1){
 						// select error
@@ -179,6 +182,7 @@ int main(int argc, char* argv[]) {
 					}
 					else {
 						// timeout!!
+						is_need_to_reset_timeout = true;
 						std::cout << "Timeout!" << std::endl;
 						failure_counter++;
 						if(failure_counter > max_num_of_resends){
@@ -220,21 +224,16 @@ int main(int argc, char* argv[]) {
 					// Continue implement Failure counter handling!!
 
 					if ((SessionAddrLen != ClientAddrLen)||(SessionAddr.sin_addr.s_addr != ClientAddr.sin_addr.s_addr) || (SessionAddr.sin_port != ClientAddr.sin_port) ){//make sure that you match IP and port!
-						std::cout << "Wrong IP or Port " << std::endl;
+						//std::cout << "Wrong IP or Port " << std::endl;
 						//Error recieved a packet from a different endpoint than the one in session.
 						// std::cout << "SessionAddrLen = "<< SessionAddrLen << " ClientAddrLen = "<< ClientAddrLen <<  std::endl;
 						// std::cout << "SessionAddr.sin_addr.s_addr = "<< SessionAddr.sin_addr.s_addr << " ClientAddr.sin_addr.s_addr = "<< ClientAddr.sin_addr.s_addr << std::endl;
 						// std::cout << "SessionAddr.sin_port = "<< SessionAddr.sin_port << " ClientAddr.sin_port = "<< ClientAddr.sin_port <<  std::endl;
 						error_handling(sock, SessionAddr, (uint16_t)4); 
-						// output_file.close();
-						// if(std::remove(const_cast<char*>(filename.c_str()))){
-						// 	// Error deleting the file!
-						// 	std::perror("TTFTP_ERROR");
-						// 	exit(1);
-						// }
-						// is_failed_session = true;
+						is_need_to_reset_timeout = false;
 						continue;
 					}
+					is_need_to_reset_timeout = true;
 					std::cout << "recvMsgSize = "<< recvMsgSize << std::endl;
 					uint16_t opcode_network_data = ( buffer[1] << 8) + buffer[0];
 					uint16_t opcode_data = ntohs((uint16_t)opcode_network_data);
