@@ -14,6 +14,8 @@ void milli_sleep(long milliseconds) {
     interval.tv_nsec = arg_in_nanoseconds;
     if (nanosleep(&interval, NULL)) {
         std::perror("Bank error: nanosleep failed");
+        log_output_file.close();
+        exit(1);
     }
 }
 
@@ -27,51 +29,75 @@ std::queue<std::vector<std::string>>* valid_args(int argc, char* argv[]);
 pthread_mutex_t log_mutex;
 std::ofstream log_output_file("log.txt", std::ofstream::out);
 int main(int argc, char* argv[]) {
-    pthread_mutex_init(&log_mutex, NULL);
 	std::queue<std::vector<std::string>>* input_files = valid_args(argc, argv);
 	if (!input_files) {
 		std::cerr << "Bank error: illegal arguments" << std::endl;
-        pthread_mutex_destroy(&log_mutex);
-		return 1;
+        log_output_file.close();
+		exit(1);
 	}
+    if (pthread_mutex_init(&log_mutex, NULL)) {
+        std::perror("Bank error: pthread_mutex_init failed");
+        delete[] input_files;
+        log_output_file.close();
+        exit(1);
+    }
     // Bank printout thread create
     int bank_id = 0;
     pthread_t bank_printout_thread;
     if(pthread_create( &bank_printout_thread, NULL, printout_routine, (void *)&bank_id)){
         std::perror("Bank error: pthread_create failed");
+        delete[] input_files;
+        log_output_file.close();
+        exit(1);
     }
     // Bank tax thread create
     int bank_tax_id = 0;
     pthread_t bank_tax_thread;
     if (pthread_create(&bank_tax_thread, NULL, tax_routine, (void*)&bank_tax_id)) {
         std::perror("Bank error: pthread_create failed");
+        delete[] input_files;
+        log_output_file.close();
+        exit(1);
     }
     // ATMs threads create
     pthread_t* atms_threads = new pthread_t[argc - 1];
     atm_input* atm_inputs = new atm_input[argc - 1];
     for(int i = 0; i < argc-1; i++) {
-        atm_inputs[i].id = i+1;
+        atm_inputs[i].id = i+1; 
         atm_inputs[i].file = input_files[i];
         if(pthread_create( &atms_threads[i], NULL, atm, (void *)&atm_inputs[i])){
             std::perror("Bank error: pthread_create failed");
+            delete[] input_files;
+            delete[] atms_threads;
+            delete[] atm_inputs;
+            log_output_file.close();
+            exit(1);
         }
     }
     // ATMs threads join
     for(int i = 0; i < argc-1; i++) {
         if (pthread_join(atms_threads[i], NULL)) {
             std::perror("Bank error: pthread_join failed");
+            delete[] input_files;
+            delete[] atms_threads;
+            delete[] atm_inputs;
+            log_output_file.close();
+            exit(1);
         }
     } 
     finished = true;
-    if (pthread_join(bank_tax_thread, NULL)) {
+    if (pthread_join(bank_tax_thread, NULL)|| pthread_join(bank_printout_thread, NULL)) {
         std::perror("Bank error: pthread_join failed");
-    }
-    if (pthread_join(bank_printout_thread, NULL)) {
-        std::perror("Bank error: pthread_join failed");
+        delete[] input_files;
+        delete[] atms_threads;
+        delete[] atm_inputs;
+        log_output_file.close();
+        exit(1);
     }
     delete[] input_files;
+    delete[] atms_threads;
     delete[] atm_inputs;
-    pthread_mutex_destroy(&log_mutex);
+    pthread_mutex_destroy_safe(&log_mutex);
     log_output_file.close();
     return 0;
 }

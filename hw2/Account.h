@@ -11,6 +11,15 @@
 const int INITIAL_NUMBER_OF_READERS = 0;
 extern pthread_mutex_t log_mutex;
 extern std::ofstream log_output_file;
+
+/*
+*	pthread safe wrapper mechanism
+*/
+void pthread_mutex_init_safe(pthread_mutex_t* mutex);
+void pthread_mutex_destroy_safe(pthread_mutex_t* mutex);
+void pthread_mutex_lock_safe(pthread_mutex_t* mutex);
+void pthread_mutex_unlock_safe(pthread_mutex_t* mutex);
+
 class Account {
 private:
 	int balance;
